@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#c90012" />
+    <title>Login - AACD 3D Connect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../CSS/login.css" />
+  </head>
+  <body>
+    <main class="login-view">
+      <section class="login-art" aria-hidden="true">
+        <div class="art-grid"></div>
+        <div class="art-copy"><div class="brand-mark small-mark">3D</div><p class="eyebrow">AACD + Instituto Mauá</p><h1>Uma rede que transforma capacidade em cuidado.</h1><p class="art-description">Conectamos demandas clínicas, estudantes e uma rede de microfábricas para acelerar a produção de próteses 3D.</p><div class="art-metrics"><span><strong>07</strong> municípios conectados</span><span><strong>24h</strong> para um primeiro match</span></div></div>
+        <div class="floating-node node-one">AACD</div><div class="floating-node node-two">FAB</div><div class="floating-node node-three">+</div>
+      </section>
+      <section class="login-panel" aria-labelledby="loginTitle">
+        <div class="login-topline"><span>Portal de acesso</span><span class="status-dot">Ambiente seguro</span></div>
+        <div class="login-card"><div class="brand-lockup"><div class="brand-mark">3D</div><div><p class="brand-name">AACD 3D CONNECT</p><p class="brand-subtitle">Hub de Manufatura Aditiva</p></div></div><div class="welcome-copy"><p class="eyebrow">Bem-vindo de volta</p><h1 id="loginTitle">Acesse seu hub</h1><p>Entre para acompanhar demandas, capacidades e homologações.</p></div>
+            <form id="loginForm" novalidate><label for="email">E-mail corporativo</label><div class="input-wrap"><span class="input-icon email-icon"><img src="../ICONS/email.png" alt="" /></span><input id="email" type="email" placeholder="nome@instituicao.org" autocomplete="email" required /></div><label for="password">Senha</label><div class="input-wrap"><span class="input-icon password-icon"><img src="../ICONS/senha.png" alt="" /></span><input id="password" type="password" placeholder="Digite sua senha" autocomplete="current-password" required /><button class="icon-button password-hidden" type="button" id="togglePassword" aria-label="Mostrar senha">&#128065;</button></div><div class="form-row"><span></span><button class="text-button" type="button" id="forgotPassword">Esqueci minha senha</button></div><button class="primary-button" type="submit">Entrar <span aria-hidden="true">-&gt;</span></button><p class="form-feedback" id="formFeedback" role="status"></p></form>
+          <div class="card-divider"><span>ou</span></div><button class="secondary-button" id="registerButton" type="button">Quero cadastrar minha instituição</button><p class="demo-hint">Acesso de demonstração: qualquer e-mail e senha com 4+ caracteres.</p>
+        </div><p class="login-footer">Tecnologia assistiva com propósito social <span>•</span> AACD 3D Connect</p>
+      </section>
+    </main>
+    <script src="../JS/app.js?v=3"></script>
+  </body>
+</html>
