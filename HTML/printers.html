@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#c90012" />
+    <title>Impressoras - AACD 3D Connect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../CSS/printers.css" />
+  </head>
+  <body>
+    <div class="printers-app">
+      <aside class="sidebar">
+        <a class="brand" href="dashboard.html"><span class="brand-symbol">3D</span><span><strong>AACD 3D<br />CONNECT</strong><small>Hub de Manufatura</small></span></a>
+        <nav aria-label="Menu principal">
+          <a class="nav-item" href="dashboard.html"><span><img src="../ICONS/dashboard.png" alt="" /></span>Dashboard</a>
+          <a class="nav-item" href="institutions.html"><span><img src="../ICONS/instituicoes.png" alt="" /></span>Instituições</a>
+          <a class="nav-item active" href="printers.html" aria-current="page"><span><img src="../ICONS/impressoras.png" alt="" /></span>Impressoras</a>
+          <a class="nav-item" href="#"><span><img src="../ICONS/materiais.png" alt="" /></span>Materiais</a>
+          <a class="nav-item" href="#"><span><img src="../ICONS/utilizacoes.png" alt="" /></span>Utilizações</a>
+          <a class="nav-item" href="#"><span><img src="../ICONS/mensagens.png" alt="" /></span>Mensagens</a>
+          <a class="nav-item" href="#"><span><img src="../ICONS/relatorios.png" alt="" /></span>Relatórios</a>
+          <a class="nav-item" href="#"><span><img src="../ICONS/configuracoes.png" alt="" /></span>Configurações</a>
+        </nav>
+        <button class="profile-link" type="button"><span><img src="../ICONS/perfil.png" alt="" /></span>Perfil</button>
+      </aside>
+      <main class="printers-main">
+        <header class="topbar"><div class="mobile-brand">AACD 3D CONNECT</div><div class="topbar-actions"><button aria-label="Notificações" type="button">!</button><button aria-label="Ajuda" type="button">?</button><button class="user-avatar" aria-label="Perfil" type="button">MC</button></div></header>
+        <div class="page-content">
+          <div class="page-heading">
+            <div><p class="eyebrow">AACD 3D CONNECT</p><h1>Global Printers</h1><p>Explore e gerencie o parque de impressão 3D em todas as instituições parceiras.</p></div>
+            <div class="filter-actions" aria-label="Filtros rápidos">
+              <label class="filter-control"><span>Instituição</span><select id="institutionFilter"><option value="">Todas</option><option value="aacd-central">AACD Central</option><option value="lab-ortopedia">Lab Ortopedia</option><option value="aacd-sul">AACD Sul</option></select></label>
+              <label class="filter-control"><span>Tecnologia</span><select id="technologyFilter"><option value="">Todas</option><option value="fdm">FDM</option><option value="resina">SLA (Resina)</option><option value="fdm-dual">FDM (Dual)</option></select></label>
+              <label class="filter-control"><span>Material</span><select id="materialFilter"><option value="">Todos</option><option value="pla">PLA</option><option value="petg">PETG</option><option value="biomed">BioMed Clear</option><option value="nylon">Nylon</option></select></label>
+            </div>
+          </div>
+          <div class="active-filters"><span id="resultCount">3 impressoras encontradas</span><label class="search"><span aria-hidden="true">/</span><input id="printerSearch" type="search" placeholder="Buscar impressora" aria-label="Buscar impressora" /></label><button id="clearFilters" type="button">Limpar filtros</button></div>
+          <section class="printer-grid" id="printerGrid" aria-live="polite">
+            <article class="printer-card" data-institution="aacd-central" data-technology="fdm" data-materials="pla petg abs" data-name="Bambu Lab X1 Carbon">
+              <div class="printer-image"><img src="https://images.unsplash.com/photo-1616401784845-180882ba9ba8?auto=format&fit=crop&w=800&q=80" alt="Impressora 3D Bambu Lab X1 Carbon" /><span class="status available"><i></i>DISPONÍVEL</span></div>
+              <div class="printer-body"><h2>Bambu Lab X1 Carbon</h2><p class="institution">AACD Central</p><dl><div><dt>Tecnologia</dt><dd>FDM</dd></div><div><dt>Volume</dt><dd>256 x 256 x 256 mm</dd></div></dl><p class="materials-label">Materiais Compatíveis</p><div class="material-list"><span data-material="pla">PLA</span><span data-material="petg">PETG</span><span>ABS</span></div><button class="printer-action" type="button">Iniciar Impressão</button></div>
+            </article>
+            <article class="printer-card" data-institution="lab-ortopedia" data-technology="resina" data-materials="biomed tough" data-name="Formlabs Form 3B+">
+              <div class="printer-image"><img src="https://images.unsplash.com/photo-1632928274373-70c4f9fc8e0b?auto=format&fit=crop&w=800&q=80" alt="Impressora 3D Formlabs Form 3B+" /><span class="status busy"><i></i>EM USO (78%)</span></div>
+              <div class="printer-body"><h2>Formlabs Form 3B+</h2><p class="institution">Lab Ortopedia</p><dl><div><dt>Tecnologia</dt><dd>SLA (Resina)</dd></div><div><dt>Volume</dt><dd>145 x 145 x 185 mm</dd></div></dl><p class="materials-label">Materiais Compatíveis</p><div class="material-list"><span data-material="biomed">BioMed Clear</span><span>Tough 1500</span></div><button class="printer-action waiting" type="button">Fila de Espera</button></div>
+            </article>
+            <article class="printer-card" data-institution="aacd-sul" data-technology="fdm-dual" data-materials="nylon pva tpu" data-name="Ultimaker S5">
+              <div class="printer-image"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80" alt="Impressora 3D Ultimaker S5" /><span class="status available"><i></i>DISPONÍVEL</span></div>
+              <div class="printer-body"><h2>Ultimaker S5</h2><p class="institution">AACD Sul</p><dl><div><dt>Tecnologia</dt><dd>FDM (Dual)</dd></div><div><dt>Volume</dt><dd>330 x 240 x 300 mm</dd></div></dl><p class="materials-label">Materiais Compatíveis</p><div class="material-list"><span data-material="nylon">Nylon</span><span>PVA</span><span>TPU</span></div><button class="printer-action" type="button">Iniciar Impressão</button></div>
+            </article>
+          </section>
+          <p class="empty-state" id="emptyState" hidden>Nenhuma impressora corresponde aos filtros selecionados.</p>
+        </div>
+      </main>
+    </div>
+    <script src="../JS/printers.js"></script>
+  </body>
+</html>

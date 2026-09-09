@@ -33,6 +33,3 @@ navItems.forEach((item) => {
   });
 });
 
-document.querySelector('#profileButton').addEventListener('click', () => {
-  document.querySelector('[data-panel="settings"]').click();
-});
