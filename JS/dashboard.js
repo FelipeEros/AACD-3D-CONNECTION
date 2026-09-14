@@ -26,6 +26,10 @@ selectPanel('overview');
 navItems.forEach((item) => {
   item.addEventListener('click', () => {
     const panelName = item.dataset.panel;
+    if (panelName === 'materials') {
+      window.location.href = 'materials.html';
+      return;
+    }
     navItems.forEach((navItem) => navItem.classList.toggle('active', navItem === item));
     selectPanel(panelName);
     title.textContent = labels[panelName][0];

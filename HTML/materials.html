@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#c90012" />
+    <title>Materiais - AACD 3D Connect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../CSS/materials.css" />
+  </head>
+  <body>
+    <div class="materials-app">
+      <aside class="sidebar">
+        <a class="brand" href="dashboard.html"><span class="brand-symbol">3D</span><span><strong>AACD 3D<br />CONNECT</strong><small>Hub de Manufatura</small></span></a>
+        <nav aria-label="Menu principal">
+          <a class="nav-item" href="dashboard.html"><span><img src="../ICONS/dashboard.png" alt="" /></span>Dashboard</a>
+          <a class="nav-item" href="institutions.html"><span><img src="../ICONS/instituicoes.png" alt="" /></span>Instituições</a>
+          <a class="nav-item" href="printers.html"><span><img src="../ICONS/impressoras.png" alt="" /></span>Impressoras</a>
+          <a class="nav-item active" href="materials.html" aria-current="page"><span><img src="../ICONS/materiais.png" alt="" /></span>Materiais</a>
+          <a class="nav-item" href="#"><span><img src="../ICONS/utilizacoes.png" alt="" /></span>Utilizações</a>
+          <a class="nav-item" href="#"><span><img src="../ICONS/mensagens.png" alt="" /></span>Mensagens</a>
+          <a class="nav-item" href="#"><span><img src="../ICONS/relatorios.png" alt="" /></span>Relatórios</a>
+          <a class="nav-item" href="#"><span><img src="../ICONS/configuracoes.png" alt="" /></span>Configurações</a>
+        </nav>
+        <button class="profile-link" type="button"><span><img src="../ICONS/perfil.png" alt="" /></span>Perfil</button>
+      </aside>
+
+      <main class="materials-main">
+        <header class="topbar"><div class="mobile-brand">AACD 3D CONNECT</div><div class="topbar-actions"><button aria-label="Notificações" type="button"></button><button aria-label="Ajuda" type="button"></button><button class="user-avatar" aria-label="Perfil" type="button"></button></div></header>
+        <div class="page-content">
+          <div class="page-heading">
+            <div><h1>Materiais Disponíveis</h1><p>Gestão global de inventário de filamentos e resinas.</p></div>
+            <button class="export-button" id="exportButton" type="button"><img src="../ICONS/download.png" alt="" /> Exportar Relatório</button>
+          </div>
+
+          <section class="filter-panel" aria-label="Filtros de materiais">
+            <label class="filter-control"><span>Tipo de Material</span><select id="typeFilter"><option value="">Todos os Tipos</option><option value="filamento">Filamento</option><option value="resina">Resina</option></select></label>
+            <label class="filter-control"><span>Instituição</span><select id="institutionFilter"><option value="">Todas as Unidades</option><option value="sp">AACD São Paulo</option><option value="rj">AACD Rio de Janeiro</option></select></label>
+            <label class="filter-control"><span>Status de Estoque</span><select id="statusFilter"><option value="">Qualquer Status</option><option value="adequado">Adequado</option><option value="critico">Crítico</option><option value="baixo">Baixo Estoque</option></select></label>
+            <button class="filter-button" id="filterButton" type="button"><img src="../ICONS/filtro.png" alt="" /> Filtrar</button>
+          </section>
+
+          <section class="materials-table-wrap" aria-label="Lista de materiais">
+            <div class="table-scroll"><table><thead><tr><th>Material / Tipo</th><th>Quantidade Global</th><th>Status</th><th>Compatibilidade</th><th>Ações</th></tr></thead><tbody id="materialsBody">
+              <tr data-type="filamento" data-institution="sp" data-status="adequado"><td><div class="material-name"><span class="material-swatch blue">////</span><span><strong>PLA Premium Branco</strong><small>Filamento 1.75mm</small></span></div></td><td><strong>125 Kg</strong><small>Distribuído em 3 un.</small></td><td><span class="status adequate">ADEQUADO</span></td><td><span class="compatibility"><img src="../ICONS/impressora.png" alt="" /> 12 Impressoras</span></td><td><button class="row-action" type="button" aria-label="Ver PLA Premium Branco">•••</button></td></tr>
+              <tr data-type="resina" data-institution="sp" data-status="critico"><td><div class="material-name"><span class="material-swatch coral">◊</span><span><strong>Resina Biocompatível Classe IIa</strong><small>Líquido TL (Transparente)</small></span></div></td><td><strong class="critical-value">5 Litros</strong><small>Concentrado SP</small></td><td><span class="status critical">CRÍTICO</span></td><td><span class="compatibility"><img src="../ICONS/impressora.png" alt="" /> 2 Impressoras (SLA)</span></td><td><button class="row-action" type="button" aria-label="Ver Resina Biocompatível Classe IIa">•••</button></td></tr>
+              <tr data-type="filamento" data-institution="rj" data-status="baixo"><td><div class="material-name"><span class="material-swatch gray">////</span><span><strong>PETG Cinza Industrial</strong><small>Filamento 1.75mm</small></span></div></td><td><strong>42 Kg</strong><small>Distribuído em 2 un.</small></td><td><span class="status low">BAIXO ESTOQUE</span></td><td><span class="compatibility"><img src="../ICONS/impressora.png" alt="" /> 8 Impressoras</span></td><td><button class="row-action" type="button" aria-label="Ver PETG Cinza Industrial">•••</button></td></tr>
+              <tr data-type="filamento" data-institution="sp" data-status="adequado"><td><div class="material-name"><span class="material-swatch blue">////</span><span><strong>TPU 95A Preto (Flexível)</strong><small>Filamento 2.85mm</small></span></div></td><td><strong>18 Kg</strong><small>Apenas SP</small></td><td><span class="status adequate">ADEQUADO</span></td><td><span class="compatibility"><img src="../ICONS/impressora.png" alt="" /> 3 Impressoras</span></td><td><button class="row-action" type="button" aria-label="Ver TPU 95A Preto">•••</button></td></tr>
+            </tbody></table></div>
+            <div class="table-footer"><span id="resultCount">Mostrando 1–4 de 24 materiais</span><div class="pagination"><button type="button" disabled aria-label="Página anterior">‹</button><button type="button" aria-label="Próxima página">›</button></div></div>
+          </section>
+
+          <div class="bottom-grid">
+            <aside class="restock-alert"><h2><span>△</span> Alerta de Reposição</h2><p>A resina biocompatível em SP atingirá nível zero em aproximadamente 4 dias baseada na fila de impressão atual.</p><button id="requestButton" type="button">Solicitar Compra Urgente</button></aside>
+            <section class="distribution-panel"><div><h2>Distribuição de Materiais</h2><p>Otimize a alocação de resinas entre as unidades.</p></div><div class="chart" aria-label="Gráfico de distribuição"><span style="height:78%"></span><span style="height:52%"></span><span style="height:28%"></span></div></section>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="../JS/materials.js"></script>
+  </body>
+</html>

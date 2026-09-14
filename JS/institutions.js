@@ -4,6 +4,12 @@ const statusFilter = document.querySelector('#statusFilter');
 const clearFilters = document.querySelector('#clearFilters');
 const cards = document.querySelectorAll('.institution-card');
 const noResults = document.querySelector('#noResults');
+const materialsLink = [...document.querySelectorAll('.nav-item')].find((item) => item.textContent.trim() === 'Materiais');
+
+materialsLink?.addEventListener('click', (event) => {
+  event.preventDefault();
+  window.location.href = 'materials.html';
+});
 
 function filterInstitutions() {
   const filters = { state: stateFilter.value, city: cityFilter.value, status: statusFilter.value };
