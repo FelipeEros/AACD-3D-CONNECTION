@@ -14,7 +14,7 @@
 	body{font-size:14px}
 	.sidebar{width:220px;flex-basis:220px}
 	.brand{height:78px;padding:12px 18px;gap:11px}
-	.brand-symbol{width:30px;height:30px;font-size:11px}
+	.brand-symbol{width:24px;height:24px;font-size:9px}
 	.brand strong{font-size:16px}
 	.brand small{font-size:9px}
 	.sidebar nav{padding-top:14px}
