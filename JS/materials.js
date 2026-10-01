@@ -20,8 +20,8 @@ document.querySelector('#filterButton').addEventListener('click', filterMaterial
 
 document.querySelector('#exportButton').addEventListener('click', (event) => {
   const button = event.currentTarget;
-  button.innerHTML = '<span aria-hidden="true">✓</span> Relatório pronto';
-  window.setTimeout(() => { button.innerHTML = '<img src="../ICONS/download.png" alt="" /> Exportar Relatório'; }, 1800);
+  button.innerHTML = '<i class="bi bi-check-circle" aria-hidden="true"></i> Relatório pronto';
+  window.setTimeout(() => { button.innerHTML = '<i class="bi bi-download" aria-hidden="true"></i> Exportar Relatório'; }, 1800);
 });
 
 document.querySelector('#requestButton').addEventListener('click', (event) => {

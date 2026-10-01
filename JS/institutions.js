@@ -32,6 +32,19 @@ document.querySelectorAll('.card-button').forEach((button) => {
   button.addEventListener('click', () => {
     const message = button.dataset.action === 'review' ? 'A solicitação está pronta para avaliação.' : 'Detalhes da instituição disponíveis em breve.';
     button.textContent = message;
-    window.setTimeout(() => { button.innerHTML = button.dataset.action === 'review' ? 'Avaliar Solicitação <b>▣</b>' : 'Ver Instituição <b>→</b>'; }, 1800);
+    window.setTimeout(() => {
+      const action = button.dataset.action === 'review' ? {
+        label: 'Avaliar Solicitação',
+        icon: 'bi bi-arrow-right',
+      } : {
+        label: 'Ver Instituição',
+        icon: 'bi bi-arrow-right',
+      };
+
+      button.innerHTML = `
+        <span class="card-button-text">${action.label}</span>
+        <i class="${action.icon}" aria-hidden="true"></i>
+      `;
+    }, 1800);
   });
 });
