@@ -17,10 +17,12 @@ button,select{font:inherit;cursor:pointer}
 .profile-link span{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px}
 .materials-main{min-width:0;flex:1}
 .topbar{height:55px;display:flex;align-items:center;justify-content:flex-end;padding:0 34px;background:#fff;border-bottom:1px solid #f0dada}
-.topbar-actions{display:flex;gap:23px;align-items:center}
-.topbar-actions button{border:0;background:none;color:#5d5252}
-.user-avatar{width:26px!important;height:26px!important;border-radius:50%!important;background:var(--red)!important;color:#fff!important;display:grid;place-items:center;font-size:10px!important;font-weight:700;position:relative}
-.user-avatar:before{content:'';position:absolute;left:-12px;top:0;height:26px;border-left:1px solid #eee}
+.topbar-actions{display:flex;gap:18px;align-items:center}
+.topbar-actions button{border:0;background:none;color:#5d5252;width:18px;height:18px;padding:0;display:flex;align-items:center;justify-content:center}
+.topbar-actions i{font-size:15px;line-height:1}
+.user-profile{position:relative;display:inline-flex;align-items:center;justify-content:center;margin-left:2px;overflow:visible}
+.user-avatar{position:relative;z-index:1;width:30px;height:30px;min-width:30px;border:0;border-radius:50%;background:#244761;color:#fff;display:grid;place-items:center;font-size:10px;font-weight:700;line-height:1;padding:0}
+.user-status-dot{position:absolute;right:-1px;bottom:-1px;z-index:0;width:11px;height:11px;border-radius:50%;background:var(--red);border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.04)}
 .page-content{padding:20px 19px 35px;max-width:1110px;margin:auto}
 .page-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
 .page-heading h1{margin:0 0 4px;font:700 25px 'Space Grotesk',sans-serif;letter-spacing:-.4px}
