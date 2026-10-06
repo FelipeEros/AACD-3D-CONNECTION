@@ -13,14 +13,16 @@ button,select{font:inherit;cursor:pointer}
 .nav-item span{width:17px;text-align:center;display:inline-flex;align-items:center;justify-content:center}
 .nav-item i,.profile-link i,.topbar-actions i,.compatibility i,.export-button i,.filter-button i{font-size:15px;line-height:1}
 .nav-item:hover,.nav-item.active{border-left-color:var(--red);background:#ffeded;color:var(--red);font-weight:700}
-.profile-link{margin-top:auto;height:50px;border:0;border-top:1px solid #f0dada;background:#fff;text-align:left;padding-left:18px;color:#55494a;font-size:12px;display:flex;align-items:center;gap:8px}
+.profile-link{margin-top:auto;height:50px;border:0;border-top:1px solid #f0dada;background:#fff;text-align:left;padding-left:18px;color:#55494a;font-size:12px;text-decoration:none;display:flex;align-items:center;gap:8px;transition:background-color .2s ease,color .2s ease}
+.profile-link:hover{background:#ffeded;color:var(--red)}
 .profile-link span{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px}
 .materials-main{min-width:0;flex:1}
 .topbar{height:55px;display:flex;align-items:center;justify-content:flex-end;padding:0 34px;background:#fff;border-bottom:1px solid #f0dada}
 .topbar-actions{display:flex;gap:18px;align-items:center}
 .topbar-actions button{border:0;background:none;color:#5d5252;width:18px;height:18px;padding:0;display:flex;align-items:center;justify-content:center}
 .topbar-actions i{font-size:15px;line-height:1}
-.user-profile,.user-avatar,.user-status-dot{display:none!important}
+.user-profile,.user-status-dot{display:none!important}
+.user-avatar{display:flex!important;align-items:center;justify-content:center;width:30px!important;height:30px!important;border:1px solid var(--red)!important;border-radius:50%;background:#fff;color:var(--red);font-size:10px!important;font-weight:700;line-height:1}
 .page-content{padding:20px 19px 35px;max-width:1110px;margin:auto}
 .page-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
 .page-heading h1{margin:0 0 4px;font:700 25px 'Space Grotesk',sans-serif;letter-spacing:-.4px}
