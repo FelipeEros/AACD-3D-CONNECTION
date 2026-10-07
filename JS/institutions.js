@@ -1,6 +1,8 @@
-const stateFilter = document.querySelector('#stateFilter');
-const cityFilter = document.querySelector('#cityFilter');
-const statusFilter = document.querySelector('#statusFilter');
+const filters = {
+  state: { value: '' },
+  city: { value: '' },
+  status: { value: '' },
+};
 const clearFilters = document.querySelector('#clearFilters');
 const cards = document.querySelectorAll('.institution-card');
 const noResults = document.querySelector('#noResults');
@@ -12,19 +14,31 @@ materialsLink?.addEventListener('click', (event) => {
 });
 
 function filterInstitutions() {
-  const filters = { state: stateFilter.value, city: cityFilter.value, status: statusFilter.value };
   let visibleCards = 0;
   cards.forEach((card) => {
-    const matches = Object.entries(filters).every(([key, value]) => !value || card.dataset[key] === value);
+    const matches = Object.entries(filters).every(([key, filter]) => !filter.value || card.dataset[key] === filter.value);
     card.hidden = !matches;
     if (matches) visibleCards += 1;
   });
   noResults.classList.toggle('visible', visibleCards === 0);
 }
 
-[stateFilter, cityFilter, statusFilter].forEach((filter) => filter.addEventListener('change', filterInstitutions));
+document.querySelectorAll('[data-filter]').forEach((option) => {
+  option.addEventListener('click', () => {
+    const filterName = option.dataset.filter;
+    filters[filterName].value = option.dataset.value;
+    document.querySelector(`#${filterName}Filter`).textContent = option.textContent;
+    option.closest('.dropdown-menu').querySelectorAll('.dropdown-item').forEach((item) => item.classList.toggle('active', item === option));
+    filterInstitutions();
+  });
+});
 clearFilters.addEventListener('click', () => {
-  [stateFilter, cityFilter, statusFilter].forEach((filter) => { filter.value = ''; });
+  Object.keys(filters).forEach((filterName) => {
+    filters[filterName].value = '';
+    const button = document.querySelector(`#${filterName}Filter`);
+    button.textContent = filterName === 'state' ? 'Estado' : filterName === 'city' ? 'Cidade' : 'Status';
+    button.closest('.dropdown').querySelectorAll('.dropdown-item').forEach((item, index) => item.classList.toggle('active', index === 0));
+  });
   filterInstitutions();
 });
 

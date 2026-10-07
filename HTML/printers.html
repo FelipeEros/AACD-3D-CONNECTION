@@ -34,52 +34,55 @@
           <div class="page-heading">
             <div><p class="eyebrow">AACD 3D CONNECT</p><h1>Global Printers</h1><p>Explore e gerencie o parque de impressão 3D em todas as instituições parceiras.</p></div>
             <div class="filter-actions" aria-label="Filtros rápidos">
-              <label class="filter-control input-group input-group-sm bg-white border border-danger-subtle rounded-4 overflow-hidden shadow-sm filter-institution">
+              <div class="filter-control input-group input-group-sm bg-white border border-danger-subtle rounded-4 shadow-sm filter-institution dropdown">
                 <span class="input-group-text bg-transparent border-0 text-danger px-2"><i class="bi bi-building" aria-hidden="true"></i></span>
                 <span class="input-group-text bg-transparent border-0 text-danger fw-semibold px-2">Instituição</span>
-                <select id="institutionFilter" class="form-select form-select-sm border-0 shadow-none bg-transparent text-body">
-                  <option value="">Todas</option>
-                  <option value="aacd-central">AACD Central</option>
-                  <option value="lab-ortopedia">Lab Ortopedia</option>
-                  <option value="aacd-sul">AACD Sul</option>
-                </select>
-              </label>
-              <label class="filter-control input-group input-group-sm bg-white border border-danger-subtle rounded-4 overflow-hidden shadow-sm filter-technology">
-                <span class="input-group-text bg-transparent border-0 text-danger px-2"><i class="bi bi-printer" aria-hidden="true"></i></span>
+                <button class="filter-value dropdown-toggle" id="institutionFilter" type="button" data-bs-toggle="dropdown" aria-expanded="false">Todas</button>
+                <ul class="dropdown-menu" aria-labelledby="institutionFilter">
+                  <li><button class="dropdown-item active" type="button" data-filter="institution" data-value="">Todas</button></li>
+                  <li><button class="dropdown-item" type="button" data-filter="institution" data-value="aacd-central">AACD Central</button></li>
+                  <li><button class="dropdown-item" type="button" data-filter="institution" data-value="lab-ortopedia">Lab Ortopedia</button></li>
+                  <li><button class="dropdown-item" type="button" data-filter="institution" data-value="aacd-sul">AACD Sul</button></li>
+                </ul>
+              </div>
+              <div class="filter-control input-group input-group-sm bg-white border border-danger-subtle rounded-4 shadow-sm filter-technology dropdown">
+                <span class="input-group-text bg-transparent border-0 text-danger px-2"><i class="bi bi-cpu" aria-hidden="true"></i></span>
                 <span class="input-group-text bg-transparent border-0 text-danger fw-semibold px-2">Tecnologia</span>
-                <select id="technologyFilter" class="form-select form-select-sm border-0 shadow-none bg-transparent text-body">
-                  <option value="">Todas</option>
-                  <option value="fdm">FDM</option>
-                  <option value="resina">SLA (Resina)</option>
-                  <option value="fdm-dual">FDM (Dual)</option>
-                </select>
-              </label>
-              <label class="filter-control input-group input-group-sm bg-white border border-danger-subtle rounded-4 overflow-hidden shadow-sm filter-material">
+                <button class="filter-value dropdown-toggle" id="technologyFilter" type="button" data-bs-toggle="dropdown" aria-expanded="false">Todas</button>
+                <ul class="dropdown-menu" aria-labelledby="technologyFilter">
+                  <li><button class="dropdown-item active" type="button" data-filter="technology" data-value="">Todas</button></li>
+                  <li><button class="dropdown-item" type="button" data-filter="technology" data-value="fdm">FDM</button></li>
+                  <li><button class="dropdown-item" type="button" data-filter="technology" data-value="resina">SLA (Resina)</button></li>
+                  <li><button class="dropdown-item" type="button" data-filter="technology" data-value="fdm-dual">FDM (Dual)</button></li>
+                </ul>
+              </div>
+              <div class="filter-control input-group input-group-sm bg-white border border-danger-subtle rounded-4 shadow-sm filter-material dropdown">
                 <span class="input-group-text bg-transparent border-0 text-danger px-2"><i class="bi bi-box-seam" aria-hidden="true"></i></span>
                 <span class="input-group-text bg-transparent border-0 text-danger fw-semibold px-2">Material</span>
-                <select id="materialFilter" class="form-select form-select-sm border-0 shadow-none bg-transparent text-body">
-                  <option value="">Todos</option>
-                  <option value="pla">PLA</option>
-                  <option value="petg">PETG</option>
-                  <option value="biomed">BioMed Clear</option>
-                  <option value="nylon">Nylon</option>
-                </select>
-              </label>
+                <button class="filter-value dropdown-toggle" id="materialFilter" type="button" data-bs-toggle="dropdown" aria-expanded="false">Todos</button>
+                <ul class="dropdown-menu" aria-labelledby="materialFilter">
+                  <li><button class="dropdown-item active" type="button" data-filter="material" data-value="">Todos</button></li>
+                  <li><button class="dropdown-item" type="button" data-filter="material" data-value="pla">PLA</button></li>
+                  <li><button class="dropdown-item" type="button" data-filter="material" data-value="petg">PETG</button></li>
+                  <li><button class="dropdown-item" type="button" data-filter="material" data-value="biomed">BioMed Clear</button></li>
+                  <li><button class="dropdown-item" type="button" data-filter="material" data-value="nylon">Nylon</button></li>
+                </ul>
+              </div>
             </div>
           </div>
-          <div class="active-filters"><span id="resultCount">3 impressoras encontradas</span><label class="search"><span aria-hidden="true">/</span><input id="printerSearch" type="search" placeholder="Buscar impressora" aria-label="Buscar impressora" /></label><button id="clearFilters" type="button">Limpar filtros</button></div>
+          <div class="active-filters"><span id="resultCount">3 impressoras encontradas</span><label class="search"><i class="bi bi-search" aria-hidden="true"></i><input id="printerSearch" type="search" placeholder="Buscar impressora" aria-label="Buscar impressora" /></label><button id="clearFilters" type="button"><i class="bi bi-x-circle" aria-hidden="true"></i> Limpar filtros</button></div>
           <section class="printer-grid" id="printerGrid" aria-live="polite">
             <article class="printer-card" data-institution="aacd-central" data-technology="fdm" data-materials="pla petg abs" data-name="Bambu Lab X1 Carbon">
               <div class="printer-image"><img src="https://images.unsplash.com/photo-1616401784845-180882ba9ba8?auto=format&fit=crop&w=800&q=80" alt="Impressora 3D Bambu Lab X1 Carbon" /><span class="status available"><i></i>DISPONÍVEL</span></div>
-              <div class="printer-body"><h2>Bambu Lab X1 Carbon</h2><p class="institution">AACD Central</p><dl><div><dt>Tecnologia</dt><dd>FDM</dd></div><div><dt>Volume</dt><dd>256 x 256 x 256 mm</dd></div></dl><p class="materials-label">Materiais Compatíveis</p><div class="material-list"><span data-material="pla">PLA</span><span data-material="petg">PETG</span><span>ABS</span></div><button class="printer-action" type="button">Iniciar Impressão</button></div>
+              <div class="printer-body"><h2>Bambu Lab X1 Carbon</h2><p class="institution"><i class="bi bi-building" aria-hidden="true"></i>AACD Central</p><dl><div><dt>Tecnologia</dt><dd>FDM</dd></div><div><dt>Volume</dt><dd>256 x 256 x 256 mm</dd></div></dl><p class="materials-label">Materiais Compatíveis</p><div class="material-list"><span data-material="pla">PLA</span><span data-material="petg">PETG</span><span>ABS</span></div><button class="printer-action" type="button">Iniciar Impressão</button></div>
             </article>
             <article class="printer-card" data-institution="lab-ortopedia" data-technology="resina" data-materials="biomed tough" data-name="Formlabs Form 3B+">
               <div class="printer-image"><img src="https://images.unsplash.com/photo-1632928274373-70c4f9fc8e0b?auto=format&fit=crop&w=800&q=80" alt="Impressora 3D Formlabs Form 3B+" /><span class="status busy"><i></i>EM USO (78%)</span></div>
-              <div class="printer-body"><h2>Formlabs Form 3B+</h2><p class="institution">Lab Ortopedia</p><dl><div><dt>Tecnologia</dt><dd>SLA (Resina)</dd></div><div><dt>Volume</dt><dd>145 x 145 x 185 mm</dd></div></dl><p class="materials-label">Materiais Compatíveis</p><div class="material-list"><span data-material="biomed">BioMed Clear</span><span>Tough 1500</span></div><button class="printer-action waiting" type="button">Fila de Espera</button></div>
+              <div class="printer-body"><h2>Formlabs Form 3B+</h2><p class="institution"><i class="bi bi-building" aria-hidden="true"></i>Lab Ortopedia</p><dl><div><dt>Tecnologia</dt><dd>SLA (Resina)</dd></div><div><dt>Volume</dt><dd>145 x 145 x 185 mm</dd></div></dl><p class="materials-label">Materiais Compatíveis</p><div class="material-list"><span data-material="biomed">BioMed Clear</span><span>Tough 1500</span></div><button class="printer-action waiting" type="button">Fila de Espera</button></div>
             </article>
             <article class="printer-card" data-institution="aacd-sul" data-technology="fdm-dual" data-materials="nylon pva tpu" data-name="Ultimaker S5">
               <div class="printer-image"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80" alt="Impressora 3D Ultimaker S5" /><span class="status available"><i></i>DISPONÍVEL</span></div>
-              <div class="printer-body"><h2>Ultimaker S5</h2><p class="institution">AACD Sul</p><dl><div><dt>Tecnologia</dt><dd>FDM (Dual)</dd></div><div><dt>Volume</dt><dd>330 x 240 x 300 mm</dd></div></dl><p class="materials-label">Materiais Compatíveis</p><div class="material-list"><span data-material="nylon">Nylon</span><span>PVA</span><span>TPU</span></div><button class="printer-action" type="button">Iniciar Impressão</button></div>
+              <div class="printer-body"><h2>Ultimaker S5</h2><p class="institution"><i class="bi bi-building" aria-hidden="true"></i>AACD Sul</p><dl><div><dt>Tecnologia</dt><dd>FDM (Dual)</dd></div><div><dt>Volume</dt><dd>330 x 240 x 300 mm</dd></div></dl><p class="materials-label">Materiais Compatíveis</p><div class="material-list"><span data-material="nylon">Nylon</span><span>PVA</span><span>TPU</span></div><button class="printer-action" type="button">Iniciar Impressão</button></div>
             </article>
           </section>
           <p class="empty-state" id="emptyState" hidden>Nenhuma impressora corresponde aos filtros selecionados.</p>
@@ -87,5 +90,6 @@
       </main>
     </div>
     <script src="../JS/printers.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
