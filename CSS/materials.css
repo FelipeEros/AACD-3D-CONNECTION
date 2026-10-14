@@ -28,12 +28,18 @@ button,select{font:inherit;cursor:pointer}
 .page-heading h1{margin:0 0 4px;font:700 25px 'Space Grotesk',sans-serif;letter-spacing:-.4px}
 .page-heading p{margin:0;color:var(--muted);font-size:13px}
 .export-button{border:0;border-radius:5px;background:#161616;color:#fff;padding:9px 14px;font-weight:700;font-size:11px;display:inline-flex;align-items:center;gap:6px}
-.filter-panel{display:grid;grid-template-columns:1fr 1fr 1.05fr auto;gap:11px;padding:12px;background:#fff;border:1px solid #f0eeee;border-radius:4px;margin-bottom:18px}
-.filter-control{display:flex;flex-direction:column;gap:4px}
-.filter-control span{color:#76696a;font-size:10px;font-weight:600}
-.filter-control select{height:32px;padding:0 10px;border:1px solid #e9e5e5;border-radius:5px;background:#fff;color:#493f40;outline:0}
-.filter-control select:focus{border-color:#d78383}
-.filter-button{align-self:end;height:32px;border:1px solid #e6e1e1;border-radius:5px;background:#fff;color:#504748;padding:0 14px;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+.filter-panel{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:10px;align-items:end;padding:12px;background:#fff;border:1px solid #f0eeee;border-radius:12px;margin-bottom:18px;box-shadow:0 2px 8px rgba(93,36,36,.03)}
+.filter-control{position:relative;z-index:1}
+.filter-value{width:100%;height:42px;padding:0 12px 0 12px;border:1px solid #e9cfcf;background:#fff;border-radius:12px;color:#454041;font-size:11px;font-weight:600;display:flex;align-items:center;gap:8px;box-shadow:0 2px 6px rgba(176,70,70,.04);transition:border-color .2s ease, box-shadow .2s ease}
+.filter-value:hover{border-color:#d67c84;box-shadow:0 3px 10px rgba(201,0,18,.08)}
+.filter-value .button-label{flex:1;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.filter-value i{margin-left:auto;font-size:12px;color:#8d6a6d}
+.filter-control .dropdown-menu{position:absolute;left:0;top:calc(100% + 8px);z-index:2000;min-width:100%;padding:5px;border:1px solid #eccaca;border-radius:8px;box-shadow:0 10px 24px rgba(70,20,20,.12);background:#fff;display:none}
+.filter-control .dropdown-menu.show{display:block}
+.filter-control .dropdown-item{width:100%;padding:7px 9px;border:0;background:transparent;color:#493a3b;text-align:left;font-size:11px;border-radius:5px}
+.filter-control .dropdown-item.active,.filter-control .dropdown-item:active,.filter-control .dropdown-item:hover{background:#fff0f0;color:var(--red)}
+.clear-button{align-self:end;height:42px;border:1px solid #edcfcf;border-radius:12px;background:#fff3f3;color:#795c5c;padding:0 14px;font-weight:700;font-size:11px;display:inline-flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 6px rgba(176,70,70,.04)}
+.clear-button:hover{filter:brightness(.99);transform:translateY(-1px)}
 .materials-table-wrap{background:#fff;border:1px solid #f0eeee;border-radius:4px;overflow:hidden}
 .table-scroll{overflow-x:auto}
 table{width:100%;border-collapse:collapse;min-width:760px}
@@ -44,9 +50,10 @@ td strong{font-weight:700}
 td small{display:block;margin-top:2px;color:#827879;font-size:9px}
 .material-name{display:flex;align-items:center;gap:10px}
 .material-name strong{display:block;font-size:11px}
-.material-swatch{display:grid;place-items:center;width:30px;height:30px;font-size:16px;font-weight:700;letter-spacing:-3px}
+.material-swatch{display:grid;place-items:center;width:30px;height:30px;border-radius:6px;flex-shrink:0}
+.material-swatch i{font-size:14px;line-height:1}
 .material-swatch.blue{background:#e0ebff;color:#4d75b8}
-.material-swatch.coral{background:#ffe0dc;color:#be4848;font-size:21px;letter-spacing:0}
+.material-swatch.coral{background:#ffe0dc;color:#be4848}
 .material-swatch.gray{background:#e7e7e7;color:#666}
 .status{display:inline-block;padding:4px 7px;font-size:9px;font-weight:700;letter-spacing:.3px}
 .adequate{background:#e6f5e9;color:#55a263}
@@ -62,8 +69,9 @@ td small{display:block;margin-top:2px;color:#827879;font-size:9px}
 .bottom-grid{display:grid;grid-template-columns:230px 1fr;gap:19px;margin-top:18px}
 .restock-alert,.distribution-panel{background:#fff;border:1px solid #f0eeee;border-radius:4px;padding:17px}
 .restock-alert h2,.distribution-panel h2{margin:0;font-size:12px}
-.restock-alert h2{color:#5d5152}
-.restock-alert h2 span{color:var(--red);font-size:19px;vertical-align:-2px;margin-right:5px}
+.restock-alert h2{color:#5d5152;display:flex;align-items:center;gap:6px}
+.alert-icon{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;line-height:1}
+.alert-svg{display:block;width:14px;height:14px;transform:translateY(-1px)}
 .restock-alert p{line-height:1.35;color:#746869;margin:8px 0 12px;font-size:11px}
 .restock-alert button{border:0;background:none;color:var(--red);padding:0;font-size:10px;font-weight:700}
 .distribution-panel{display:flex;align-items:center;justify-content:space-between;min-height:153px;padding:26px 17px}
@@ -90,12 +98,13 @@ td small{display:block;margin-top:2px;color:#827879;font-size:9px}
   .export-button{white-space:nowrap;padding:8px;font-size:0}
   .export-button i{font-size:17px}
   .filter-panel{grid-template-columns:1fr 1fr}
-  .filter-button{width:100%}
+  .clear-button{grid-column:1 / -1;width:100%}
   .bottom-grid{grid-template-columns:1fr}
   .distribution-panel{min-height:125px}
 }
 @media(max-width:430px){
   .filter-panel{grid-template-columns:1fr}
+  .clear-button{grid-column:1 / -1}
   .page-heading{display:block}
   .export-button{position:absolute;right:12px;top:72px}
   .table-footer{font-size:9px}

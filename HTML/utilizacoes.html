@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#c90012" />
+    <title>Utilizações - AACD 3D Connect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="../CSS/utilizacoes.css" />
+  </head>
+  <body>
+    <div class="utilizacoes-app">
+      <aside class="sidebar">
+        <a class="brand" href="dashboard.html">
+          <span class="brand-symbol">3D</span>
+          <span>
+            <strong>AACD 3D<br />CONNECT</strong>
+            <small>Hub de Manufatura</small>
+          </span>
+        </a>
+
+        <nav aria-label="Menu principal">
+          <a class="nav-item" href="dashboard.html"><span><i class="bi bi-grid-1x2-fill" aria-hidden="true"></i></span>Dashboard</a>
+          <a class="nav-item" href="institutions.html"><span><i class="bi bi-building" aria-hidden="true"></i></span>Instituições</a>
+          <a class="nav-item" href="printers.html"><span><i class="bi bi-printer" aria-hidden="true"></i></span>Impressoras</a>
+          <a class="nav-item" href="materials.html"><span><i class="bi bi-box-seam" aria-hidden="true"></i></span>Materiais</a>
+          <a class="nav-item active" href="utilizacoes.html" aria-current="page"><span><i class="bi bi-graph-up-arrow" aria-hidden="true"></i></span>Utilizações</a>
+          <a class="nav-item" href="#"><span><i class="bi bi-chat-dots" aria-hidden="true"></i></span>Mensagens</a>
+          <a class="nav-item" href="#"><span><i class="bi bi-bar-chart" aria-hidden="true"></i></span>Relatórios</a>
+          <a class="nav-item" href="#"><span><i class="bi bi-gear" aria-hidden="true"></i></span>Configurações</a>
+        </nav>
+
+        <a class="profile-link" href="Login.html" aria-label="Desconectar">
+          <span><i class="bi bi-box-arrow-right" aria-hidden="true"></i></span>Desconectar
+        </a>
+      </aside>
+
+      <main class="utilizacoes-main">
+        <header class="topbar">
+          <div class="mobile-brand">AACD 3D CONNECT</div>
+          <div class="topbar-actions">
+            <button aria-label="Notificações" type="button"><i class="bi bi-bell" aria-hidden="true"></i></button>
+            <button aria-label="Ajuda" type="button"><i class="bi bi-question-circle" aria-hidden="true"></i></button>
+            <button class="user-avatar" aria-label="Perfil de JS" type="button">JS</button>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow">AACD 3D CONNECT</p>
+              <h1>Histórico de Utilizações</h1>
+              <p>Monitoramento e auditoria de recursos de impressão 3D na rede.</p>
+            </div>
+          </div>
+
+          <div class="summary-grid">
+            <article class="summary-card">
+              <div class="card-icon"><i class="bi bi-graph-up-arrow" aria-hidden="true"></i></div>
+              <div class="card-copy">
+                <span>Utilizações este mês</span>
+                <strong>1,248</strong>
+              </div>
+            </article>
+
+            <article class="summary-card">
+              <div class="card-icon"><i class="bi bi-building" aria-hidden="true"></i></div>
+              <div class="card-copy">
+                <span>Instituições utilizadas</span>
+                <strong>14</strong>
+              </div>
+            </article>
+
+            <article class="summary-card">
+              <div class="card-icon"><i class="bi bi-printer" aria-hidden="true"></i></div>
+              <div class="card-copy">
+                <span>Impressoras utilizadas</span>
+                <strong>32</strong>
+              </div>
+            </article>
+          </div>
+
+          <div class="filter-bar">
+            <div class="filter-control dropdown">
+              <span class="filter-label"><i class="bi bi-building" aria-hidden="true"></i> Instituição</span>
+              <button class="filter-value dropdown-toggle" id="institutionFilter" type="button" data-bs-toggle="dropdown" aria-expanded="false">Todas</button>
+              <ul class="dropdown-menu" aria-labelledby="institutionFilter">
+                <li><button class="dropdown-item active" type="button" data-filter="institution" data-value="">Todas</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="institution" data-value="aacd">AACD</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="institution" data-value="unifesp">Unifesp</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="institution" data-value="hospital-sirio-libanes">Hospital Sírio-Libanês</button></li>
+              </ul>
+            </div>
+
+            <div class="filter-control dropdown">
+              <span class="filter-label"><i class="bi bi-printer" aria-hidden="true"></i> Impressora</span>
+              <button class="filter-value dropdown-toggle" id="printerFilter" type="button" data-bs-toggle="dropdown" aria-expanded="false">Todas</button>
+              <ul class="dropdown-menu" aria-labelledby="printerFilter">
+                <li><button class="dropdown-item active" type="button" data-filter="printer" data-value="">Todas</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="printer" data-value="formlabs-3b">Formlabs 3B</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="printer" data-value="ultimaker-s5">Ultimaker S5</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="printer" data-value="stratasys-j750">Stratasys J750</button></li>
+              </ul>
+            </div>
+
+            <div class="filter-control dropdown">
+              <span class="filter-label"><i class="bi bi-box-seam" aria-hidden="true"></i> Material</span>
+              <button class="filter-value dropdown-toggle" id="materialFilter" type="button" data-bs-toggle="dropdown" aria-expanded="false">Todos</button>
+              <ul class="dropdown-menu" aria-labelledby="materialFilter">
+                <li><button class="dropdown-item active" type="button" data-filter="material" data-value="">Todos</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="material" data-value="resina">Resina</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="material" data-value="pla-premium">PLA Premium</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="material" data-value="petg">PETG</button></li>
+              </ul>
+            </div>
+
+            <div class="filter-control dropdown">
+              <span class="filter-label"><i class="bi bi-calendar3" aria-hidden="true"></i> Período</span>
+              <button class="filter-value dropdown-toggle" id="periodFilter" type="button" data-bs-toggle="dropdown" aria-expanded="false">mm/dd/yyyy</button>
+              <ul class="dropdown-menu" aria-labelledby="periodFilter">
+                <li><button class="dropdown-item active" type="button" data-filter="period" data-value="">mm/dd/yyyy</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="period" data-value="7-dias">Últimos 7 dias</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="period" data-value="30-dias">Últimos 30 dias</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="period" data-value="90-dias">Último trimestre</button></li>
+              </ul>
+            </div>
+
+            <div class="filter-control dropdown">
+              <span class="filter-label"><i class="bi bi-check2-circle" aria-hidden="true"></i> Status</span>
+              <button class="filter-value dropdown-toggle" id="statusFilter" type="button" data-bs-toggle="dropdown" aria-expanded="false">Todos</button>
+              <ul class="dropdown-menu" aria-labelledby="statusFilter">
+                <li><button class="dropdown-item active" type="button" data-filter="status" data-value="">Todos</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="status" data-value="concluido">Concluído</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="status" data-value="em-andamento">Em andamento</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="status" data-value="cancelado">Cancelado</button></li>
+              </ul>
+            </div>
+
+            <button class="filter-button" type="button"><i class="bi bi-x-circle" aria-hidden="true"></i>Limpar filtros</button>
+          </div>
+
+          <section class="table-card" aria-label="Tabela de utilizações">
+            <table class="util-table">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Instituição</th>
+                  <th>Impressora</th>
+                  <th>Material</th>
+                  <th>Quantidade</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-institution="aacd" data-printer="formlabs-3b" data-material="resina" data-status="concluido" data-period="30-dias">
+                  <td>24 Out, 2023 - 14:30</td>
+                  <td>AACD</td>
+                  <td>Formlabs 3B</td>
+                  <td>Resina Biocompatível</td>
+                  <td>250ml</td>
+                  <td><span class="status success">Concluído</span></td>
+                </tr>
+                <tr data-institution="aacd" data-printer="ultimaker-s5" data-material="pla-premium" data-status="em-andamento" data-period="30-dias">
+                  <td>24 Out, 2023 - 10:15</td>
+                  <td>AACD</td>
+                  <td>Ultimaker S5</td>
+                  <td>PLA Premium</td>
+                  <td>120g</td>
+                  <td><span class="status warning">Em andamento</span></td>
+                </tr>
+                <tr data-institution="hospital-sirio-libanes" data-printer="stratasys-j750" data-material="resina" data-status="cancelado" data-period="90-dias">
+                  <td>23 Out, 2023 - 16:45</td>
+                  <td>Hospital Sírio-Libanês</td>
+                  <td>Stratasys J750</td>
+                  <td>PolyJet Vero</td>
+                  <td>85g</td>
+                  <td><span class="status danger">Cancelado</span></td>
+                </tr>
+                <tr data-institution="aacd" data-printer="formlabs-3b" data-material="resina" data-status="concluido" data-period="30-dias">
+                  <td>23 Out, 2023 - 09:00</td>
+                  <td>AACD</td>
+                  <td>Formlabs 3B</td>
+                  <td>Resina Dental LT</td>
+                  <td>180ml</td>
+                  <td><span class="status success">Concluído</span></td>
+                </tr>
+                <tr data-institution="unifesp" data-printer="mk3s-plus" data-material="petg" data-status="concluido" data-period="90-dias">
+                  <td>22 Out, 2023 - 13:20</td>
+                  <td>Unifesp</td>
+                  <td>MK3S+</td>
+                  <td>PETG Clínico</td>
+                  <td>340g</td>
+                  <td><span class="status success">Concluído</span></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="table-footer">
+              <span>Mostrando 1 a 5 de 1,248 registros</span>
+              <div class="pagination" aria-label="Paginação">
+                <button type="button" class="page-link disabled">Anterior</button>
+                <button type="button" class="page-number active">1</button>
+                <button type="button" class="page-number">2</button>
+                <button type="button" class="page-number">3</button>
+                <button type="button" class="page-link">Próxima</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../JS/utilizacoes.js"></script>
+  </body>
+</html>

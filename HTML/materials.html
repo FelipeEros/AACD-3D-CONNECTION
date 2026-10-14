@@ -20,7 +20,7 @@
           <a class="nav-item" href="institutions.html"><span><i class="bi bi-building" aria-hidden="true"></i></span>Instituições</a>
           <a class="nav-item" href="printers.html"><span><i class="bi bi-printer" aria-hidden="true"></i></span>Impressoras</a>
           <a class="nav-item active" href="materials.html" aria-current="page"><span><i class="bi bi-box-seam" aria-hidden="true"></i></span>Materiais</a>
-          <a class="nav-item" href="#"><span><i class="bi bi-graph-up-arrow" aria-hidden="true"></i></span>Utilizações</a>
+          <a class="nav-item" href="utilizacoes.html"><span><i class="bi bi-graph-up-arrow" aria-hidden="true"></i></span>Utilizações</a>
           <a class="nav-item" href="#"><span><i class="bi bi-chat-dots" aria-hidden="true"></i></span>Mensagens</a>
           <a class="nav-item" href="#"><span><i class="bi bi-bar-chart" aria-hidden="true"></i></span>Relatórios</a>
           <a class="nav-item" href="#"><span><i class="bi bi-gear" aria-hidden="true"></i></span>Configurações</a>
@@ -37,24 +37,58 @@
           </div>
 
           <section class="filter-panel" aria-label="Filtros de materiais">
-            <label class="filter-control"><span>Tipo de Material</span><select id="typeFilter"><option value="">Todos os Tipos</option><option value="filamento">Filamento</option><option value="resina">Resina</option></select></label>
-            <label class="filter-control"><span>Instituição</span><select id="institutionFilter"><option value="">Todas as Unidades</option><option value="sp">AACD São Paulo</option><option value="rj">AACD Rio de Janeiro</option></select></label>
-            <label class="filter-control"><span>Status de Estoque</span><select id="statusFilter"><option value="">Qualquer Status</option><option value="adequado">Adequado</option><option value="critico">Crítico</option><option value="baixo">Baixo Estoque</option></select></label>
-            <button class="filter-button" id="filterButton" type="button"><i class="bi bi-funnel" aria-hidden="true"></i> Filtrar</button>
+            <div class="filter-control dropdown">
+              <button class="filter-value dropdown-toggle" id="typeFilter" type="button" data-select="type" aria-expanded="false">
+                <span class="button-label">Todos os Tipos</span>
+                <i class="bi bi-chevron-down" aria-hidden="true"></i>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="typeFilter">
+                <li><button class="dropdown-item active" type="button" data-filter="type" data-value="">Todos os Tipos</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="type" data-value="filamento">Filamento</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="type" data-value="resina">Resina</button></li>
+              </ul>
+            </div>
+
+            <div class="filter-control dropdown">
+              <button class="filter-value dropdown-toggle" id="institutionFilter" type="button" data-select="institution" aria-expanded="false">
+                <span class="button-label">Todas as Unidades</span>
+                <i class="bi bi-chevron-down" aria-hidden="true"></i>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="institutionFilter">
+                <li><button class="dropdown-item active" type="button" data-filter="institution" data-value="">Todas as Unidades</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="institution" data-value="sp">AACD São Paulo</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="institution" data-value="rj">AACD Rio de Janeiro</button></li>
+              </ul>
+            </div>
+
+            <div class="filter-control dropdown">
+              <button class="filter-value dropdown-toggle" id="statusFilter" type="button" data-select="status" aria-expanded="false">
+                <span class="button-label">Qualquer Status</span>
+                <i class="bi bi-chevron-down" aria-hidden="true"></i>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="statusFilter">
+                <li><button class="dropdown-item active" type="button" data-filter="status" data-value="">Qualquer Status</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="status" data-value="adequado">Adequado</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="status" data-value="critico">Crítico</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="status" data-value="baixo">Baixo Estoque</button></li>
+              </ul>
+            </div>
+
+            <button class="clear-button" id="clearFilters" type="button"><i class="bi bi-x-circle" aria-hidden="true"></i> Limpar filtros</button>
           </section>
 
           <section class="materials-table-wrap" aria-label="Lista de materiais">
             <div class="table-scroll"><table><thead><tr><th>Material / Tipo</th><th>Quantidade Global</th><th>Status</th><th>Compatibilidade</th><th>Ações</th></tr></thead><tbody id="materialsBody">
-              <tr data-type="filamento" data-institution="sp" data-status="adequado"><td><div class="material-name"><span class="material-swatch blue">////</span><span><strong>PLA Premium Branco</strong><small>Filamento 1.75mm</small></span></div></td><td><strong>125 Kg</strong><small>Distribuído em 3 un.</small></td><td><span class="status adequate">ADEQUADO</span></td><td><span class="compatibility"><i class="bi bi-printer" aria-hidden="true"></i> 12 Impressoras</span></td><td><button class="row-action" type="button" aria-label="Ver PLA Premium Branco">•••</button></td></tr>
-              <tr data-type="resina" data-institution="sp" data-status="critico"><td><div class="material-name"><span class="material-swatch coral">◊</span><span><strong>Resina Biocompatível Classe IIa</strong><small>Líquido TL (Transparente)</small></span></div></td><td><strong class="critical-value">5 Litros</strong><small>Concentrado SP</small></td><td><span class="status critical">CRÍTICO</span></td><td><span class="compatibility"><i class="bi bi-printer" aria-hidden="true"></i> 2 Impressoras (SLA)</span></td><td><button class="row-action" type="button" aria-label="Ver Resina Biocompatível Classe IIa">•••</button></td></tr>
-              <tr data-type="filamento" data-institution="rj" data-status="baixo"><td><div class="material-name"><span class="material-swatch gray">////</span><span><strong>PETG Cinza Industrial</strong><small>Filamento 1.75mm</small></span></div></td><td><strong>42 Kg</strong><small>Distribuído em 2 un.</small></td><td><span class="status low">BAIXO ESTOQUE</span></td><td><span class="compatibility"><i class="bi bi-printer" aria-hidden="true"></i> 8 Impressoras</span></td><td><button class="row-action" type="button" aria-label="Ver PETG Cinza Industrial">•••</button></td></tr>
-              <tr data-type="filamento" data-institution="sp" data-status="adequado"><td><div class="material-name"><span class="material-swatch blue">////</span><span><strong>TPU 95A Preto (Flexível)</strong><small>Filamento 2.85mm</small></span></div></td><td><strong>18 Kg</strong><small>Apenas SP</small></td><td><span class="status adequate">ADEQUADO</span></td><td><span class="compatibility"><i class="bi bi-printer" aria-hidden="true"></i> 3 Impressoras</span></td><td><button class="row-action" type="button" aria-label="Ver TPU 95A Preto">•••</button></td></tr>
+              <tr data-type="filamento" data-institution="sp" data-status="adequado"><td><div class="material-name"><span class="material-swatch blue"><i class="bi bi-droplet-fill" aria-hidden="true"></i></span><span><strong>PLA Premium Branco</strong><small>Filamento 1.75mm</small></span></div></td><td><strong>125 Kg</strong><small>Distribuído em 3 un.</small></td><td><span class="status adequate">ADEQUADO</span></td><td><span class="compatibility"><i class="bi bi-printer" aria-hidden="true"></i> 12 Impressoras</span></td><td><button class="row-action" type="button" aria-label="Ver PLA Premium Branco">•••</button></td></tr>
+              <tr data-type="resina" data-institution="sp" data-status="critico"><td><div class="material-name"><span class="material-swatch coral"><i class="bi bi-droplet-fill" aria-hidden="true"></i></span><span><strong>Resina Biocompatível Classe IIa</strong><small>Líquido TL (Transparente)</small></span></div></td><td><strong class="critical-value">5 Litros</strong><small>Concentrado SP</small></td><td><span class="status critical">CRÍTICO</span></td><td><span class="compatibility"><i class="bi bi-printer" aria-hidden="true"></i> 2 Impressoras (SLA)</span></td><td><button class="row-action" type="button" aria-label="Ver Resina Biocompatível Classe IIa">•••</button></td></tr>
+              <tr data-type="filamento" data-institution="rj" data-status="baixo"><td><div class="material-name"><span class="material-swatch gray"><i class="bi bi-droplet-fill" aria-hidden="true"></i></span><span><strong>PETG Cinza Industrial</strong><small>Filamento 1.75mm</small></span></div></td><td><strong>42 Kg</strong><small>Distribuído em 2 un.</small></td><td><span class="status low">BAIXO ESTOQUE</span></td><td><span class="compatibility"><i class="bi bi-printer" aria-hidden="true"></i> 8 Impressoras</span></td><td><button class="row-action" type="button" aria-label="Ver PETG Cinza Industrial">•••</button></td></tr>
+              <tr data-type="filamento" data-institution="sp" data-status="adequado"><td><div class="material-name"><span class="material-swatch blue"><i class="bi bi-droplet-fill" aria-hidden="true"></i></span><span><strong>TPU 95A Preto (Flexível)</strong><small>Filamento 2.85mm</small></span></div></td><td><strong>18 Kg</strong><small>Apenas SP</small></td><td><span class="status adequate">ADEQUADO</span></td><td><span class="compatibility"><i class="bi bi-printer" aria-hidden="true"></i> 3 Impressoras</span></td><td><button class="row-action" type="button" aria-label="Ver TPU 95A Preto">•••</button></td></tr>
             </tbody></table></div>
             <div class="table-footer"><span id="resultCount">Mostrando 1–4 de 24 materiais</span><div class="pagination"><button type="button" disabled aria-label="Página anterior">‹</button><button type="button" aria-label="Próxima página">›</button></div></div>
           </section>
 
           <div class="bottom-grid">
-            <aside class="restock-alert"><h2><span>△</span> Alerta de Reposição</h2><p>A resina biocompatível em SP atingirá nível zero em aproximadamente 4 dias baseada na fila de impressão atual.</p><button id="requestButton" type="button">Solicitar Compra Urgente</button></aside>
+            <aside class="restock-alert"><h2><span class="alert-icon" aria-hidden="true"><svg class="alert-svg" viewBox="0 0 24 24" role="img" aria-hidden="true"><path d="M12 2.5L22 19.5H2L12 2.5Z" fill="#d72638"></path><path d="M12 8.2V13.5" stroke="#fff" stroke-width="2.3" stroke-linecap="round"></path><circle cx="12" cy="16.8" r="1.4" fill="#fff"></circle></svg></span> Alerta de Reposição</h2><p>A resina biocompatível em SP atingirá nível zero em aproximadamente 4 dias baseada na fila de impressão atual.</p><button id="requestButton" type="button">Solicitar Compra Urgente</button></aside>
             <section class="distribution-panel"><div><h2>Distribuição de Materiais</h2><p>Otimize a alocação de resinas entre as unidades.</p></div><div class="chart" aria-label="Gráfico de distribuição"><span style="height:78%"></span><span style="height:52%"></span><span style="height:28%"></span></div></section>
           </div>
         </div>
