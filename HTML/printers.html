@@ -22,9 +22,9 @@
           <a class="nav-item active" href="printers.html" aria-current="page"><span><i class="bi bi-printer" aria-hidden="true"></i></span>Impressoras</a>
           <a class="nav-item" href="materials.html"><span><i class="bi bi-box-seam" aria-hidden="true"></i></span>Materiais</a>
           <a class="nav-item" href="utilizacoes.html"><span><i class="bi bi-graph-up-arrow" aria-hidden="true"></i></span>Utilizações</a>
-          <a class="nav-item" href="#"><span><i class="bi bi-chat-dots" aria-hidden="true"></i></span>Mensagens</a>
+          <a class="nav-item" href="messages.html"><span><i class="bi bi-chat-dots" aria-hidden="true"></i></span>Mensagens</a>
           <a class="nav-item" href="#"><span><i class="bi bi-bar-chart" aria-hidden="true"></i></span>Relatórios</a>
-          <a class="nav-item" href="#"><span><i class="bi bi-gear" aria-hidden="true"></i></span>Configurações</a>
+          <a class="nav-item" href="configuracoes.html"><span><i class="bi bi-gear" aria-hidden="true"></i></span>Configurações</a>
         </nav>
         <a class="profile-link" href="Login.html" aria-label="Desconectar"><span><i class="bi bi-box-arrow-right" aria-hidden="true"></i></span>Desconectar</a>
       </aside>
@@ -73,15 +73,17 @@
           <div class="active-filters"><span id="resultCount">3 impressoras encontradas</span><label class="search"><i class="bi bi-search" aria-hidden="true"></i><input id="printerSearch" type="search" placeholder="Buscar impressora" aria-label="Buscar impressora" /></label><button id="clearFilters" type="button"><i class="bi bi-x-circle" aria-hidden="true"></i> Limpar filtros</button></div>
           <section class="printer-grid" id="printerGrid" aria-live="polite">
             <article class="printer-card" data-institution="aacd-central" data-technology="fdm" data-materials="pla petg abs" data-name="Bambu Lab X1 Carbon">
-              <div class="printer-image"><img src="https://images.unsplash.com/photo-1616401784845-180882ba9ba8?auto=format&fit=crop&w=800&q=80" alt="Impressora 3D Bambu Lab X1 Carbon" /><span class="status available"><i></i>DISPONÍVEL</span></div>
+              <div class="printer-image empty-image"><span class="status available"><i></i>DISPONÍVEL</span></div>
               <div class="printer-body"><h2>Bambu Lab X1 Carbon</h2><p class="institution"><i class="bi bi-building" aria-hidden="true"></i>AACD Central</p><dl><div><dt>Tecnologia</dt><dd>FDM</dd></div><div><dt>Volume</dt><dd>256 x 256 x 256 mm</dd></div></dl><p class="materials-label">Materiais Compatíveis</p><div class="material-list"><span data-material="pla">PLA</span><span data-material="petg">PETG</span><span>ABS</span></div><button class="printer-action" type="button">Iniciar Impressão</button></div>
             </article>
             <article class="printer-card" data-institution="lab-ortopedia" data-technology="resina" data-materials="biomed tough" data-name="Formlabs Form 3B+">
-              <div class="printer-image"><img src="https://images.unsplash.com/photo-1632928274373-70c4f9fc8e0b?auto=format&fit=crop&w=800&q=80" alt="Impressora 3D Formlabs Form 3B+" /><span class="status busy"><i></i>EM USO (78%)</span></div>
+              <div class="printer-image empty-image">
+                <span class="status busy"><i></i>EM USO (78%)</span>
+              </div>
               <div class="printer-body"><h2>Formlabs Form 3B+</h2><p class="institution"><i class="bi bi-building" aria-hidden="true"></i>Lab Ortopedia</p><dl><div><dt>Tecnologia</dt><dd>SLA (Resina)</dd></div><div><dt>Volume</dt><dd>145 x 145 x 185 mm</dd></div></dl><p class="materials-label">Materiais Compatíveis</p><div class="material-list"><span data-material="biomed">BioMed Clear</span><span>Tough 1500</span></div><button class="printer-action waiting" type="button">Fila de Espera</button></div>
             </article>
             <article class="printer-card" data-institution="aacd-sul" data-technology="fdm-dual" data-materials="nylon pva tpu" data-name="Ultimaker S5">
-              <div class="printer-image"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80" alt="Impressora 3D Ultimaker S5" /><span class="status available"><i></i>DISPONÍVEL</span></div>
+              <div class="printer-image empty-image"><span class="status available"><i></i>DISPONÍVEL</span></div>
               <div class="printer-body"><h2>Ultimaker S5</h2><p class="institution"><i class="bi bi-building" aria-hidden="true"></i>AACD Sul</p><dl><div><dt>Tecnologia</dt><dd>FDM (Dual)</dd></div><div><dt>Volume</dt><dd>330 x 240 x 300 mm</dd></div></dl><p class="materials-label">Materiais Compatíveis</p><div class="material-list"><span data-material="nylon">Nylon</span><span>PVA</span><span>TPU</span></div><button class="printer-action" type="button">Iniciar Impressão</button></div>
             </article>
           </section>
