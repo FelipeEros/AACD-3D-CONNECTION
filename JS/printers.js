@@ -9,6 +9,32 @@ const resultCount = document.querySelector('#resultCount');
 const emptyState = document.querySelector('#emptyState');
 const clearFilters = document.querySelector('#clearFilters');
 
+document.querySelectorAll('.filter-control .dropdown-toggle').forEach((button) => {
+  button.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const control = button.closest('.filter-control');
+    const menu = control.querySelector('.dropdown-menu');
+    const shouldOpen = !menu.classList.contains('show');
+
+    document.querySelectorAll('.filter-control .dropdown-menu').forEach((otherMenu) => {
+      otherMenu.classList.remove('show');
+      otherMenu.closest('.filter-control')?.querySelector('.dropdown-toggle')?.setAttribute('aria-expanded', 'false');
+    });
+
+    if (shouldOpen) {
+      menu.classList.add('show');
+      button.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+
+document.addEventListener('click', () => {
+  document.querySelectorAll('.filter-control .dropdown-menu').forEach((menu) => {
+    menu.classList.remove('show');
+    menu.closest('.filter-control')?.querySelector('.dropdown-toggle')?.setAttribute('aria-expanded', 'false');
+  });
+});
+
 function filterPrinters() {
   const searchTerm = filters.search.value.trim().toLowerCase();
   let visibleCards = 0;
