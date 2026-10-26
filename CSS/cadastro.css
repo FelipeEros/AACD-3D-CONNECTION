@@ -35,8 +35,7 @@ button {
 }
 
 .cadastro-view {
-  max-width: 1380px;
-  margin: 0 auto;
+  width: 100%;
   padding: 18px 18px 16px;
   min-height: 100vh;
 }

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#c90012" />
+    <title>Meus Materiais - Instituição Parceira</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="../CSS/materiais-parceira.css" />
+  </head>
+  <body>
+    <div class="partner-materials-app">
+      <aside class="sidebar">
+        <a class="brand" href="DashboardParceira.html">
+          <strong>AACD 3D<br />Connect</strong>
+          <small>Hub de Manufatura</small>
+        </a>
+        <nav aria-label="Menu principal">
+          <a class="nav-item" href="DashboardParceira.html"><i class="bi bi-grid-1x2-fill" aria-hidden="true"></i>Dashboard</a>
+          <a class="nav-item" href="ImpressorasParceira.html"><i class="bi bi-printer" aria-hidden="true"></i>Minhas Impressoras</a>
+          <a class="nav-item active" href="MateriaisParceira.html" aria-current="page"><i class="bi bi-box-seam" aria-hidden="true"></i>Meus Materiais</a>
+          <a class="nav-item" href="MensagensParceira.html"><i class="bi bi-chat-dots" aria-hidden="true"></i>Mensagens</a>
+          <a class="nav-item" href="configuracoes.html"><i class="bi bi-gear" aria-hidden="true"></i>Configurações</a>
+          <a class="disconnect-link" href="Login.html"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>Desconectar</a>
+        </nav>
+      </aside>
+
+      <main class="materials-main">
+        <header class="topbar">
+          <div class="topbar-actions">
+            <button type="button" aria-label="Notificações"><i class="bi bi-bell" aria-hidden="true"></i></button>
+            <button type="button" aria-label="Ajuda"><i class="bi bi-question-circle" aria-hidden="true"></i></button>
+            <button type="button" class="user-avatar" aria-label="Perfil da instituição"><i class="bi bi-person" aria-hidden="true"></i></button>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <header class="page-heading">
+            <div>
+              <h1>Gestão de Materiais</h1>
+              <p>Gerencie o estoque de filamentos, resinas e outros insumos para impressão 3D.</p>
+            </div>
+            <button type="button" class="primary-button"><i class="bi bi-plus-lg" aria-hidden="true"></i>Novo Material</button>
+          </header>
+
+          <section class="summary-grid" aria-label="Resumo do estoque">
+            <article class="summary-card">
+              <span class="summary-icon"><i class="bi bi-boxes" aria-hidden="true"></i></span>
+              <div><small>Total em Estoque</small><strong>124</strong><p>Rolos/Frascos ativos</p></div>
+            </article>
+            <article class="summary-card critical-card">
+              <span class="summary-icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span>
+              <div><small>Estoque Crítico</small><strong>3</strong><p>Materiais precisam de reposição</p></div>
+              <i class="background-alert bi bi-exclamation-triangle" aria-hidden="true"></i>
+            </article>
+          </section>
+
+          <section class="inventory-panel" aria-labelledby="inventoryTitle">
+            <div class="inventory-header">
+              <h2 id="inventoryTitle">Inventário Detalhado</h2>
+              <div class="inventory-actions">
+                <button type="button">Todos os Tipos <i class="bi bi-chevron-down" aria-hidden="true"></i></button>
+                <button type="button"><i class="bi bi-filter" aria-hidden="true"></i>Filtros</button>
+              </div>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>Material</th><th>Tipo</th><th>Cor</th><th>Quantidade</th><th>Status</th><th>Ações</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td><strong>PLA Premium</strong><small>Marca X - Lote 1029</small></td>
+                    <td>Filamento<br />(1.75mm)</td>
+                    <td><span class="color-dot white"></span>Branco</td>
+                    <td>15 rolos<br />(1kg)</td>
+                    <td><span class="status adequate">ADEQUADO</span></td>
+                    <td><button class="edit-button" type="button" aria-label="Editar PLA Premium"><i class="bi bi-pencil" aria-hidden="true"></i></button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>PETG Clínico</strong><small>Marca Y - Lote 8832</small></td>
+                    <td>Filamento<br />(1.75mm)</td>
+                    <td><span class="color-dot blue"></span>Azul<br />Translúcido</td>
+                    <td class="critical-value">1 rolo (1kg)</td>
+                    <td><span class="status critical"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> CRÍTICO</span></td>
+                    <td><button class="edit-button" type="button" aria-label="Editar PETG Clínico"><i class="bi bi-pencil" aria-hidden="true"></i></button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Resina Biocompatível</strong><small>DentalCorp - Lote D22</small></td>
+                    <td>Resina SLA</td>
+                    <td><span class="color-dot beige"></span>Dente A2</td>
+                    <td>2 frascos<br />(1L)</td>
+                    <td><span class="status low">BAIXO</span></td>
+                    <td><button class="edit-button" type="button" aria-label="Editar Resina Biocompatível"><i class="bi bi-pencil" aria-hidden="true"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

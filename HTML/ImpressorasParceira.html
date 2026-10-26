@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#c90012" />
+    <title>Minhas Impressoras - Instituição Parceira</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="../CSS/impressoras-parceira.css" />
+  </head>
+  <body>
+    <div class="partner-printers-app">
+      <aside class="sidebar">
+        <a class="brand" href="DashboardParceira.html">
+          <strong>AACD 3D<br />Connect</strong>
+          <small>Hub de Manufatura</small>
+        </a>
+        <nav aria-label="Menu principal">
+          <a class="nav-item" href="DashboardParceira.html"><i class="bi bi-grid-1x2-fill" aria-hidden="true"></i>Dashboard</a>
+          <a class="nav-item active" href="ImpressorasParceira.html" aria-current="page"><i class="bi bi-printer" aria-hidden="true"></i>Minhas Impressoras</a>
+          <a class="nav-item" href="MateriaisParceira.html"><i class="bi bi-box-seam" aria-hidden="true"></i>Meus Materiais</a>
+          <a class="nav-item" href="MensagensParceira.html"><i class="bi bi-chat-dots" aria-hidden="true"></i>Mensagens</a>
+          <a class="nav-item" href="configuracoes.html"><i class="bi bi-gear" aria-hidden="true"></i>Configurações</a>
+          <a class="disconnect-link" href="Login.html"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>Desconectar</a>
+        </nav>
+      </aside>
+
+      <main class="printers-main">
+        <header class="topbar">
+          <div class="topbar-actions">
+            <button type="button" aria-label="Notificações"><i class="bi bi-bell" aria-hidden="true"></i></button>
+            <button type="button" aria-label="Ajuda"><i class="bi bi-question-circle" aria-hidden="true"></i></button>
+            <button type="button" class="user-avatar" aria-label="Perfil da instituição"><i class="bi bi-person" aria-hidden="true"></i></button>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <header class="page-heading">
+            <div>
+              <h1>Gestão de Impressoras</h1>
+              <p>Gerencie e monitore o parque de impressão 3D da sua instituição.</p>
+            </div>
+            <button class="primary-button" type="button"><i class="bi bi-plus-lg" aria-hidden="true"></i>Cadastrar Impressora</button>
+          </header>
+
+          <section class="summary-bar" aria-label="Resumo das impressoras">
+            <div><span>Total Ativas</span><strong>4</strong></div>
+            <div><span>Em Manutenção</span><strong>1</strong></div>
+            <div><span>Tempo Total (Mês)</span><strong>432h</strong></div>
+          </section>
+
+          <section class="printer-grid" aria-label="Minhas impressoras">
+            <article class="printer-card">
+              <div class="printer-image printer-image-purple">
+                <span class="status status-operating"><i></i>OPERANTE</span>
+                <i class="bi bi-image" aria-hidden="true"></i>
+              </div>
+              <div class="printer-body">
+                <h2>Creality Ender 3 V2</h2>
+                <small class="printer-id">ID: PRT-001</small>
+                <dl>
+                  <div><dt>Material Atual</dt><dd>PLA (Branco)</dd></div>
+                  <div><dt>Tempo de Uso</dt><dd>1,240h</dd></div>
+                  <div><dt>Última Revisão</dt><dd>12/05/2023</dd></div>
+                </dl>
+                <div class="card-actions">
+                  <button type="button" class="details-button">Detalhes</button>
+                  <button type="button" class="icon-action" aria-label="Editar impressora"><i class="bi bi-pencil" aria-hidden="true"></i></button>
+                  <button type="button" class="icon-action danger" aria-label="Excluir impressora"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                </div>
+              </div>
+            </article>
+
+            <article class="printer-card">
+              <div class="printer-image printer-image-purple">
+                <span class="status status-busy"><i></i>OCUPADA</span>
+                <i class="bi bi-image" aria-hidden="true"></i>
+              </div>
+              <div class="printer-body">
+                <h2>Prusa i3 MK3S+</h2>
+                <small class="printer-id">ID: PRT-002</small>
+                <dl>
+                  <div><dt>Material Atual</dt><dd>PETG (Azul)</dd></div>
+                  <div><dt>Tempo Restante</dt><dd class="danger-text">02:15:00</dd></div>
+                  <div><dt>Progresso</dt><dd>65%</dd></div>
+                </dl>
+                <div class="progress-track"><span></span></div>
+                <div class="card-actions">
+                  <button type="button" class="details-button">Detalhes</button>
+                  <button type="button" class="icon-action" aria-label="Editar impressora"><i class="bi bi-pencil" aria-hidden="true"></i></button>
+                  <button type="button" class="icon-action danger" aria-label="Excluir impressora"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                </div>
+              </div>
+            </article>
+
+            <article class="printer-card">
+              <div class="printer-image printer-image-gray">
+                <span class="status status-maintenance"><i></i>MANUTENÇÃO</span>
+                <i class="bi bi-image" aria-hidden="true"></i>
+              </div>
+              <div class="printer-body">
+                <h2>Anycubic Vyper</h2>
+                <small class="printer-id">ID: PRT-003</small>
+                <dl>
+                  <div><dt>Status Detalhe</dt><dd>Aguardando Peça</dd></div>
+                  <div><dt>Tempo Inativa</dt><dd>3 Dias</dd></div>
+                  <div><dt>Previsão Retorno</dt><dd>20/10/2023</dd></div>
+                </dl>
+                <div class="card-actions">
+                  <button type="button" class="details-button">Ver Ordem</button>
+                  <button type="button" class="icon-action" aria-label="Editar impressora"><i class="bi bi-pencil" aria-hidden="true"></i></button>
+                  <button type="button" class="icon-action danger" aria-label="Excluir impressora"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                </div>
+              </div>
+            </article>
+          </section>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

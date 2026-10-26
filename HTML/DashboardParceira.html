@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#c90012" />
+    <title>Dashboard Simplificado - Instituição Parceira</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="../CSS/dashboard-parceira.css" />
+  </head>
+  <body>
+    <div class="partner-app">
+      <aside class="sidebar">
+        <a class="brand" href="DashboardParceira.html">
+          <strong>AACD 3D<br />Connect</strong>
+          <small>Hub de Manufatura</small>
+        </a>
+
+        <nav aria-label="Menu principal">
+          <a class="nav-item active" href="DashboardParceira.html" aria-current="page">
+            <i class="bi bi-grid-1x2-fill" aria-hidden="true"></i>Dashboard
+          </a>
+          <a class="nav-item" href="ImpressorasParceira.html">
+            <i class="bi bi-printer" aria-hidden="true"></i>Minhas Impressoras
+          </a>
+          <a class="nav-item" href="MateriaisParceira.html">
+            <i class="bi bi-box-seam" aria-hidden="true"></i>Meus Materiais
+          </a>
+          <a class="nav-item" href="MensagensParceira.html">
+            <i class="bi bi-chat-dots" aria-hidden="true"></i>Mensagens
+          </a>
+          <a class="nav-item" href="configuracoes.html">
+            <i class="bi bi-gear" aria-hidden="true"></i>Configurações
+          </a>
+          <a class="disconnect-link" href="Login.html">
+            <i class="bi bi-box-arrow-right" aria-hidden="true"></i>Desconectar
+          </a>
+        </nav>
+      </aside>
+
+      <main class="dashboard-main">
+        <header class="topbar">
+          <div class="topbar-actions">
+            <button type="button" aria-label="Notificações">
+              <i class="bi bi-bell" aria-hidden="true"></i>
+            </button>
+            <button type="button" aria-label="Ajuda">
+              <i class="bi bi-question-circle" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="user-avatar" aria-label="Perfil da instituição">
+              <i class="bi bi-person" aria-hidden="true"></i>
+            </button>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <header class="page-heading">
+            <p class="breadcrumb">Dashboard Simplificado - Instituição Parceira</p>
+            <h1>Visão Geral da Operação</h1>
+            <p>Resumo das atividades e recursos da sua instituição.</p>
+          </header>
+
+          <section class="summary-grid" aria-label="Resumo da operação">
+            <article class="summary-card">
+              <div class="card-top">
+                <span class="metric-icon printer"><i class="bi bi-printer" aria-hidden="true"></i></span>
+                <span class="metric-tag">ATIVAS</span>
+              </div>
+              <strong>4<small>/5</small></strong>
+              <p>Impressoras online</p>
+            </article>
+            <article class="summary-card">
+              <div class="card-top">
+                <span class="metric-icon material"><i class="bi bi-box-seam" aria-hidden="true"></i></span>
+                <span class="metric-tag critical">CRÍTICO</span>
+              </div>
+              <strong>15<small>%</small></strong>
+              <p>Nível de Filamento ABS</p>
+            </article>
+          </section>
+
+          <section class="resource-panel" aria-labelledby="resourceTitle">
+            <h2 id="resourceTitle">Status de Uso dos Recursos</h2>
+            <div class="resource-grid">
+              <div class="resource-column">
+                <h3>Ocupação de Impressoras</h3>
+                <div class="resource-row">
+                  <span>Impressoras em Uso</span>
+                  <strong class="red-text">4</strong>
+                </div>
+                <div class="progress-track"><span class="progress-red" style="width: 80%"></span></div>
+                <div class="resource-row">
+                  <span>Disponíveis para AACD</span>
+                  <strong>1</strong>
+                </div>
+              </div>
+              <div class="resource-column">
+                <h3>Consumo de Materiais</h3>
+                <div class="resource-row">
+                  <span>Filamento PLA (Estoque)</span>
+                  <strong>8.2 kg</strong>
+                </div>
+                <div class="progress-track"><span class="progress-gray" style="width: 65%"></span></div>
+                <div class="resource-row">
+                  <span>Filamento ABS (Estoque)</span>
+                  <strong class="red-text">1.5 kg</strong>
+                </div>
+                <div class="progress-track"><span class="progress-red" style="width: 15%"></span></div>
+              </div>
+            </div>
+            <p class="resource-note"><i class="bi bi-info-circle" aria-hidden="true"></i> Recursos cedidos para operação exclusiva da AACD Central.</p>
+          </section>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

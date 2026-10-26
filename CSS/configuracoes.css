@@ -131,6 +131,19 @@ a {
   font-size: 12px;
 }
 
+.profile-link span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+}
+
+.profile-link i {
+  font-size: 15px;
+  line-height: 1;
+}
+
 .profile-link:hover {
   background: #fff0f0;
   color: var(--red);
@@ -138,9 +151,8 @@ a {
 
 .settings-app {
   display: flex;
+  width: 100%;
   min-height: 100vh;
-  max-width: 1440px;
-  margin: 0 auto;
   background: var(--page);
 }
 
