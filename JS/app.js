@@ -25,7 +25,7 @@ loginForm.addEventListener('submit', (event) => {
     return;
   }
   showFeedback('Acessando seu workspace...', '#238b72');
-  window.setTimeout(() => { window.location.href = 'dashboard.html'; }, 450);
+  window.setTimeout(() => { window.location.href = 'Tela_Dashboard.html'; }, 450);
 });
 
 document.querySelector('#forgotPassword').addEventListener('click', () => showFeedback('Um link de recuperação seria enviado para seu e-mail corporativo.', '#c97842'));

@@ -27,7 +27,7 @@ navItems.forEach((item) => {
   item.addEventListener('click', () => {
     const panelName = item.dataset.panel;
     if (panelName === 'materials') {
-      window.location.href = 'materials.html';
+      window.location.href = 'Tela_Materiais.html';
       return;
     }
     navItems.forEach((navItem) => navItem.classList.toggle('active', navItem === item));
@@ -36,4 +36,3 @@ navItems.forEach((item) => {
     subtitle.textContent = labels[panelName][1];
   });
 });
-

@@ -10,7 +10,7 @@ const materialsLink = [...document.querySelectorAll('.nav-item')].find((item) =>
 
 materialsLink?.addEventListener('click', (event) => {
   event.preventDefault();
-  window.location.href = 'materials.html';
+  window.location.href = 'Tela_Materiais.html';
 });
 
 function filterInstitutions() {
