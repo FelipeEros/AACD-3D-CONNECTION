@@ -42,23 +42,34 @@ clearFilters.addEventListener('click', () => {
   filterInstitutions();
 });
 
+const detailsModal = document.querySelector('#institutionDetailsModal');
+const reviewModal = document.querySelector('#requestReviewModal');
+const reviewFeedback = document.querySelector('#reviewFeedback');
+
 document.querySelectorAll('.card-button').forEach((button) => {
   button.addEventListener('click', () => {
-    const message = button.dataset.action === 'review' ? 'A solicitação está pronta para avaliação.' : 'Detalhes da instituição disponíveis em breve.';
-    button.textContent = message;
-    window.setTimeout(() => {
-      const action = button.dataset.action === 'review' ? {
-        label: 'Avaliar Solicitação',
-        icon: 'bi bi-arrow-right',
-      } : {
-        label: 'Ver Instituição',
-        icon: 'bi bi-arrow-right',
-      };
+    const modal = button.dataset.action === 'review' ? reviewModal : detailsModal;
+    bootstrap.Modal.getOrCreateInstance(modal).show();
+  });
+});
 
-      button.innerHTML = `
-        <span class="card-button-text">${action.label}</span>
-        <i class="${action.icon}" aria-hidden="true"></i>
-      `;
-    }, 1800);
+document.querySelectorAll('[data-review-action]').forEach((button) => {
+  button.addEventListener('click', () => {
+    const approved = button.dataset.reviewAction === 'approve';
+    reviewFeedback.textContent = approved
+      ? 'Solicitação aprovada. A instituição agora pode ser incorporada ao hub.'
+      : 'Solicitação recusada. O pedido foi removido da fila de avaliação.';
+    reviewFeedback.className = `review-feedback visible ${approved ? 'success' : 'rejected'}`;
+    document.querySelectorAll('[data-review-action]').forEach((actionButton) => {
+      actionButton.disabled = true;
+    });
+  });
+});
+
+reviewModal.addEventListener('hidden.bs.modal', () => {
+  reviewFeedback.textContent = '';
+  reviewFeedback.className = 'review-feedback';
+  document.querySelectorAll('[data-review-action]').forEach((button) => {
+    button.disabled = false;
   });
 });

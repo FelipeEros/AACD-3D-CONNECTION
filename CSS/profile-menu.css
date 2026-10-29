@@ -10,6 +10,55 @@
 .profile-menu a{display:flex;align-items:center;gap:9px;min-height:34px;padding:0 14px;color:#55494a;font-size:10px;text-decoration:none}
 .profile-menu a:hover{background:#fff0f0;color:#c90012}
 .profile-menu a i{width:14px;font-size:13px}
+.profile-menu .profile-menu-action{display:flex;align-items:center;justify-content:flex-start!important;gap:9px;width:100%!important;height:34px!important;min-height:34px;padding:0 14px!important;border:0;background:#fff;color:#55494a;font-size:10px;text-align:left;white-space:nowrap}
+.profile-menu .profile-menu-action:hover{background:#fff0f0;color:#c90012!important}
+.profile-menu-action i{width:14px;font-size:13px}
 .profile-logout{border-top:1px solid #f0dfdf;color:#c90012!important}
 .profile-menu-toggle{display:flex!important;align-items:center;justify-content:center;width:30px!important;height:30px!important;border:1px solid #c90012!important;border-radius:50%;background:#fff!important;color:#c90012;font-size:10px!important;font-weight:700;line-height:1}
 .page-header-actions{display:flex;align-items:center;justify-content:flex-end;margin-left:auto}
+.notification-menu{position:relative}
+.notification-menu .notification-button{position:relative;width:20px!important;height:20px!important;border:0;background:none;color:#5d5252}
+.notification-menu .notification-button:hover{color:#c90012}
+.notification-badge{position:absolute;top:-6px;right:-7px;display:grid;place-items:center;min-width:14px;height:14px;padding:0 3px;border-radius:9px;color:#fff;background:#c90012;font-size:8px;font-weight:700;line-height:1}
+.notification-panel{position:absolute;z-index:20;top:calc(100% + 13px);right:-5px;width:330px;border:1px solid #f0dfdf;border-radius:7px;background:#fff;box-shadow:0 12px 30px rgba(67,35,35,.14);opacity:0;pointer-events:none;transform:translateY(-6px);transition:opacity .18s ease,transform .18s ease}
+.notification-panel.is-open{opacity:1;pointer-events:auto;transform:translateY(0)}
+.notification-header{display:flex;align-items:center;justify-content:space-between;padding:14px 15px;border-bottom:1px solid #f0dfdf}
+.notification-header h2{margin:0;color:#2c2022;font:600 14px 'Space Grotesk',sans-serif}
+.notification-header button{width:auto!important;height:auto!important;border:0;background:none;color:#c90012;font-size:9px;font-weight:600}
+.notification-header button:disabled{cursor:default;opacity:.45}
+.notification-list{max-height:310px;overflow-y:auto}.notification-list.is-empty{display:none}
+.notification-item{display:flex;align-items:flex-start;gap:10px;padding:12px 15px;color:#2c2022;text-decoration:none}
+.notification-item:hover{background:#fff5f5;color:#2c2022}.notification-item.unread{background:#fffafa}
+.notification-icon{display:grid;place-items:center;flex:0 0 28px;width:28px;height:28px;border-radius:5px;font-size:14px}
+.notification-icon.critical{color:#c90012;background:#ffe5e5}.notification-icon.success{color:#258047;background:#e6f5e9}.notification-icon.message{color:#1670ac;background:#e2f2ff}.notification-icon.printer{color:#7556a5;background:#eee7fa}
+.notification-item strong,.notification-item small,.notification-item time{display:block}.notification-item strong{font-size:10px}.notification-item small{margin-top:3px;color:#766d6d;font-size:9px;line-height:1.35}.notification-item time{margin-top:5px;color:#a18d8d;font-size:8px}
+.notification-empty{display:none;margin:0;padding:28px 15px;color:#766d6d;text-align:center;font-size:10px}.notification-empty.visible{display:block}
+@media(max-width:520px){.notification-panel{position:fixed;top:63px;right:10px;left:10px;width:auto}.notification-list{max-height:calc(100vh - 150px)}}
+.profile-modal{position:fixed;inset:0;z-index:1050;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .18s ease}
+.profile-modal.is-open{opacity:1;pointer-events:auto}
+.profile-modal-backdrop{position:absolute;inset:0;background:rgba(44,32,34,.42)}
+.profile-modal-dialog{position:relative;width:min(100%,480px);border:1px solid #f0dfdf;border-radius:10px;background:#fff;box-shadow:0 18px 50px rgba(67,24,24,.2);transform:translateY(-8px);transition:transform .18s ease}
+.profile-modal.is-open .profile-modal-dialog{transform:translateY(0)}
+.profile-modal-header{display:flex;align-items:flex-start;justify-content:space-between;padding:22px 24px 17px;border-bottom:1px solid #f0dfdf}
+.profile-modal-eyebrow{color:#c90012;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.profile-modal-header h2{margin:4px 0 0;color:#2c2022;font:600 22px 'Space Grotesk',sans-serif}
+.profile-modal-close{border:0;background:none;color:#766d6d;font-size:24px;line-height:1;padding:0 2px}
+.profile-modal-close:hover{color:#c90012}
+.profile-modal-body{padding:21px 24px}
+.profile-modal-identity{display:flex;align-items:center;gap:11px;margin-bottom:20px}
+.profile-modal-avatar{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:#fff0f0;color:#c90012;font-size:13px;font-weight:700}
+.profile-modal-identity strong,.profile-modal-identity span{display:block}
+.profile-modal-identity strong{font-size:13px}
+.profile-modal-identity span{margin-top:4px;color:#766d6d;font-size:10px}
+.profile-fields{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.profile-fields label{display:grid;gap:6px}
+.profile-fields label span{color:#766d6d;font-size:10px;font-weight:600}
+.profile-fields input{width:100%;height:34px;padding:0 10px;border:1px solid #ead2d2;border-radius:5px;color:#2c2022;font:11px 'DM Sans',sans-serif;outline:none}
+.profile-fields input:focus{border-color:#c90012;box-shadow:0 0 0 3px rgba(201,0,18,.07)}
+.profile-modal-footer{display:flex;justify-content:flex-end;gap:8px;padding:15px 24px;border-top:1px solid #f0dfdf}
+.profile-modal-secondary,.profile-modal-primary{height:34px;padding:0 14px;border-radius:6px;font-size:10px;font-weight:700}
+.profile-modal-secondary{border:1px solid #edcfcf;background:#fff;color:#795c5c}
+.profile-modal-primary{border:1px solid #c90012;background:#c90012;color:#fff}
+.profile-modal-primary:hover{background:#a90010}
+.profile-modal-primary:disabled{cursor:default;opacity:.7}
+@media(max-width:520px){.profile-fields{grid-template-columns:1fr}.profile-modal-header,.profile-modal-body,.profile-modal-footer{padding-left:18px;padding-right:18px}}

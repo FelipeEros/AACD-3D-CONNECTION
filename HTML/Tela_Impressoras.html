@@ -33,7 +33,7 @@
         <header class="topbar"><div class="mobile-brand">AACD 3D CONNECT</div><div class="topbar-actions"><button aria-label="Notificações" type="button"><i class="bi bi-bell" aria-hidden="true"></i></button><button class="user-avatar" aria-label="Perfil de JS" type="button">JS</button></div></header>
         <div class="page-content">
           <div class="page-heading">
-            <div><p class="eyebrow">AACD 3D CONNECT</p><h1>Global Printers</h1><p>Explore e gerencie o parque de impressão 3D em todas as instituições parceiras.</p></div>
+            <div><p class="eyebrow">AACD 3D CONNECT</p><h1>Central de Impressoras</h1><p>Explore e gerencie o parque de impressão 3D em todas as instituições parceiras.</p></div>
             <div class="filter-actions" aria-label="Filtros rápidos">
               <div class="filter-control input-group input-group-sm bg-white border border-danger-subtle rounded-4 shadow-sm filter-institution dropdown">
                 <span class="input-group-text bg-transparent border-0 text-danger px-2"><i class="bi bi-building" aria-hidden="true"></i></span>
@@ -91,6 +91,31 @@
           <p class="empty-state" id="emptyState" hidden>Nenhuma impressora corresponde aos filtros selecionados.</p>
         </div>
       </main>
+    </div>
+    <div class="print-modal" id="printModal" aria-hidden="true">
+      <div class="print-modal-backdrop" data-print-modal-close></div>
+      <section class="print-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="printModalTitle">
+        <header class="print-modal-header">
+          <div><span class="print-modal-eyebrow">Nova impressão</span><h2 id="printModalTitle">Configurar impressão</h2></div>
+          <button class="print-modal-close" type="button" aria-label="Fechar" data-print-modal-close>&times;</button>
+        </header>
+        <form id="printForm">
+          <div class="print-modal-body">
+            <div class="print-summary"><span class="bi bi-printer" aria-hidden="true"></span><div><strong id="selectedPrinterName"></strong><small id="selectedPrinterInstitution"></small></div><span class="print-available">DISPONÍVEL</span></div>
+            <div class="print-form-grid">
+              <label class="print-field field-full"><span>Arquivo do modelo</span><input id="printFile" name="file" type="file" accept=".stl,.obj,.3mf" required /><small>Formatos aceitos: STL, OBJ e 3MF.</small></label>
+              <label class="print-field"><span>Material</span><select id="printMaterial" name="material" required></select></label>
+              <label class="print-field"><span>Quantidade de peças</span><input name="quantity" type="number" min="1" value="1" required /></label>
+              <label class="print-field"><span>Qualidade</span><select name="quality" required><option value="standard">Padrão</option><option value="fast">Rápida</option><option value="high">Alta</option></select></label>
+              <label class="print-field print-check"><input name="supports" type="checkbox" /><span>Precisa de suporte</span></label>
+              <label class="print-field field-full"><span>Observações</span><textarea name="notes" rows="3" placeholder="Adicione instruções para a equipe, se necessário."></textarea></label>
+            </div>
+            <div class="print-estimate"><span><i class="bi bi-clock" aria-hidden="true"></i> Tempo estimado</span><strong>Calculado após o envio</strong></div>
+            <p class="print-form-feedback" id="printFormFeedback" role="status" aria-live="polite"></p>
+          </div>
+          <footer class="print-modal-footer"><button class="print-modal-secondary" type="button" data-print-modal-close>Cancelar</button><button class="print-modal-primary" type="submit">Enviar para fila</button></footer>
+        </form>
+      </section>
     </div>
     <script src="../JS/printers.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

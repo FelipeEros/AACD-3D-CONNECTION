@@ -24,7 +24,7 @@
           <a class="nav-item active" href="Tela_Impressoras_Parceiras.html" aria-current="page"><i class="bi bi-printer" aria-hidden="true"></i>Minhas Impressoras</a>
           <a class="nav-item" href="Tela_Materiais_Perceira.html"><i class="bi bi-box-seam" aria-hidden="true"></i>Meus Materiais</a>
           <a class="nav-item" href="Tela_Mensagens_Parceira.html"><i class="bi bi-chat-dots" aria-hidden="true"></i>Mensagens</a>
-          <a class="nav-item" href="Tela_Configuracoes.html"><i class="bi bi-gear" aria-hidden="true"></i>Configurações</a>
+          <a class="nav-item" href="Tela_Configuracoes_Parceira.html"><i class="bi bi-gear" aria-hidden="true"></i>Configurações</a>
           
         </nav>
       </aside>
@@ -44,7 +44,7 @@
               <h1>Gestão de Impressoras</h1>
               <p>Gerencie e monitore o parque de impressão 3D da sua instituição.</p>
             </div>
-            <button class="primary-button" type="button"><i class="bi bi-plus-lg" aria-hidden="true"></i>Cadastrar Impressora</button>
+            <button class="primary-button" id="openPrinterRegistration" type="button"><i class="bi bi-plus-lg" aria-hidden="true"></i>Cadastrar Impressora</button>
           </header>
 
           <section class="summary-bar" aria-label="Resumo das impressoras">
@@ -121,6 +121,37 @@
         </div>
       </main>
     </div>
-      <script src="../JS/profile-menu.js"></script>
+    <div class="printer-modal" id="printerRegistrationModal" aria-hidden="true">
+      <div class="printer-modal-backdrop" data-printer-modal-close></div>
+      <section class="printer-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="printerRegistrationTitle">
+        <header class="printer-modal-header">
+          <div>
+            <span class="printer-modal-eyebrow">Nova impressora</span>
+            <h2 id="printerRegistrationTitle">Cadastrar impressora</h2>
+          </div>
+          <button class="printer-modal-close" type="button" aria-label="Fechar" data-printer-modal-close>&times;</button>
+        </header>
+        <form id="printerRegistrationForm">
+          <div class="printer-modal-body">
+            <p class="printer-modal-description">Preencha os dados da impressora para adicioná-la ao parque da sua instituição.</p>
+            <div class="printer-form-grid">
+              <label><span>Nome da impressora</span><input name="name" type="text" required /></label>
+              <label><span>Fabricante</span><input name="manufacturer" type="text" required /></label>
+              <label><span>Modelo</span><input name="model" type="text" required /></label>
+              <label><span>Número de série</span><input name="serialNumber" type="text" required /></label>
+              <label><span>Tecnologia de impressão</span><select name="technology" required><option value="" selected disabled>Selecione</option><option>FDM</option><option>SLA</option><option>SLS</option></select></label>
+              <label><span>Material compatível</span><input name="material" type="text" placeholder="Ex.: PLA, ABS..." required /></label>
+            </div>
+            <p class="printer-form-feedback" id="printerFormFeedback" role="status" aria-live="polite"></p>
+          </div>
+          <footer class="printer-modal-footer">
+            <button class="printer-modal-secondary" type="button" data-printer-modal-close>Cancelar</button>
+            <button class="printer-modal-primary" type="submit">Cadastrar impressora</button>
+          </footer>
+        </form>
+      </section>
+    </div>
+    <script src="../JS/impressoras-parceira.js"></script>
+    <script src="../JS/profile-menu.js"></script>
   </body>
 </html>

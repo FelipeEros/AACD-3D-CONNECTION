@@ -75,14 +75,75 @@ clearFilters.addEventListener('click', () => {
   filterPrinters();
 });
 
-document.querySelectorAll('.printer-action').forEach((button) => {
+const printModal = document.querySelector('#printModal');
+const printForm = document.querySelector('#printForm');
+const printMaterial = document.querySelector('#printMaterial');
+const printFormFeedback = document.querySelector('#printFormFeedback');
+const materialLabels = {
+  pla: 'PLA',
+  petg: 'PETG',
+  abs: 'ABS',
+  biomed: 'BioMed Clear',
+  tough: 'Tough 1500',
+  nylon: 'Nylon',
+  pva: 'PVA',
+  tpu: 'TPU',
+};
+
+function closePrintModal() {
+  printModal.classList.remove('is-open');
+  printModal.setAttribute('aria-hidden', 'true');
+  printForm.reset();
+  printFormFeedback.textContent = '';
+  printFormFeedback.className = 'print-form-feedback';
+  printForm.querySelector('button[type="submit"]').disabled = false;
+}
+
+document.querySelectorAll('.printer-action:not(.waiting)').forEach((button) => {
   button.addEventListener('click', () => {
-    const originalText = button.textContent;
-    button.textContent = button.classList.contains('waiting') ? 'Adicionada à fila' : 'Solicitação enviada';
-    button.disabled = true;
-    window.setTimeout(() => {
-      button.textContent = originalText;
-      button.disabled = false;
-    }, 1800);
+    const card = button.closest('.printer-card');
+    const printerName = card.querySelector('h2').textContent;
+    const institution = card.querySelector('.institution').textContent.trim();
+    const materials = card.dataset.materials.split(' ');
+
+    document.querySelector('#selectedPrinterName').textContent = printerName;
+    document.querySelector('#selectedPrinterInstitution').textContent = institution;
+    printMaterial.innerHTML = materials.map((material) => `<option value="${material}">${materialLabels[material] || material.toUpperCase()}</option>`).join('');
+    printModal.classList.add('is-open');
+    printModal.setAttribute('aria-hidden', 'false');
+    document.querySelector('#printFile').focus();
   });
+
+  document.querySelectorAll('.printer-action.waiting').forEach((button) => {
+    button.addEventListener('click', () => {
+      const originalText = button.textContent;
+      button.textContent = 'Adicionada à fila';
+      button.disabled = true;
+      window.setTimeout(() => {
+        button.textContent = originalText;
+        button.disabled = false;
+      }, 1800);
+    });
+  });
+});
+
+printModal.querySelectorAll('[data-print-modal-close]').forEach((button) => {
+  button.addEventListener('click', closePrintModal);
+});
+
+printForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  if (!printForm.checkValidity()) {
+    printForm.reportValidity();
+    return;
+  }
+  printFormFeedback.textContent = 'Impressão enviada para a fila com sucesso.';
+  printFormFeedback.className = 'print-form-feedback visible success';
+  printForm.querySelector('button[type="submit"]').disabled = true;
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && printModal.classList.contains('is-open')) {
+    closePrintModal();
+  }
 });

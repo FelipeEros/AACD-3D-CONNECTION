@@ -24,7 +24,7 @@
           <a class="nav-item" href="Tela_Impressoras_Parceiras.html"><i class="bi bi-printer" aria-hidden="true"></i>Minhas Impressoras</a>
           <a class="nav-item active" href="Tela_Materiais_Perceira.html" aria-current="page"><i class="bi bi-box-seam" aria-hidden="true"></i>Meus Materiais</a>
           <a class="nav-item" href="Tela_Mensagens_Parceira.html"><i class="bi bi-chat-dots" aria-hidden="true"></i>Mensagens</a>
-          <a class="nav-item" href="Tela_Configuracoes.html"><i class="bi bi-gear" aria-hidden="true"></i>Configurações</a>
+          <a class="nav-item" href="Tela_Configuracoes_Parceira.html"><i class="bi bi-gear" aria-hidden="true"></i>Configurações</a>
           
         </nav>
       </aside>
@@ -44,7 +44,7 @@
               <h1>Gestão de Materiais</h1>
               <p>Gerencie o estoque de filamentos, resinas e outros insumos para impressão 3D.</p>
             </div>
-            <button type="button" class="primary-button"><i class="bi bi-plus-lg" aria-hidden="true"></i>Novo Material</button>
+            <button type="button" class="primary-button" id="openMaterialRegistration"><i class="bi bi-plus-lg" aria-hidden="true"></i>Novo Material</button>
           </header>
 
           <section class="summary-grid" aria-label="Resumo do estoque">
@@ -102,6 +102,39 @@
         </div>
       </main>
     </div>
-      <script src="../JS/profile-menu.js"></script>
+    <div class="material-modal" id="materialRegistrationModal" aria-hidden="true">
+      <div class="material-modal-backdrop" data-material-modal-close></div>
+      <section class="material-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="materialRegistrationTitle">
+        <header class="material-modal-header">
+          <div>
+            <span class="material-modal-eyebrow">Novo item de estoque</span>
+            <h2 id="materialRegistrationTitle">Cadastrar material</h2>
+          </div>
+          <button class="material-modal-close" type="button" aria-label="Fechar" data-material-modal-close>&times;</button>
+        </header>
+        <form id="materialRegistrationForm">
+          <div class="material-modal-body">
+            <p class="material-modal-description">Preencha os dados do material para adicioná-lo ao estoque da sua instituição.</p>
+            <div class="material-form-grid">
+              <label><span>Nome do material</span><input name="name" type="text" required /></label>
+              <label><span>Tipo</span><select name="type" required><option value="" selected disabled>Selecione</option><option>Filamento</option><option>Resina</option><option>Pó</option><option>Outro</option></select></label>
+              <label><span>Marca</span><input name="brand" type="text" required /></label>
+              <label><span>Número do lote</span><input name="batch" type="text" required /></label>
+              <label><span>Cor</span><input name="color" type="text" required /></label>
+              <label><span>Quantidade</span><input name="quantity" type="number" min="0" step="0.01" required /></label>
+              <label><span>Unidade de medida</span><select name="unit" required><option value="" selected disabled>Selecione</option><option>Rolos</option><option>Frascos</option><option>Quilogramas (kg)</option><option>Litros (L)</option></select></label>
+              <label><span>Material compatível</span><input name="compatibility" type="text" placeholder="Ex.: PLA, ABS..." required /></label>
+            </div>
+            <p class="material-form-feedback" id="materialFormFeedback" role="status" aria-live="polite"></p>
+          </div>
+          <footer class="material-modal-footer">
+            <button class="material-modal-secondary" type="button" data-material-modal-close>Cancelar</button>
+            <button class="material-modal-primary" type="submit">Cadastrar material</button>
+          </footer>
+        </form>
+      </section>
+    </div>
+    <script src="../JS/materiais-parceira.js"></script>
+    <script src="../JS/profile-menu.js"></script>
   </body>
 </html>
