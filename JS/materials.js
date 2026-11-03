@@ -6,6 +6,7 @@ const selectedFilters = {
 
 const rows = [...document.querySelectorAll('#materialsBody tr')];
 const resultCount = document.querySelector('#resultCount');
+const exportStatus = document.querySelector('#exportStatus');
 
 function filterMaterials() {
   const visibleRows = rows.filter((row) => Object.entries(selectedFilters).every(([key, value]) => !value || row.dataset[key] === value));
@@ -82,10 +83,49 @@ document.querySelector('#clearFilters').addEventListener('click', () => {
   filterMaterials();
 });
 
+function csvEscape(value) {
+  return `"${value.replace(/"/g, '""')}"`;
+}
+
+function getCellValue(cell) {
+  return cell.textContent.replace(/\s+/g, ' ').trim();
+}
+
 document.querySelector('#exportButton').addEventListener('click', (event) => {
   const button = event.currentTarget;
-  button.innerHTML = '<i class="bi bi-check-circle" aria-hidden="true"></i> Relatório pronto';
-  window.setTimeout(() => { button.innerHTML = '<i class="bi bi-download" aria-hidden="true"></i> Exportar Relatório'; }, 1800);
+  const table = document.querySelector('#materialsBody').closest('table');
+  const headers = [...table.querySelectorAll('thead th')]
+    .slice(0, -1)
+    .map(getCellValue);
+  const data = rows
+    .filter((row) => !row.hidden)
+    .map((row) => [...row.cells].slice(0, -1).map(getCellValue));
+
+  if (!data.length) {
+    exportStatus.textContent = 'Não há materiais para exportar com os filtros selecionados.';
+    return;
+  }
+
+  const csv = [headers, ...data]
+    .map((line) => line.map(csvEscape).join(';'))
+    .join('\r\n');
+  const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8;' });
+  const downloadUrl = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  const date = new Date().toISOString().slice(0, 10);
+
+  link.href = downloadUrl;
+  link.download = `relatorio-materiais-${date}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(downloadUrl);
+
+  button.innerHTML = '<i class="bi bi-check-circle" aria-hidden="true"></i> Relatório exportado';
+  exportStatus.textContent = `Relatório exportado com ${data.length} ${data.length === 1 ? 'material' : 'materiais'}.`;
+  window.setTimeout(() => {
+    button.innerHTML = '<i class="bi bi-download" aria-hidden="true"></i> Exportar Relatório';
+  }, 1800);
 });
 
 document.querySelector('#requestButton').addEventListener('click', (event) => {

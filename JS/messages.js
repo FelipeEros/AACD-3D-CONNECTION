@@ -68,6 +68,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const messageForm = document.getElementById('messageForm');
   const messageInput = document.getElementById('messageInput');
   const chatBody = document.querySelector('.chat-body');
+  const attachmentButton = document.getElementById('attachmentButton');
+  const attachmentInput = document.getElementById('attachmentInput');
+  const conversationSearchButton = document.getElementById('conversationSearchButton');
+  const conversationSearch = document.getElementById('conversationSearch');
+  const conversationSearchInput = document.getElementById('conversationSearchInput');
   let activeChatId = 'einstein';
 
   function renderChat(chatId) {
@@ -107,6 +112,39 @@ document.addEventListener('DOMContentLoaded', () => {
     conversationItems.forEach((item) => {
       const isActive = item.dataset.chatId === chatId;
       item.classList.toggle('active', isActive);
+    });
+
+    conversationSearchButton?.addEventListener('click', () => {
+      const isOpen = conversationSearch.hidden;
+      conversationSearch.hidden = !isOpen;
+      conversationSearchButton.setAttribute('aria-expanded', String(isOpen));
+      if (isOpen) conversationSearchInput?.focus();
+    });
+
+    conversationSearchInput?.addEventListener('input', () => {
+      const query = conversationSearchInput.value.trim().toLocaleLowerCase();
+      document.querySelectorAll('.message-row').forEach((message) => {
+        const matches = !query || message.textContent.toLocaleLowerCase().includes(query);
+        message.hidden = !matches;
+      });
+    });
+
+    attachmentButton?.addEventListener('click', () => attachmentInput?.click());
+
+    attachmentInput?.addEventListener('change', () => {
+      const [file] = attachmentInput.files;
+      if (!file) return;
+
+      const chat = chats[activeChatId] || chats.einstein;
+      chat.messages.push({
+        type: 'outgoing',
+        author: 'Você',
+        time: 'agora',
+        text: `Arquivo anexado: ${file.name}`
+      });
+      renderChat(activeChatId);
+      chatBody.scrollTop = chatBody.scrollHeight;
+      attachmentInput.value = '';
     });
   }
 

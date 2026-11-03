@@ -112,10 +112,14 @@
               </div>
 
               <div class="chat-actions">
-                <button type="button" aria-label="Informações"><i class="bi bi-info-circle" aria-hidden="true"></i></button>
-                <button type="button" aria-label="Buscar"><i class="bi bi-search" aria-hidden="true"></i></button>
+                <button id="conversationSearchButton" type="button" aria-label="Buscar" aria-expanded="false" aria-controls="conversationSearch"><i class="bi bi-search" aria-hidden="true"></i></button>
               </div>
             </header>
+
+            <div class="chat-search" id="conversationSearch" hidden>
+              <i class="bi bi-search" aria-hidden="true"></i>
+              <input id="conversationSearchInput" type="search" placeholder="Buscar nesta conversa" aria-label="Buscar nesta conversa" />
+            </div>
 
             <div class="chat-date" id="chatDate">Hoje, 14 de Maio</div>
 
@@ -158,7 +162,8 @@
             </div>
 
             <form class="composer" id="messageForm">
-              <button class="composer-icon" type="button" aria-label="Anexar arquivo"><i class="bi bi-paperclip" aria-hidden="true"></i></button>
+              <input id="attachmentInput" type="file" hidden />
+              <button id="attachmentButton" class="composer-icon" type="button" aria-label="Anexar arquivo"><i class="bi bi-paperclip" aria-hidden="true"></i></button>
               <input id="messageInput" type="text" placeholder="Digite sua mensagem para Hospital Israelita Albert Einstein" aria-label="Mensagem" />
               <button class="send-button" type="submit">Enviar <i class="bi bi-send" aria-hidden="true"></i></button>
             </form>
