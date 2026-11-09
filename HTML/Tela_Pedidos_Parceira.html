@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Novo Pedido - Instituição Parceira</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="../CSS/pedidos-parceira.css" />
+    <link rel="stylesheet" href="../CSS/profile-menu.css" />
+  </head>
+  <body>
+    <div class="partner-orders-app">
+      <aside class="sidebar">
+        <a class="brand" href="Tela_Dashboard_Parceira.html"><strong>AACD 3D<br />Connect</strong><small>Hub de Manufatura</small></a>
+        <nav aria-label="Menu principal">
+          <a class="nav-item" href="Tela_Dashboard_Parceira.html"><i class="bi bi-grid-1x2-fill" aria-hidden="true"></i>Dashboard</a>
+          <a class="nav-item" href="Tela_Impressoras_Parceiras.html"><i class="bi bi-printer" aria-hidden="true"></i>Minhas Impressoras</a>
+          <a class="nav-item" href="Tela_Materiais_Perceira.html"><i class="bi bi-box-seam" aria-hidden="true"></i>Meus Materiais</a>
+          <a class="nav-item active" href="Tela_Pedidos_Parceira.html" aria-current="page"><i class="bi bi-clipboard-plus" aria-hidden="true"></i>Novo Pedido</a>
+          <a class="nav-item" href="Tela_Mensagens_Parceira.html"><i class="bi bi-chat-dots" aria-hidden="true"></i>Mensagens</a>
+          <a class="nav-item" href="Tela_Configuracoes_Parceira.html"><i class="bi bi-gear" aria-hidden="true"></i>Configurações</a>
+        </nav>
+      </aside>
+      <main class="orders-main">
+        <header class="topbar"><div class="topbar-actions"><button type="button" aria-label="Notificações"><i class="bi bi-bell" aria-hidden="true"></i></button><button type="button" class="user-avatar" aria-label="Perfil da instituição"><i class="bi bi-person" aria-hidden="true"></i></button></div></header>
+        <div class="page-content">
+          <header class="page-heading"><div><h1>Novo pedido</h1><p>Preencha as informações abaixo para enviar um novo pedido à AACD.</p></div></header>
+          <form class="order-form" id="partnerOrderForm">
+            <section class="form-card"><div class="card-heading"><span class="heading-icon"><i class="bi bi-file-earmark-code" aria-hidden="true"></i></span><div><h2>Dados da impressão</h2><p>Informe o modelo e as configurações desejadas.</p></div></div>
+              <div class="form-grid">
+                <label class="field field-full"><span>Arquivo do modelo <b>*</b></span><div class="file-input"><i class="bi bi-cloud-arrow-up" aria-hidden="true"></i><input id="orderFile" type="file" accept=".stl,.obj,.3mf" required /><strong id="fileName">Selecione um arquivo STL, OBJ ou 3MF</strong><small>Até 50 MB</small></div></label>
+                <div class="field"><span>Impressora desejada <b>*</b></span><div class="partner-dropdown"><i class="bi bi-printer" aria-hidden="true"></i><button class="partner-dropdown-button" type="button" aria-expanded="false">Selecione uma impressora</button><input class="dropdown-value" type="hidden" name="printer" required /><ul class="partner-dropdown-menu"><li><button type="button" data-value="Prusa MK3S+">Prusa MK3S+</button></li><li><button type="button" data-value="Ultimaker S5">Ultimaker S5</button></li><li><button type="button" data-value="Prusa Mini+">Prusa Mini+</button></li></ul></div></div>
+                <div class="field"><span>Material <b>*</b></span><div class="partner-dropdown"><i class="bi bi-box-seam" aria-hidden="true"></i><button class="partner-dropdown-button" type="button" aria-expanded="false">Selecione o material</button><input class="dropdown-value" type="hidden" name="material" required /><ul class="partner-dropdown-menu"><li><button type="button" data-value="PLA Branco">PLA Branco</button></li><li><button type="button" data-value="PLA Flexível">PLA Flexível</button></li><li><button type="button" data-value="PETG Preto">PETG Preto</button></li><li><button type="button" data-value="TPU Flexível">TPU Flexível</button></li></ul></div></div>
+                <label class="field"><span>Quantidade <b>*</b></span><input type="number" min="1" value="1" required /></label>
+                <label class="field"><span>Prazo desejado</span><input type="date" /></label>
+                <label class="field field-full"><span>Observações</span><textarea rows="4" placeholder="Descreva requisitos, medidas ou orientações para a produção."></textarea></label>
+              </div>
+            </section>
+            <aside class="request-summary"><h2>Resumo do pedido</h2><div class="summary-row"><span>Instituição</span><strong>Instituição Parceira</strong></div><div class="summary-row"><span>Status inicial</span><strong class="pending-label"><i class="bi bi-clock" aria-hidden="true"></i>Pendente</strong></div><p>Após o envio, a equipe AACD analisará os dados e retornará com a confirmação do pedido.</p><button class="submit-button" type="submit"><i class="bi bi-send" aria-hidden="true"></i>Enviar pedido</button><p class="form-feedback" id="formFeedback" role="status"></p></aside>
+          </form>
+        </div>
+      </main>
+    </div>
+    <script src="../JS/pedidos-parceira.js"></script>
+    <script src="../JS/profile-menu.js"></script>
+  </body>
+</html>

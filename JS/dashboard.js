@@ -9,7 +9,7 @@ const labels = {
   materials: ['Materiais', 'Lotes, filamentos suportados e rastreabilidade.'],
   uses: ['Utilizações', 'Histórico de impressões e modelos produzidos.'],
   messages: ['Mensagens', 'Comunicação entre as instituições da rede.'],
-  reports: ['Relatórios', 'Indicadores operacionais e impacto social.'],
+  pedidos: ['Pedidos', 'Acompanhe e gerencie os pedidos da rede.'],
   settings: ['Configurações', 'Preferências de acesso e da instituição.']
 };
 

@@ -34,7 +34,7 @@ button { font: inherit; cursor: pointer; }
   display: block;
   height: 82px;
   padding: 1px 20px;
-  color: #55494a;
+  color: var(--red);
   text-decoration: none;
 }
 
