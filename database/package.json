@@ -1,0 +1,15 @@
+{
+  "name": "aacd-3d-database",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": "./src/index.js",
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check src/index.js && node --check src/client.js && node --check src/repositories/base.js",
+    "smoke": "node scripts/smoke.js"
+  },
+  "engines": {"node": ">=20"},
+  "dependencies": {"@supabase/supabase-js": "^2.0.0"}
+}
