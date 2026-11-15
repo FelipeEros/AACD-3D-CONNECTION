@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="../CSS/pedidos-acoes.css" />
     <link rel="stylesheet" href="../CSS/pedidos.css" />
     <link rel="stylesheet" href="../CSS/profile-menu.css" />
   </head>
@@ -32,8 +33,8 @@
         <header class="topbar"><div class="mobile-brand">AACD 3D CONNECT</div><div class="topbar-actions"><button aria-label="Notificações" type="button"><i class="bi bi-bell" aria-hidden="true"></i></button><button class="user-avatar" aria-label="Perfil de JS" type="button">JS</button></div></header>
         <div class="page-content">
           <div class="page-heading">
-            <div><h1>Pedidos das Instituições</h1><p>Acompanhe os pedidos de impressão enviados pelas instituições parceiras.</p></div>
-            <div class="order-summary"><strong id="orderCount">4</strong><span>pedidos cadastrados</span></div>
+            <div><h1>Pedidos das Instituições</h1><p>Crie pedidos de impressão para as instituições parceiras e acompanhe a produção.</p></div>
+            <div style="display:flex;gap:12px;align-items:center"><button class="primary-action" id="newOrderButton" type="button"><i class="bi bi-plus-lg" aria-hidden="true"></i>Novo pedido</button><div class="order-summary"><strong id="orderCount">0</strong><span>pedidos cadastrados</span></div></div>
           </div>
 
           <section class="orders-toolbar" aria-label="Filtros de pedidos">
@@ -42,37 +43,28 @@
               <span class="filter-label"><i class="bi bi-building" aria-hidden="true"></i>Instituição</span>
               <button class="filter-value dropdown-toggle" id="institutionFilter" type="button" aria-expanded="false">Todas</button>
               <ul class="dropdown-menu" aria-labelledby="institutionFilter">
-                <li><button class="dropdown-item active" type="button" data-filter="institution" data-value="">Todas</button></li>
-                <li><button class="dropdown-item" type="button" data-filter="institution" data-value="Hospital Israelita Albert Einstein">Hospital Israelita Albert Einstein</button></li>
-                <li><button class="dropdown-item" type="button" data-filter="institution" data-value="AACD Central">AACD Central</button></li>
-                <li><button class="dropdown-item" type="button" data-filter="institution" data-value="Santa Casa de Misericórdia">Santa Casa de Misericórdia</button></li>
-              </ul>
+                <li><button class="dropdown-item active" type="button" data-filter="institution" data-value="">Todas</button></li></ul>
             </div>
             <div class="order-filter dropdown">
               <span class="filter-label"><i class="bi bi-clipboard-check" aria-hidden="true"></i>Status</span>
               <button class="filter-value dropdown-toggle" id="statusFilter" type="button" aria-expanded="false">Todos</button>
               <ul class="dropdown-menu" aria-labelledby="statusFilter">
                 <li><button class="dropdown-item active" type="button" data-filter="status" data-value="">Todos</button></li>
-                <li><button class="dropdown-item" type="button" data-filter="status" data-value="pending">Pendente</button></li>
-                <li><button class="dropdown-item" type="button" data-filter="status" data-value="production">Em produção</button></li>
-                <li><button class="dropdown-item" type="button" data-filter="status" data-value="completed">Concluído</button></li>
-                <li><button class="dropdown-item" type="button" data-filter="status" data-value="cancelled">Cancelado</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="status" data-value="pendente">Pendente</button></li><li><button class="dropdown-item" type="button" data-filter="status" data-value="aceita">Aceito</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="status" data-value="em_producao">Em produção</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="status" data-value="concluida">Concluído</button></li>
+                <li><button class="dropdown-item" type="button" data-filter="status" data-value="cancelada">Cancelado</button></li><li><button class="dropdown-item" type="button" data-filter="status" data-value="recusada">Recusado</button></li>
               </ul>
             </div>
             <button class="clear-button" id="clearFilters" type="button"><i class="bi bi-x-circle" aria-hidden="true"></i>Limpar filtros</button>
           </section>
 
           <section class="orders-table-card" aria-labelledby="ordersTitle">
-            <div class="section-heading"><div><h2 id="ordersTitle">Pedidos recentes</h2><p>Selecione um pedido para consultar todos os detalhes.</p></div><span class="table-count" id="visibleCount">4 resultados</span></div>
+            <div class="section-heading"><div><h2 id="ordersTitle">Pedidos recentes</h2><p>Selecione um pedido para consultar todos os detalhes.</p></div><span class="table-count" id="visibleCount">Carregando...</span></div>
             <div class="table-wrapper">
               <table>
-                <thead><tr><th>Pedido</th><th>Instituição</th><th>Impressora</th><th>Material</th><th>Solicitado em</th><th>Status</th><th><span class="visually-hidden">Ações</span></th></tr></thead>
-                <tbody id="ordersList">
-                  <tr data-institution="Hospital Israelita Albert Einstein" data-status="production" data-search="PED-2024-004 Órtese de punho Hospital Israelita Albert Einstein"><td><strong>PED-2024-004</strong><small>Órtese de punho</small></td><td><span class="institution-name"><i class="bi bi-building" aria-hidden="true"></i>Hospital Israelita Albert Einstein</span></td><td>Prusa MK3S+</td><td>PLA Flexível</td><td>08/11/2024</td><td><span class="status status-production">Em produção</span></td><td><button class="details-button" type="button" data-order="0">Detalhes <i class="bi bi-arrow-right" aria-hidden="true"></i></button></td></tr>
-                  <tr data-institution="AACD Central" data-status="pending" data-search="PED-2024-003 Modelo anatômico AACD Central"><td><strong>PED-2024-003</strong><small>Modelo anatômico</small></td><td><span class="institution-name"><i class="bi bi-building" aria-hidden="true"></i>AACD Central</span></td><td>Ultimaker S5</td><td>PLA Branco</td><td>07/11/2024</td><td><span class="status status-pending">Pendente</span></td><td><button class="details-button" type="button" data-order="1">Detalhes <i class="bi bi-arrow-right" aria-hidden="true"></i></button></td></tr>
-                  <tr data-institution="Santa Casa de Misericórdia" data-status="completed" data-search="PED-2024-002 Suporte personalizado Santa Casa de Misericórdia"><td><strong>PED-2024-002</strong><small>Suporte personalizado</small></td><td><span class="institution-name"><i class="bi bi-building" aria-hidden="true"></i>Santa Casa de Misericórdia</span></td><td>Prusa Mini+</td><td>PETG Preto</td><td>05/11/2024</td><td><span class="status status-completed">Concluído</span></td><td><button class="details-button" type="button" data-order="2">Detalhes <i class="bi bi-arrow-right" aria-hidden="true"></i></button></td></tr>
-                  <tr data-institution="AACD Central" data-status="cancelled" data-search="PED-2024-001 Adaptador ergonômico AACD Central"><td><strong>PED-2024-001</strong><small>Adaptador ergonômico</small></td><td><span class="institution-name"><i class="bi bi-building" aria-hidden="true"></i>AACD Central</span></td><td>Ender 3 S1</td><td>TPU Flexível</td><td>02/11/2024</td><td><span class="status status-cancelled">Cancelado</span></td><td><button class="details-button" type="button" data-order="3">Detalhes <i class="bi bi-arrow-right" aria-hidden="true"></i></button></td></tr>
-                </tbody>
+                <thead><tr><th>Pedido</th><th>Instituição</th><th>Impressora</th><th>Prazo</th><th>Solicitado em</th><th>Status</th><th><span class="visually-hidden">Ações</span></th></tr></thead>
+                <tbody id="ordersList"></tbody>
               </table>
             </div>
             <p class="empty-state" id="emptyState">Nenhum pedido encontrado com os filtros selecionados.</p>
@@ -87,13 +79,37 @@
         <header class="modal-header"><div><span class="modal-eyebrow">Detalhes do pedido</span><h2 id="modalTitle">PED-2024-004</h2></div><button class="close-button" type="button" aria-label="Fechar detalhes" data-close-modal><i class="bi bi-x-lg" aria-hidden="true"></i></button></header>
         <div class="modal-body">
           <div class="modal-status-row"><span class="status status-production" id="modalStatus">Em produção</span><span class="modal-muted" id="modalDate">Solicitado em 08/11/2024</span></div>
-          <div class="detail-grid"><div><span>Instituição</span><strong id="modalInstitution">Hospital Israelita Albert Einstein</strong></div><div><span>Impressora</span><strong id="modalPrinter">Prusa MK3S+</strong></div><div><span>Material</span><strong id="modalMaterial">PLA Flexível</strong></div><div><span>Quantidade</span><strong id="modalQuantity">2 unidades</strong></div><div><span>Tempo estimado</span><strong id="modalEstimatedTime">4h 30min</strong></div><div><span>Início</span><strong id="modalStart">08/11/2024 · 14h</strong></div><div><span>Previsão de término</span><strong id="modalEnd">08/11/2024 · 18h30</strong></div></div>
+          <div class="detail-grid"><div><span>Instituição</span><strong id="modalInstitution">Hospital Israelita Albert Einstein</strong></div><div><span>Impressora</span><strong id="modalPrinter">Prusa MK3S+</strong></div><div><span>Material</span><strong id="modalMaterial">PLA Flexível</strong></div><div><span>Quantidade</span><strong id="modalQuantity">2 unidades</strong></div><div><span>Prazo</span><strong id="modalEstimatedTime">4h 30min</strong></div></div>
           <section class="progress-section" aria-labelledby="progressTitle"><h3 id="progressTitle">Andamento da impressão</h3><div class="progress-track"><span class="progress-line"><i id="progressLine"></i></span><ol><li class="progress-step" data-step="requested"><span></span><strong>Solicitado</strong></li><li class="progress-step" data-step="accepted"><span></span><strong>Aceito</strong></li><li class="progress-step" data-step="production"><span></span><strong>Produzindo</strong></li><li class="progress-step" data-step="completed"><span></span><strong>Concluído</strong></li></ol></div></section>
-          <div class="file-section"><div><span class="file-icon"><i class="bi bi-file-earmark-code" aria-hidden="true"></i></span><div><span>Arquivo do pedido</span><strong id="modalFile">ortese-punho-v2.stl</strong></div></div><button class="file-button" type="button"><i class="bi bi-download" aria-hidden="true"></i>Baixar arquivo</button></div>
+          <div class="file-section"><div><span class="file-icon"><i class="bi bi-file-earmark-code" aria-hidden="true"></i></span><div><span>Arquivo do modelo</span><strong id="modalFile">ortese-punho-v2.stl</strong></div></div><button class="file-button" type="button"><i class="bi bi-download" aria-hidden="true"></i>Baixar arquivo</button></div>
           <div class="notes-section"><h3>Observações</h3><p id="modalNotes">Imprimir com preenchimento de 30% e camada de 0,2 mm.</p></div>
-        </div>
+        </div><div class="modal-actions" id="modalActions"></div><p class="modal-feedback" id="modalFeedback" role="status" style="padding:0 26px 14px"></p>
       </section>
     </div>
+    <div class="order-modal" id="newOrderModal" hidden>
+      <div class="modal-backdrop" data-close-new></div>
+      <section class="modal-dialog wide" role="dialog" aria-modal="true" aria-labelledby="newOrderTitle">
+        <header class="modal-header"><div><span class="modal-eyebrow">Pedido de impressão</span><h2 id="newOrderTitle">Novo pedido</h2></div><button class="close-button" type="button" aria-label="Fechar" data-close-new><i class="bi bi-x-lg" aria-hidden="true"></i></button></header>
+        <form class="modal-body" id="newOrderForm" novalidate>
+          <div class="form-grid-2">
+            <label class="form-field">Instituição *<select id="newInstitution" required><option value="">Selecione</option></select></label>
+            <label class="form-field">Impressora *<select id="newPrinter" required disabled><option value="">Escolha a instituição</option></select></label>
+            <div class="form-field full">Materiais *
+              <div class="items-list" id="newItems"></div>
+              <button class="secondary-action" type="button" id="addItem" disabled>+ Adicionar material</button>
+              <p class="hint">Só aparecem os materiais compatíveis com a impressora escolhida.</p>
+            </div>
+            <label class="form-field">Prazo desejado<input id="newDeadline" type="date" /></label>
+            <label class="form-field">Arquivo do modelo (STL, OBJ ou 3MF)<input id="newFile" type="file" accept=".stl,.obj,.3mf" /></label>
+            <label class="form-field full">Observações<textarea id="newNotes" rows="3" placeholder="Requisitos, medidas ou orientações para a produção."></textarea></label>
+          </div>
+          <p class="modal-feedback" id="newOrderFeedback" role="status"></p>
+          <div class="modal-actions" style="padding:12px 0 0;border:0"><button class="secondary-action" type="button" data-close-new>Cancelar</button><button class="primary-action" type="submit" id="newOrderSubmit">Criar pedido</button></div>
+        </form>
+      </section>
+    </div>
+    <script src="../JS/config.js"></script>
+    <script src="../JS/api.js" data-perfil="aacd"></script>
     <script src="../JS/pedidos.js"></script>
     <script src="../JS/profile-menu.js"></script>
   </body>
