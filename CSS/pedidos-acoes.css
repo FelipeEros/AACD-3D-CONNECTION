@@ -1,0 +1,53 @@
+/* Ações e formulários dos pedidos (AACD e parceira). */
+.primary-action{height:36px;padding:0 16px;border:0;border-radius:6px;background:#c90012;color:#fff;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+.primary-action:disabled{opacity:.55;cursor:not-allowed}
+.secondary-action{height:36px;padding:0 14px;border:1px solid #e5bfc0;border-radius:6px;background:#fff;color:#c90012;font-size:12px;font-weight:700;cursor:pointer}
+.danger-action{height:36px;padding:0 14px;border:1px solid #e8c8c8;border-radius:6px;background:#fff3f3;color:#a55050;font-size:12px;font-weight:700;cursor:pointer}
+.modal-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;padding:16px 26px 22px;border-top:1px solid #f3dede}
+.modal-actions:empty{display:none}
+.modal-feedback{min-height:16px;margin:10px 0 0;font-size:11px}
+.modal-dialog.wide{width:min(100%,680px);max-height:calc(100vh - 40px);overflow:auto}
+.form-grid-2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.form-grid-2>*,.item-row>*{min-width:0}
+.form-field input,.form-field select,.form-field textarea,.secondary-action{box-sizing:border-box;width:100%;max-width:100%}
+.modal-actions .secondary-action,.modal-actions .primary-action,.modal-actions .danger-action{width:auto}
+.form-grid-2 .full{grid-column:1/-1}
+.form-field{display:flex;flex-direction:column;gap:6px;font-size:11px;color:#6f5f60}
+.form-field input,.form-field select,.form-field textarea{height:36px;padding:0 10px;border:1px solid #e8c8c8;border-radius:6px;background:#fff;color:#2c2022;font:inherit;font-size:12px}
+.form-field textarea{height:auto;padding:8px 10px;resize:vertical}
+.item-row{display:grid;grid-template-columns:minmax(0,1fr) 110px 36px;gap:8px;align-items:end;margin-bottom:8px}
+.item-remove{height:36px;border:1px solid #edcfcf;border-radius:6px;background:#fff;color:#a55050;cursor:pointer}
+.items-list{margin-top:6px}
+.hint{color:#8c7475;font-size:10px;margin:4px 0 0}
+.file-list{list-style:none;margin:0;padding:0}
+
+/* Tela da parceira: tabela, status e janela (mesma aparência da tela da AACD). */
+.pr-card{border:1px solid #f0d4d4;border-radius:8px;background:#fff;box-shadow:0 5px 16px rgba(100,45,45,.05);overflow:hidden}
+.pr-card .section-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid #f3dede;flex-wrap:wrap}
+.pr-card h2{font:600 18px 'Space Grotesk',sans-serif;margin:0}
+.pr-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.pr-tabs button{height:30px;padding:0 12px;border:1px solid #edcfcf;border-radius:15px;background:#fff;color:#795c5c;font-size:11px;cursor:pointer}
+.pr-tabs button.active{background:#c90012;border-color:#c90012;color:#fff}
+.pr-card table{width:100%;border-collapse:collapse}
+.pr-card th,.pr-card td{padding:13px 16px;text-align:left;border-bottom:1px solid #f5e5e5;font-size:11px;color:#594b4c}
+.pr-card th{background:#fffafa;color:#8c7475;font-size:10px;text-transform:uppercase;letter-spacing:.03em}
+.pr-card td strong{display:block;color:#2c2022}
+.pr-card td small{display:block;color:#9a8585;margin-top:3px}
+.pr-empty{padding:30px;text-align:center;color:#766d6d;font-size:12px}
+.status{display:inline-flex;padding:5px 9px;border-radius:12px;font-size:10px;font-weight:700;white-space:nowrap}
+.status-pending{background:#fff5dc;color:#ba7100}
+.status-production{background:#e8efff;color:#3b68b4}
+.status-completed{background:#e6f5e9;color:#258047}
+.status-cancelled{background:#f8e7e7;color:#a55050}
+.row-actions{display:flex;gap:6px;flex-wrap:wrap}
+.row-actions button{height:28px;padding:0 10px;font-size:11px}
+.order-modal[hidden]{display:none}
+.order-modal{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:20px}
+.order-modal .modal-backdrop{position:absolute;inset:0;background:rgba(44,32,34,.45)}
+.order-modal .modal-dialog{position:relative;width:min(100%,560px);border:1px solid #f0d4d4;border-radius:10px;background:#fff;box-shadow:0 18px 50px rgba(67,24,24,.2)}
+.order-modal .modal-header{display:flex;justify-content:space-between;align-items:flex-start;padding:22px 26px 16px;border-bottom:1px solid #f3dede}
+.order-modal .modal-header h2{font:600 21px 'Space Grotesk',sans-serif;margin:0}
+.order-modal .modal-eyebrow{color:#c90012;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.order-modal .close-button{border:0;background:transparent;color:#8c7475;font-size:18px;cursor:pointer}
+.order-modal .modal-body{padding:20px 26px}
+@media (max-width:650px){.form-grid-2{grid-template-columns:1fr}}
