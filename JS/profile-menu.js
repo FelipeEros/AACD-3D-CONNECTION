@@ -188,7 +188,10 @@ document.querySelectorAll('.profile-menu').forEach((profileMenu) => {
 
   if (logout) {
     logout.addEventListener('click', (event) => {
-      if (!window.confirm('Deseja realmente sair da sua conta?')) event.preventDefault();
+      event.preventDefault();
+      if (!window.confirm('Deseja realmente sair da sua conta?')) return;
+      if (window.AACD) window.AACD.logout();
+      else window.location.href = 'Tela_Login.html';
     });
   }
 
@@ -209,15 +212,34 @@ profileModal?.querySelectorAll('[data-profile-action="close"]').forEach((element
   });
 });
 
-profileModal?.querySelector('[data-profile-action="save"]')?.addEventListener('click', () => {
-  const saveButton = profileModal.querySelector('[data-profile-action="save"]');
-  saveButton.textContent = 'Alterações salvas';
-  saveButton.disabled = true;
-  window.setTimeout(() => {
-    saveButton.textContent = 'Salvar alterações';
-    saveButton.disabled = false;
-  }, 1600);
-});
+// ---- Dados reais do usuário logado ---------------------------------------
+// Os dados do perfil vêm de /api/auth/me. A edição de nome/cargo não tem rota
+// no backend ainda, por isso os campos ficam somente leitura.
+async function preencherPerfil() {
+  if (!window.AACD?.usuario) return;
+  let perfil = { ...window.AACD.usuario };
+  try { perfil = { ...perfil, ...(await window.AACD.api('/auth/me')) }; } catch { /* usa a sessão */ }
+
+  const nome = perfil.nome || perfil.nome_completo || perfil.email;
+  const cargo = perfil.perfil === 'aacd' ? 'Equipe AACD' : 'Instituição parceira';
+  const iniciais = String(nome).replace(/@.*/, '').split(/[\s._-]+/).filter(Boolean)
+    .slice(0, 2).map((p) => p[0].toUpperCase()).join('') || '?';
+
+  document.querySelectorAll('.profile-summary strong, .profile-modal-identity strong').forEach((el) => { el.textContent = nome; });
+  document.querySelectorAll('.profile-summary small:nth-of-type(1), .profile-modal-identity span').forEach((el) => { el.textContent = cargo; });
+  document.querySelectorAll('.profile-summary small:nth-of-type(2)').forEach((el) => { el.textContent = perfil.email; });
+  document.querySelectorAll('.profile-summary-avatar, .profile-modal-avatar').forEach((el) => { el.textContent = iniciais; });
+  document.querySelectorAll('button.user-avatar').forEach((el) => {
+    if (!el.querySelector('i')) el.textContent = iniciais;
+  });
+
+  const campos = profileModal?.querySelectorAll('.profile-fields input') || [];
+  const valores = [nome, perfil.email, perfil.telefone || '', cargo];
+  campos.forEach((input, i) => { input.value = valores[i] ?? ''; input.readOnly = true; });
+  const save = profileModal?.querySelector('[data-profile-action="save"]');
+  if (save) save.hidden = true;
+}
+preencherPerfil();
 
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape' && profileModal?.classList.contains('is-open')) {
