@@ -1,0 +1,28 @@
+{
+  "name": "aacd-3d-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch --env-file=.env src/server.js",
+    "test": "node --test",
+    "lint": "node --check src/server.js",
+    "postinstall": "npm ci --prefix ../database --no-audit --no-fund"
+  },
+  "engines": {
+    "node": ">=20.6"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.119.0",
+    "cors": "^2.8.6",
+    "express": "^4.22.3",
+    "express-rate-limit": "^8.7.4",
+    "helmet": "^8.3.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "supertest": "^7.3.2"
+  }
+}
