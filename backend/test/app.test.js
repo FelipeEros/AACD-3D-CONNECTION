@@ -24,3 +24,12 @@ test('JSON malformado retorna 400', async () => {
 test('loadEnv rejeita configuração incompleta', () => {
   assert.throws(() => loadEnv({}), /SUPABASE_URL/);
 });
+
+test('documentação OpenAPI cobre todas as rotas montadas', async () => {
+  const app = buildApp();
+  const res = await request(app).get('/api/openapi.json');
+  assert.equal(res.status, 200);
+  assert.ok(Object.keys(res.body.paths).length >= 30);
+  const docs = await request(app).get('/api/docs/');
+  assert.equal(docs.status, 200);
+});

@@ -13,6 +13,8 @@ import solicitacoesRoutes from './routes/solicitacoes.js';
 import mensagensRoutes from './routes/mensagens.js';
 import arquivosRoutes from './routes/arquivos.js';
 import dashboardRoutes from './routes/dashboard.js';
+import swaggerUi from 'swagger-ui-express';
+import { openapi } from './docs/openapi.js';
 import { requireAuth } from './middlewares/auth.js';
 
 /**
@@ -42,6 +44,9 @@ export function createApp({ env, supabase }) {
   }
 
   app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
+  app.get('/api/openapi.json', (req, res) => res.json(openapi));
+  // A interface do Swagger usa scripts inline: CSP relaxado só nesta rota.
+  app.use('/api/docs', helmet({ contentSecurityPolicy: false }), swaggerUi.serve, swaggerUi.setup(openapi));
   app.use('/api/auth', authRoutes);
   app.use('/api/cadastro', cadastroRoutes);
 
