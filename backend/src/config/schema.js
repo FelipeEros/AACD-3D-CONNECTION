@@ -55,6 +55,13 @@ export const COLUMNS = Object.freeze({
   instituicaoEmail: 'email', // CONFERIR: e-mail de contato usado para criar o acesso
 });
 
+// Campos editáveis pela API, por tabela. A API usa os MESMOS nomes das
+// colunas. CONFERIR todos (derivados dos formulários do Frontend).
+export const FIELDS = Object.freeze({
+  impressoras: ['nome', 'fabricante', 'modelo', 'numero_serie', 'tecnologia', 'observacoes'],
+  materiais: ['nome', 'tipo', 'marca', 'lote', 'cor', 'unidade'],
+});
+
 // CONFERIR: valores de usuarios.perfil
 export const PERFIS = Object.freeze({ aacd: 'aacd', instituicao: 'instituicao' });
 
