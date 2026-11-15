@@ -1,0 +1,32 @@
+name: Backend
+
+on:
+  push:
+    paths: ['backend/**', 'database/**', '.github/workflows/backend.yml']
+  pull_request:
+    paths: ['backend/**', 'database/**', '.github/workflows/backend.yml']
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: |
+            backend/package-lock.json
+            database/package-lock.json
+      - name: Instalar dependências (backend + database)
+        run: npm ci
+        working-directory: backend
+      - name: Testes do módulo database
+        run: npm test
+        working-directory: database
+      - name: Testes do backend
+        run: npm test
+        working-directory: backend
