@@ -47,6 +47,7 @@ export const COLUMNS = Object.freeze({
   mensagemId: 'mensagem_id',
   status: 'status',
   remetenteId: 'remetente_id', // CONFERIR: autor da mensagem
+  conteudo: 'conteudo', // CONFERIR: texto da mensagem
   caminhoStorage: 'caminho_storage', // citado no guia
   criadoEm: 'created_at', // CONFERIR: pode ser criado_em
   estado: 'estado', // CONFERIR: filtros da tela de instituições
@@ -62,6 +63,8 @@ export const FIELDS = Object.freeze({
   materiais: ['nome', 'tipo', 'marca', 'lote', 'cor', 'unidade'],
   solicitacoes: ['instituicao_id', 'impressora_id', 'prazo', 'observacoes', 'arquivo_modelo'],
   itensSolicitacao: ['solicitacao_id', 'material_id', 'quantidade', 'observacoes'],
+  mensagens: ['instituicao_id', 'remetente_id', 'conteudo'],
+  arquivos: ['caminho_storage', 'mensagem_id', 'solicitacao_id', 'nome_original', 'tipo_mime', 'tamanho_bytes'],
 });
 
 // CONFERIR: valores de usuarios.perfil
