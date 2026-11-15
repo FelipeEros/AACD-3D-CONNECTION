@@ -40,7 +40,7 @@
 .status-completed{background:#e6f5e9;color:#258047}
 .status-cancelled{background:#f8e7e7;color:#a55050}
 .row-actions{display:flex;gap:6px;flex-wrap:wrap}
-.row-actions button{height:28px;padding:0 10px;font-size:11px}
+.row-actions button{width:auto;height:28px;padding:0 10px;font-size:11px}
 .order-modal[hidden]{display:none}
 .order-modal{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:20px}
 .order-modal .modal-backdrop{position:absolute;inset:0;background:rgba(44,32,34,.45)}
