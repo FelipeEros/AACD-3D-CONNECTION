@@ -9,6 +9,7 @@ import instituicoesRoutes from './routes/instituicoes.js';
 import impressorasRoutes from './routes/impressoras.js';
 import materiaisRoutes from './routes/materiais.js';
 import estoqueRoutes from './routes/estoque.js';
+import solicitacoesRoutes from './routes/solicitacoes.js';
 import { requireAuth } from './middlewares/auth.js';
 
 /**
@@ -46,6 +47,7 @@ export function createApp({ env, supabase }) {
   app.use('/api/impressoras', requireAuth, impressorasRoutes);
   app.use('/api/materiais', requireAuth, materiaisRoutes);
   app.use('/api/estoque', requireAuth, estoqueRoutes);
+  app.use('/api/solicitacoes', requireAuth, solicitacoesRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

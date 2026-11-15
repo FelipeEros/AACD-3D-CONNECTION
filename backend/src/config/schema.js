@@ -60,6 +60,8 @@ export const COLUMNS = Object.freeze({
 export const FIELDS = Object.freeze({
   impressoras: ['nome', 'fabricante', 'modelo', 'numero_serie', 'tecnologia', 'observacoes'],
   materiais: ['nome', 'tipo', 'marca', 'lote', 'cor', 'unidade'],
+  solicitacoes: ['instituicao_id', 'impressora_id', 'prazo', 'observacoes', 'arquivo_modelo'],
+  itensSolicitacao: ['solicitacao_id', 'material_id', 'quantidade', 'observacoes'],
 });
 
 // CONFERIR: valores de usuarios.perfil
@@ -103,7 +105,11 @@ export const RPC = Object.freeze({
   cancelarSolicitacao: { name: 'cancelar_solicitacao', args: ({ id }) => ({ p_solicitacao_id: id }) },
   concluirProducao: {
     name: 'concluir_producao',
-    args: ({ id, consumo }) => ({ p_solicitacao_id: id, p_consumo: consumo }),
+    // CONFERIR o formato do jsonb esperado pela função.
+    args: ({ id, consumo }) => ({
+      p_solicitacao_id: id,
+      p_consumo: consumo.map((c) => ({ item_id: c.item_id, quantidade_consumida: c.quantidade_consumida })),
+    }),
   },
   registrarMovimentacaoEstoque: {
     name: 'registrar_movimentacao_estoque',
