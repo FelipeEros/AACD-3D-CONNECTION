@@ -6,6 +6,7 @@ import { notFoundHandler, errorHandler } from './middlewares/error.js';
 import authRoutes from './routes/auth.js';
 import cadastroRoutes from './routes/cadastro.js';
 import instituicoesRoutes from './routes/instituicoes.js';
+import impressorasRoutes from './routes/impressoras.js';
 import { requireAuth } from './middlewares/auth.js';
 
 /**
@@ -40,6 +41,7 @@ export function createApp({ env, supabase }) {
 
   // Daqui em diante todas as rotas exigem login.
   app.use('/api/instituicoes', requireAuth, instituicoesRoutes);
+  app.use('/api/impressoras', requireAuth, impressorasRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);
