@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import { rateLimit } from 'express-rate-limit';
 import { notFoundHandler, errorHandler } from './middlewares/error.js';
+import authRoutes from './routes/auth.js';
 
 /**
  * Cria a aplicação Express.
@@ -25,9 +26,13 @@ export function createApp({ env, supabase }) {
   app.use(express.json({ limit: '1mb' }));
   if (env.NODE_ENV !== 'test') {
     app.use('/api', rateLimit({ windowMs: 60_000, limit: 300, standardHeaders: 'draft-8', legacyHeaders: false }));
+    // Limite mais rígido contra tentativas de senha.
+    app.use(['/api/auth/login', '/api/auth/recuperar-senha', '/api/cadastro'],
+      rateLimit({ windowMs: 15 * 60_000, limit: 20, standardHeaders: 'draft-8', legacyHeaders: false }));
   }
 
   app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
+  app.use('/api/auth', authRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);
