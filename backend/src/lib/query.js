@@ -54,3 +54,14 @@ export async function updateRow(db, source, id, values) {
 
 /** Remove chaves undefined (campos não enviados num PATCH). */
 export const compact = (obj) => Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== undefined));
+
+/** Conta registros sem trazer os dados (HEAD + count exato). */
+export async function countRows(db, source, filters = {}) {
+  let q = db.from(source).select('*', { count: 'exact', head: true });
+  for (const [col, value] of Object.entries(filters)) {
+    if (value !== undefined && value !== null) q = q.eq(col, value);
+  }
+  const { count, error } = await q;
+  if (error) throw error;
+  return count ?? 0;
+}

@@ -12,6 +12,7 @@ import estoqueRoutes from './routes/estoque.js';
 import solicitacoesRoutes from './routes/solicitacoes.js';
 import mensagensRoutes from './routes/mensagens.js';
 import arquivosRoutes from './routes/arquivos.js';
+import dashboardRoutes from './routes/dashboard.js';
 import { requireAuth } from './middlewares/auth.js';
 
 /**
@@ -52,6 +53,7 @@ export function createApp({ env, supabase }) {
   app.use('/api/solicitacoes', requireAuth, solicitacoesRoutes);
   app.use('/api/mensagens', requireAuth, mensagensRoutes);
   app.use('/api/arquivos', requireAuth, arquivosRoutes);
+  app.use('/api/dashboard', requireAuth, dashboardRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);
