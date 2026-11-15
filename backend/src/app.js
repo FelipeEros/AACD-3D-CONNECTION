@@ -4,6 +4,9 @@ import helmet from 'helmet';
 import { rateLimit } from 'express-rate-limit';
 import { notFoundHandler, errorHandler } from './middlewares/error.js';
 import authRoutes from './routes/auth.js';
+import cadastroRoutes from './routes/cadastro.js';
+import instituicoesRoutes from './routes/instituicoes.js';
+import { requireAuth } from './middlewares/auth.js';
 
 /**
  * Cria a aplicação Express.
@@ -33,6 +36,10 @@ export function createApp({ env, supabase }) {
 
   app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
   app.use('/api/auth', authRoutes);
+  app.use('/api/cadastro', cadastroRoutes);
+
+  // Daqui em diante todas as rotas exigem login.
+  app.use('/api/instituicoes', requireAuth, instituicoesRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);
