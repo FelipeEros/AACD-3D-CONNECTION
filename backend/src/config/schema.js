@@ -52,6 +52,7 @@ export const COLUMNS = Object.freeze({
   estado: 'estado', // CONFERIR: filtros da tela de instituições
   cidade: 'cidade',
   nome: 'nome',
+  instituicaoEmail: 'email', // CONFERIR: e-mail de contato usado para criar o acesso
 });
 
 // CONFERIR: valores de usuarios.perfil
