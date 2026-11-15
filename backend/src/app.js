@@ -7,6 +7,8 @@ import authRoutes from './routes/auth.js';
 import cadastroRoutes from './routes/cadastro.js';
 import instituicoesRoutes from './routes/instituicoes.js';
 import impressorasRoutes from './routes/impressoras.js';
+import materiaisRoutes from './routes/materiais.js';
+import estoqueRoutes from './routes/estoque.js';
 import { requireAuth } from './middlewares/auth.js';
 
 /**
@@ -42,6 +44,8 @@ export function createApp({ env, supabase }) {
   // Daqui em diante todas as rotas exigem login.
   app.use('/api/instituicoes', requireAuth, instituicoesRoutes);
   app.use('/api/impressoras', requireAuth, impressorasRoutes);
+  app.use('/api/materiais', requireAuth, materiaisRoutes);
+  app.use('/api/estoque', requireAuth, estoqueRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);
