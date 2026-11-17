@@ -111,11 +111,10 @@ export const RPC = Object.freeze({
     // CONFERIR o formato do jsonb esperado pela função.
     args: ({ id, consumo }) => ({
       p_solicitacao_id: id,
-      p_consumo: consumo.map((c) => ({
-        item_id: c.item_id,
-        quantidade_consumida: c.quantidade_consumida,
-        consumo_real: c.quantidade_consumida,
-      })),
+      p_consumos: Object.fromEntries(consumo.map((c) => [
+        c.item_id,
+        c.quantidade_consumida,
+      ])),
     }),
   },
   registrarMovimentacaoEstoque: {

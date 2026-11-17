@@ -46,7 +46,7 @@ export const openapi = {
     '/instituicoes': { get: op('Instituições', 'Lista instituições', { parameters: [...page, q('status'), q('estado'), q('cidade'), q('busca')] }) },
     '/instituicoes/{id}': {
       get: op('Instituições', 'Detalhe', { parameters: [id] }),
-      patch: op('Instituições', 'Atualiza dados (Configurações)', { parameters: [id], requestBody: json({ nome: s, email: s, telefone: s, endereco: s, cidade: s, estado: s, responsavel: s }) }),
+      patch: op('Instituições', 'Atualiza dados (Configurações)', { parameters: [id], requestBody: json({ nome: s, cnpj: s, email: s, telefone: s, cidade: s, estado: s, responsavel: s }) }),
     },
     '/instituicoes/{id}/aprovar': { post: op('Instituições', 'AACD aprova e envia convite de acesso', { parameters: [id] }) },
     '/instituicoes/{id}/rejeitar': { post: op('Instituições', 'AACD rejeita o cadastro', { parameters: [id] }) },

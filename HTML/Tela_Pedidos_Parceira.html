@@ -26,7 +26,19 @@
         </nav>
       </aside>
       <main class="orders-main">
-        <header class="topbar"><div class="topbar-actions"><button type="button" aria-label="Notificações"><i class="bi bi-bell" aria-hidden="true"></i></button><button type="button" class="user-avatar" aria-label="Perfil da instituição"><i class="bi bi-person" aria-hidden="true"></i></button></div></header>
+        <header class="topbar"><div class="topbar-actions">
+          <div class="notification-menu">
+            <button type="button" class="notification-button" id="notificationButton" aria-label="Notificações" aria-expanded="false" aria-controls="notificationPanel">
+              <i class="bi bi-bell" aria-hidden="true"></i><span class="notification-badge" hidden>0</span>
+            </button>
+            <section class="notification-panel" id="notificationPanel" aria-labelledby="notificationTitle">
+              <header class="notification-header"><h2 id="notificationTitle">Notificações</h2><button type="button" id="markNotificationsRead">Marcar como lidas</button></header>
+              <div class="notification-list"></div>
+              <p class="notification-empty">Você está em dia!</p>
+            </section>
+          </div>
+          <button type="button" class="user-avatar" aria-label="Perfil da instituição"><i class="bi bi-person" aria-hidden="true"></i></button>
+        </div></header>
         <div class="page-content">
           <header class="page-heading">
             <div>
@@ -68,5 +80,6 @@
     <script src="../JS/api.js" data-perfil="instituicao"></script>
     <script src="../JS/pedidos-parceira.js"></script>
     <script src="../JS/profile-menu.js"></script>
+    <script src="../JS/notificacoes-parceira.js"></script>
   </body>
 </html>

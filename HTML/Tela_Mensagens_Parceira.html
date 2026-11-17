@@ -27,32 +27,51 @@
       </aside>
 
       <main class="messages-main">
-        <header class="topbar"><div class="topbar-actions"><button type="button" aria-label="Notificações"><i class="bi bi-bell" aria-hidden="true"></i></button><button type="button" class="user-avatar" aria-label="Perfil da instituição"><i class="bi bi-person" aria-hidden="true"></i></button></div></header>
+        <header class="topbar"><div class="topbar-actions">
+          <div class="notification-menu">
+            <button type="button" class="notification-button" id="notificationButton" aria-label="Notificações" aria-expanded="false" aria-controls="notificationPanel">
+              <i class="bi bi-bell" aria-hidden="true"></i><span class="notification-badge" hidden>0</span>
+            </button>
+            <section class="notification-panel" id="notificationPanel" aria-labelledby="notificationTitle">
+              <header class="notification-header"><h2 id="notificationTitle">Notificações</h2><button type="button" id="markNotificationsRead">Marcar como lidas</button></header>
+              <div class="notification-list"></div>
+              <p class="notification-empty">Você está em dia!</p>
+            </section>
+          </div>
+          <button type="button" class="user-avatar" aria-label="Perfil da instituição"><i class="bi bi-person" aria-hidden="true"></i></button>
+        </div></header>
         <div class="messages-shell">
           <aside class="conversation-sidebar">
-            <header class="panel-header"><h1>Mensagens</h1><button type="button" aria-label="Nova mensagem"><i class="bi bi-pencil-square" aria-hidden="true"></i></button></header>
+            <header class="panel-header"><h1>Mensagens</h1></header>
             <div class="conversation-list">
-              <button class="conversation-item active" type="button"><span class="conversation-icon"><i class="bi bi-building" aria-hidden="true"></i></span><span class="conversation-copy"><strong>AACD Central</strong><small>Os arquivos STL foram aprovados. Pode prosseguir.</small></span><time>10:42</time></button>
-              <button class="conversation-item" type="button"><span class="conversation-icon"><i class="bi bi-person" aria-hidden="true"></i></span><span class="conversation-copy"><strong>Equipe de Operações</strong><small>A impressora Prusa está pronta para uso.</small></span><time>Ontem</time></button>
-              <button class="conversation-item" type="button"><span class="conversation-icon"><i class="bi bi-headset" aria-hidden="true"></i></span><span class="conversation-copy"><strong>Suporte AACD 3D</strong><small>Seu chamado foi atualizado pela equipe.</small></span><time>12 Abr</time></button>
+              <button class="conversation-item active" type="button" aria-current="true">
+                <span class="conversation-icon"><i class="bi bi-building" aria-hidden="true"></i></span>
+                <span class="conversation-copy"><strong>AACD Central</strong><small id="conversationPreview">Carregando mensagens...</small></span>
+                <time id="conversationTime"></time>
+              </button>
             </div>
           </aside>
 
           <section class="chat-panel" aria-label="Conversa com AACD Central">
-            <header class="chat-header"><div class="contact"><span class="chat-avatar"><i class="bi bi-building" aria-hidden="true"></i></span><div><h2>AACD Central</h2><small>Equipe AACD 3D Connect</small></div></div><div class="chat-actions"><button type="button" aria-label="Informações"><i class="bi bi-info-circle" aria-hidden="true"></i></button><button type="button" aria-label="Buscar"><i class="bi bi-search" aria-hidden="true"></i></button></div></header>
-            <div class="chat-body">
-              <div class="date-divider"><span>Hoje</span></div>
-              <div class="message incoming"><span class="message-author">AACD Central</span><p>Olá! Os arquivos STL foram aprovados. Pode prosseguir com a impressão.</p><time>10:42</time></div>
-              <div class="message outgoing"><p>Ótimo, obrigado pelo retorno. Vou iniciar a produção agora.</p><time>10:45</time></div>
-              <div class="message incoming"><span class="message-author">AACD Central</span><p>Perfeito. Avise quando o lote estiver concluído para registrarmos a utilização.</p><time>10:47</time></div>
-            </div>
-            <form class="composer"><button class="composer-button" type="button" aria-label="Anexar arquivo"><i class="bi bi-paperclip" aria-hidden="true"></i></button><input type="text" placeholder="Escreva uma mensagem..." aria-label="Mensagem" /><button class="send-button" type="submit" aria-label="Enviar mensagem">Enviar <i class="bi bi-send" aria-hidden="true"></i></button></form>
+            <header class="chat-header"><div class="contact"><span class="chat-avatar"><i class="bi bi-building" aria-hidden="true"></i></span><div><h2>AACD Central</h2><small>Equipe AACD 3D Connect</small></div></div><div class="chat-actions"><button id="conversationInfoButton" type="button" aria-label="Informações da conversa" aria-expanded="false"><i class="bi bi-info-circle" aria-hidden="true"></i></button><button id="conversationSearchButton" type="button" aria-label="Buscar na conversa" aria-expanded="false"><i class="bi bi-search" aria-hidden="true"></i></button></div></header>
+            <div class="conversation-info" id="conversationInfo" hidden><strong>AACD Central</strong><span>Equipe AACD 3D Connect</span><small>Conversa institucional</small></div>
+            <div class="conversation-search" id="conversationSearch" hidden><i class="bi bi-search" aria-hidden="true"></i><input id="conversationSearchInput" type="search" placeholder="Buscar nesta conversa" aria-label="Buscar nesta conversa" /></div>
+            <div class="chat-body" id="messagesBody" aria-live="polite"><p>Carregando mensagens...</p></div>
+            <p class="message-feedback" id="messageFeedback" role="status"></p>
+            <form class="composer" id="messageForm">
+              <input id="attachmentInput" type="file" hidden accept=".stl,.obj,.3mf,.pdf,.png,.jpg,.jpeg" />
+              <button id="attachmentButton" class="composer-button" type="button" aria-label="Anexar arquivo"><i class="bi bi-paperclip" aria-hidden="true"></i></button>
+              <input id="messageInput" type="text" placeholder="Escreva uma mensagem..." aria-label="Mensagem" autocomplete="off" />
+              <button class="send-button" type="submit">Enviar <i class="bi bi-send" aria-hidden="true"></i></button>
+            </form>
           </section>
         </div>
       </main>
     </div>
       <script src="../JS/config.js"></script>
     <script src="../JS/api.js" data-perfil="instituicao"></script>
-    <script src="../JS/profile-menu.js"></script>
+      <script src="../JS/messages-parceira.js"></script>
+      <script src="../JS/profile-menu.js"></script>
+    <script src="../JS/notificacoes-parceira.js"></script>
   </body>
 </html>

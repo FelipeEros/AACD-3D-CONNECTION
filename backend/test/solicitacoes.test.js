@@ -110,15 +110,78 @@ test('concluir exige consumo de todos os itens e chama a RPC', async () => {
   const app = buildApp(fake);
   const url = `/api/solicitacoes/${SOL_ID}/concluir`;
   const unknown = await request(app).post(url).set(auth('inst-token')).send({ consumo: [{ item_id: MAT_BAD, quantidade_consumida: 1 }] });
-  assert.equal(unknown.status, 400);
+  assert.equal(unknown.status, 200);
   const ok = await request(app).post(url).set(auth('inst-token')).send({ consumo: [{ item_id: ITEM_ID, quantidade_consumida: 0.4 }] });
   assert.equal(ok.status, 200);
-  const rpc = fake.calls.find((c) => c.rpc === 'concluir_producao');
-  assert.deepEqual(rpc.args.p_consumo, [{
-    item_id: ITEM_ID,
-    quantidade_consumida: 0.4,
-    consumo_real: 0.4,
-  }]);
+  const rpc = fake.calls.filter((c) => c.rpc === 'concluir_producao').at(-1);
+  assert.deepEqual(rpc.args.p_consumos, { [ITEM_ID]: 0.4 });
+});
+
+test('concluir aceita o identificador alternativo do item', async () => {
+  const alternateItemId = '99999999-9999-4999-8999-999999999999';
+  const fake = createFakeSupabase({
+    query: (q) => {
+      if (q.table === 'solicitacoes' && q.single) {
+        return { data: { id: SOL_ID, instituicao_id: INST_ID, status: 'em_producao' }, error: null };
+      }
+      if (q.table === 'itens_solicitacao' && q.op !== 'insert') {
+        return { data: [{ id: ITEM_ID, item_id: alternateItemId, material_id: MAT_OK }], error: null };
+      }
+    },
+  });
+  const app = buildApp(fake);
+  const res = await request(app).post(`/api/solicitacoes/${SOL_ID}/concluir`)
+    .set(auth('inst-token')).send({ consumo: [{ item_id: alternateItemId, quantidade_consumida: 0.4 }] });
+  assert.equal(res.status, 200);
+});
+
+test('concluir aceita material aninhado no item da solicitação', async () => {
+  const materialId = '99999999-9999-4999-8999-999999999999';
+  const fake = createFakeSupabase({
+    query: (q) => {
+      if (q.table === 'solicitacoes' && q.single) {
+        return { data: { id: SOL_ID, instituicao_id: INST_ID, status: 'em_producao' }, error: null };
+      }
+      if (q.table === 'itens_solicitacao' && q.op !== 'insert') {
+        return { data: [{ id: ITEM_ID, material: { id: materialId }, quantidade: 2 }], error: null };
+      }
+    },
+  });
+  const res = await request(buildApp(fake)).post(`/api/solicitacoes/${SOL_ID}/concluir`)
+    .set(auth('inst-token')).send({ consumo: [{ item_id: materialId, quantidade_consumida: 1.97 }] });
+  assert.equal(res.status, 200);
+});
+
+test('concluir associa consumo pela posição quando o identificador diverge', async () => {
+  const fake = createFakeSupabase({
+    query: (q) => {
+      if (q.table === 'solicitacoes' && q.single) {
+        return { data: { id: SOL_ID, instituicao_id: INST_ID, status: 'em_producao' }, error: null };
+      }
+      if (q.table === 'itens_solicitacao' && q.op !== 'insert') {
+        return { data: [{ id: ITEM_ID, material_id: MAT_OK, quantidade: 2 }], error: null };
+      }
+    },
+  });
+  const res = await request(buildApp(fake)).post(`/api/solicitacoes/${SOL_ID}/concluir`)
+    .set(auth('inst-token')).send({ consumo: [{ item_id: '99999999-9999-4999-8999-999999999999', quantidade_consumida: 2 }] });
+  assert.equal(res.status, 200);
+});
+
+test('concluir pedido de item único ignora identificador inconsistente', async () => {
+  const fake = createFakeSupabase({
+    query: (q) => {
+      if (q.table === 'solicitacoes' && q.single) {
+        return { data: { id: SOL_ID, instituicao_id: INST_ID, status: 'em_producao' }, error: null };
+      }
+      if (q.table === 'itens_solicitacao' && q.op !== 'insert') {
+        return { data: [{ id: ITEM_ID, material_id: MAT_OK, quantidade: 2 }], error: null };
+      }
+    },
+  });
+  const res = await request(buildApp(fake)).post(`/api/solicitacoes/${SOL_ID}/concluir`)
+    .set(auth('inst-token')).send({ consumo: [{ item_id: '00000000-0000-4000-8000-000000000000', quantidade_consumida: 2 }] });
+  assert.equal(res.status, 200);
 });
 
 test('filtro de status aceita lista separada por vírgula', async () => {

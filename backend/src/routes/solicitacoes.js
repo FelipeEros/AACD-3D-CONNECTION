@@ -51,6 +51,15 @@ function rpcNaoEncontrada(error) {
     || /Could not find the function/i.test(error?.message ?? '');
 }
 
+function itemIdentificadores(item) {
+  return [item.id, item.item_id, item.material_id, item.material?.id, item.material?.material_id]
+    .filter((id, index, ids) => id && ids.indexOf(id) === index);
+}
+
+function itemIdentificadorPrincipal(item) {
+  return item.id ?? item.item_id ?? item.material_id ?? item.material?.id ?? item.material?.material_id;
+}
+
 const TRANSICOES_STATUS = Object.freeze({
   pendente: new Set(['aceita', 'recusada']),
   aceita: new Set(['em_producao']),
@@ -71,7 +80,7 @@ async function concluirSemRpc(req, solicitacao, itens, consumo) {
   if (solicitacao.status !== 'em_producao') {
     throw badRequest(`Transição inválida: ${solicitacao.status} -> concluida`);
   }
-  const itensPorId = new Map(itens.map((item) => [item.id ?? item.item_id, item]));
+  const itensPorId = new Map(itens.flatMap((item) => itemIdentificadores(item).map((id) => [id, item])));
   for (const registro of consumo) {
     if (registro.quantidade_consumida === 0) continue;
     const item = itensPorId.get(registro.item_id);
@@ -172,21 +181,49 @@ router.post('/:id/concluir', requireRole('instituicao'), validate({
     consumo: z.array(z.object({ item_id: uuid, quantidade_consumida: z.number().min(0) })).min(1),
   }),
 }), asyncHandler(async (req, res) => {
+  console.info('[solicitacoes] conclusão recebida', {
+    solicitacao: req.params.id,
+    consumo: req.body.consumo,
+    usuario: req.user.id,
+  });
   const solicitacao = await loadSolicitacao(req);
   const itens = await listItens(req.db, req.params.id);
-  const ids = new Set(itens.map((i) => i.id ?? i.item_id));
-  const desconhecidos = req.body.consumo.filter((c) => !ids.has(c.item_id)).map((c) => c.item_id);
+  console.info('[solicitacoes] itens encontrados', {
+    solicitacao: req.params.id,
+    itens: itens.map((item) => ({
+      id: item.id,
+      item_id: item.item_id,
+      material_id: item.material_id,
+      material: item.material?.id,
+    })),
+  });
+  const itemPorIdentificador = new Map(itens.flatMap((item) => itemIdentificadores(item).map((id) => [id, item])));
+  const consumoAssociado = req.body.consumo.map((registro, index) => ({
+    registro,
+    item: itens.length === 1 && req.body.consumo.length === 1
+      ? itens[0]
+      : itemPorIdentificador.get(registro.item_id) || (req.body.consumo.length === itens.length ? itens[index] : null),
+  }));
+  const desconhecidos = consumoAssociado
+    .filter(({ item }) => !item)
+    .map(({ registro }) => registro.item_id);
   if (desconhecidos.length) throw badRequest('Itens não pertencem a esta solicitação', { item_ids: desconhecidos });
   const faltando = itens
-    .map((i) => i.id ?? i.item_id)
-    .filter((itemId) => !req.body.consumo.some((c) => c.item_id === itemId));
+    .filter((item) => !consumoAssociado.some(({ item: associado }) => associado === item))
+    .map(itemIdentificadorPrincipal);
   if (faltando.length) throw badRequest('Informe o consumo de todos os itens', { item_ids: faltando });
 
+  const consumoNormalizado = consumoAssociado.map(({ registro, item }) => ({
+    ...registro,
+    item_id: itemIdentificadorPrincipal(item),
+    material_id: item.material_id ?? item.material?.id ?? item.material?.material_id,
+  }));
   try {
-    await callRpc(req.db, RPC.concluirProducao, { id: req.params.id, consumo: req.body.consumo });
+    await callRpc(req.db, RPC.concluirProducao, { id: req.params.id, consumo: consumoNormalizado });
   } catch (error) {
+    console.error('[solicitacoes] erro na RPC concluir_producao', error);
     if (!rpcNaoEncontrada(error)) throw error;
-    await concluirSemRpc(req, solicitacao, itens, req.body.consumo);
+    await concluirSemRpc(req, solicitacao, itens, consumoNormalizado);
   }
   res.json(await getRow(req.db, TABLES.solicitacoes, req.params.id));
 }));

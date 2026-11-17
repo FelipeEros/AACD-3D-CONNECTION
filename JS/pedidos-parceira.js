@@ -125,6 +125,16 @@
       ]);
       const itens = detalhe.itens || [];
       const quantidadeSolicitada = (item) => item.quantidade ?? item.quantidade_pecas ?? item.consumo_estimado ?? 0;
+      const identificadorItem = (item) => item.id ?? item.item_id ?? item.material_id ?? item.material?.id ?? item.material?.material_id;
+      console.info('[AACD pedidos] detalhe do pedido', {
+        pedido: id,
+        itens: itens.map((item) => ({
+          id: item.id,
+          item_id: item.item_id,
+          material_id: item.material_id,
+          material: item.material?.id,
+        })),
+      });
       corpo.innerHTML = `
         <p><span class="status ${st.css}">${escapeHtml(st.label)}</span>
           <span class="hint" style="margin-left:8px">Recebido em ${fmt.dataHora(p.criado_em)}</span></p>
@@ -139,7 +149,7 @@
             <div class="form-field">${escapeHtml(i.material?.nome || 'Material')}
             <span class="hint">Pedido: ${fmt.numero(quantidadeSolicitada(i), 2)} ${escapeHtml(i.material?.unidade || '')}</span></div>
             ${concluir
-            ? `<label class="form-field">Consumido (${escapeHtml(i.material?.unidade || '')})<input type="number" min="0" step="0.01" data-item="${i.id || i.item_id}" value="${quantidadeSolicitada(i)}" required /></label>`
+            ? `<label class="form-field">Consumido (${escapeHtml(i.material?.unidade || '')})<input type="number" min="0" step="0.01" data-item="${identificadorItem(i)}" value="${quantidadeSolicitada(i)}" required /></label>`
               : ''}
           </div>`).join('') || '<p class="hint">Sem itens.</p>'}
         <h3 style="font:600 14px 'Space Grotesk',sans-serif;margin:16px 0 8px">Arquivos do modelo</h3>
@@ -174,9 +184,15 @@
 
   async function concluirPedido(id) {
     const campos = [...corpo.querySelectorAll('input[data-item]')];
-    const consumo = campos.map((c) => ({ item_id: c.dataset.item, quantidade_consumida: Number(c.value) }));
-    if (consumo.some((c) => c.quantidade_consumida < 0 || Number.isNaN(c.quantidade_consumida) || campos.find((x) => x.dataset.item === c.item_id).value === '')) {
-      feedback(modalFeedback, 'Informe o consumo de todos os materiais (pode ser 0).', 'erro');
+    modalFeedback.textContent = '';
+    const consumo = campos.map((campo) => ({
+      item_id: campo.dataset.item,
+      quantidade_consumida: Number.parseFloat(campo.value.replace(',', '.')),
+    }));
+    const diagnostico = { pedido: id, consumo };
+    console.info('[AACD pedidos] enviando conclusão', diagnostico);
+    if (!campos.length || consumo.some((item) => !Number.isFinite(item.quantidade_consumida) || item.quantidade_consumida < 0)) {
+      feedback(modalFeedback, 'Informe um consumo válido para todos os itens.', 'erro');
       return;
     }
     const botao = $('#confirmConclude');
@@ -186,7 +202,14 @@
       fechar();
       carregar();
     } catch (err) {
-      feedback(modalFeedback, errorMessage(err), 'erro');
+      console.error('[AACD pedidos] erro ao concluir', {
+        ...diagnostico,
+        status: err.status,
+        message: err.message,
+        details: err.details,
+      });
+      const details = err.details ? ` Detalhes: ${JSON.stringify(err.details)}` : '';
+      feedback(modalFeedback, `${errorMessage(err)}${details}`, 'erro');
       botao.disabled = false;
     }
   }

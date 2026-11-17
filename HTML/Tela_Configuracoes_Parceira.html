@@ -27,46 +27,59 @@
       </aside>
 
       <main class="partner-settings-main">
-        <header class="topbar"><div class="topbar-actions"><button type="button" aria-label="Notificações"><i class="bi bi-bell" aria-hidden="true"></i></button><button type="button" class="user-avatar" aria-label="Perfil da instituição"><i class="bi bi-person" aria-hidden="true"></i></button></div></header>
+        <header class="topbar">        <div class="topbar-actions"><div class="notification-menu">
+          <button type="button" class="notification-button" id="notificationButton" aria-label="Notificações" aria-expanded="false" aria-controls="notificationPanel">
+            <i class="bi bi-bell" aria-hidden="true"></i><span class="notification-badge" hidden>0</span>
+          </button>
+          <section class="notification-panel" id="notificationPanel" aria-labelledby="notificationTitle">
+            <header class="notification-header"><h2 id="notificationTitle">Notificações</h2><button type="button" id="markNotificationsRead">Marcar como lidas</button></header>
+            <div class="notification-list"></div>
+            <p class="notification-empty">Você está em dia!</p>
+          </section>
+        </div><button type="button" class="user-avatar" aria-label="Perfil da instituição"><i class="bi bi-person" aria-hidden="true"></i></button></div></header>
         <div class="page-content">
           <header class="page-heading"><h1>Configurações da Instituição</h1><p>Gerencie os dados, contatos e preferências da sua empresa parceira.</p></header>
 
-          <section class="settings-panel" aria-labelledby="companySettingsTitle">
+          <form id="settingsForm" class="settings-panel" aria-labelledby="companySettingsTitle">
             <div class="panel-header"><div><h2 id="companySettingsTitle">Dados da instituição</h2><p>Informações exibidas para a AACD e nos registros da rede.</p></div><i class="panel-icon bi bi-building" aria-hidden="true"></i></div>
             <div class="field-grid">
-              <label class="field"><span>Nome da instituição</span><input type="text" value="Santa Casa de Misericórdia" /></label>
-              <label class="field"><span>CNPJ</span><input type="text" value="00.000.000/0001-00" /></label>
-              <label class="field"><span>E-mail institucional</span><input type="email" value="contato@santacasa.org.br" /></label>
-              <label class="field"><span>Telefone</span><input type="tel" value="(31) 3333-4400" /></label>
-              <label class="field field-full"><span>Endereço</span><input type="text" value="Rua da Saúde, 1000 - Belo Horizonte, MG" /></label>
-              <label class="field field-full"><span>Descrição da instituição</span><textarea rows="3">Instituição parceira dedicada ao atendimento hospitalar e à produção de órteses e próteses personalizadas.</textarea></label>
+              <label class="field"><span>Nome da instituição</span><input id="institutionName" type="text" required /></label>
+              <label class="field"><span>CNPJ</span><input id="institutionCnpj" data-mask="cnpj" type="text" inputmode="numeric" autocomplete="off" maxlength="18" placeholder="00.000.000/0000-00" required /></label>
+              <label class="field"><span>E-mail institucional</span><input id="institutionEmail" type="email" required /></label>
+              <label class="field"><span>Telefone</span><input id="institutionPhone" data-mask="telefone" type="tel" inputmode="tel" autocomplete="tel" maxlength="15" placeholder="(00) 00000-0000" required /></label>
+              <label class="field field-full"><span>Endereço</span><input id="institutionAddress" type="text" /></label>
+              <label class="field field-full"><span>Descrição da instituição</span><textarea id="institutionDescription" rows="3" maxlength="1000" placeholder="Descreva a instituição"></textarea></label>
             </div>
-            <div class="action-row"><button type="button" class="primary-button" data-save-settings>Salvar alterações</button></div>
-          </section>
+            <div class="action-row">
+              <p class="settings-feedback" role="status" aria-live="polite"></p>
+              <button type="submit" class="primary-button" data-save-settings>Salvar alterações</button>
+            </div>
+          </form>
 
           <section class="settings-panel" aria-labelledby="notificationSettingsTitle">
             <div class="panel-header"><div><h2 id="notificationSettingsTitle">Notificações</h2><p>Escolha quais avisos você deseja receber.</p></div><i class="panel-icon bi bi-bell" aria-hidden="true"></i></div>
-            <label class="toggle-row"><span><strong>Atualizações da AACD</strong><small>Receber mensagens sobre solicitações, arquivos e operações.</small></span><input type="checkbox" checked /><i aria-hidden="true"></i></label>
-            <label class="toggle-row"><span><strong>Alertas de estoque</strong><small>Ser avisado quando um material atingir nível crítico.</small></span><input type="checkbox" checked /><i aria-hidden="true"></i></label>
-            <label class="toggle-row"><span><strong>Manutenção de impressoras</strong><small>Receber lembretes sobre revisões e indisponibilidade.</small></span><input type="checkbox" /><i aria-hidden="true"></i></label>
+            <label class="toggle-row"><span><strong>Atualizações da AACD</strong><small>Receber mensagens sobre solicitações, arquivos e operações.</small></span><input type="checkbox" data-notification="aacd" checked /><i aria-hidden="true"></i></label>
+            <label class="toggle-row"><span><strong>Alertas de estoque</strong><small>Ser avisado quando um material atingir nível crítico.</small></span><input type="checkbox" data-notification="estoque" checked /><i aria-hidden="true"></i></label>
+            <label class="toggle-row"><span><strong>Manutenção de impressoras</strong><small>Receber lembretes sobre revisões e indisponibilidade.</small></span><input type="checkbox" data-notification="manutencao" /><i aria-hidden="true"></i></label>
           </section>
 
           <section class="settings-panel" aria-labelledby="securitySettingsTitle">
             <div class="panel-header"><div><h2 id="securitySettingsTitle">Segurança</h2><p>Atualize a senha de acesso da instituição.</p></div><i class="panel-icon bi bi-shield-lock" aria-hidden="true"></i></div>
             <div class="field-grid">
-              <label class="field"><span>Senha atual</span><input type="password" /></label>
-              <label class="field"><span>Nova senha</span><input type="password" /></label>
-              <label class="field"><span>Confirmar nova senha</span><input type="password" /></label>
+              <label class="field"><span>Senha atual</span><input id="currentPassword" type="password" autocomplete="current-password" /></label>
+              <label class="field"><span>Nova senha</span><input id="newPassword" type="password" autocomplete="new-password" /></label>
+              <label class="field"><span>Confirmar nova senha</span><input id="confirmPassword" type="password" autocomplete="new-password" /></label>
             </div>
-            <div class="action-row"><button type="button" class="secondary-button">Alterar senha</button></div>
+            <div class="action-row"><button id="changePasswordButton" type="button" class="secondary-button">Alterar senha</button></div>
           </section>
-          <p class="settings-feedback" role="status" aria-live="polite"></p>
         </div>
       </main>
     </div>
     <script src="../JS/config.js"></script>
+    <script src="../JS/form-masks.js"></script>
     <script src="../JS/api.js" data-perfil="instituicao"></script>
     <script src="../JS/configuracoes-parceira.js"></script>
     <script src="../JS/profile-menu.js"></script>
+    <script src="../JS/notificacoes-parceira.js"></script>
   </body>
 </html>

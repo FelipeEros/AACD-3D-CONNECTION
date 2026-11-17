@@ -143,6 +143,7 @@ button { font: inherit; cursor: pointer; }
 .notification-button { position: relative; }
 .notification-button:hover { color: var(--red); }
 .notification-badge { position: absolute; top: -6px; right: -7px; display: grid; place-items: center; min-width: 14px; height: 14px; padding: 0 3px; border-radius: 9px; color: #fff; background: var(--red); font-size: 8px; font-weight: 700; line-height: 1; }
+.notification-badge[hidden] { display: none !important; }
 .notification-panel { position: absolute; z-index: 20; top: calc(100% + 13px); right: -5px; width: 330px; border: 1px solid #f0dfdf; border-radius: 7px; background: #fff; box-shadow: 0 12px 30px rgba(67, 35, 35, .14); opacity: 0; pointer-events: none; transform: translateY(-6px); transition: opacity .18s ease, transform .18s ease; }
 .notification-panel.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
 .notification-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 15px; border-bottom: 1px solid #f0dfdf; }
@@ -169,6 +170,10 @@ button { font: inherit; cursor: pointer; }
 @media(max-width:520px){.notification-panel{position:fixed;top:63px;right:10px;left:10px;width:auto}.notification-list{max-height:calc(100vh - 150px)}}
 
 .page-content { width: 100%; padding: 28px 32px 55px; }
+
+.dashboard-data-pending .dashboard-data {
+  visibility: hidden;
+}
 
 .page-heading { margin-bottom: 21px; }
 

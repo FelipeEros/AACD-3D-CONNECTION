@@ -71,6 +71,10 @@ function createProfileModal() {
 
 function createNotificationMenu(button) {
   if (button.closest('.notification-menu')) return;
+  const telaParceira = document.querySelector(
+    '.partner-app, .partner-orders-app, .partner-materials-app, .partner-messages-app, .partner-settings-app',
+  );
+  if (telaParceira || window.AACD?.usuario?.perfil === 'instituicao') return;
 
   const wrapper = document.createElement('div');
   wrapper.className = 'notification-menu';
@@ -106,7 +110,7 @@ function createNotificationMenu(button) {
   const updateCount = () => {
     const count = items.filter((item) => item.classList.contains('unread')).length;
     badge.textContent = count;
-    badge.hidden = count === 0;
+    badge.hidden = false;
     markRead.disabled = count === 0;
     panel.querySelector('.notification-list').classList.toggle('is-empty', count === 0);
     empty.classList.toggle('visible', count === 0);

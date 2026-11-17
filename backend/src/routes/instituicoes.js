@@ -37,13 +37,13 @@ router.get('/:id', validate({ params: idParams }), asyncHandler(async (req, res)
   res.json(row);
 }));
 
-// Tela de Configurações: dados editáveis da instituição. Status e CNPJ
-// não são alterados aqui (status muda apenas pelas RPCs da AACD).
+// Tela de Configurações: dados editáveis da instituição. Status muda apenas
+// pelas RPCs da AACD.
 const updateBody = z.object({
   nome: z.string().trim().min(2).max(200).optional(),
+  cnpj: z.string().transform((v) => v.replace(/\D/g, '')).pipe(z.string().length(14, 'CNPJ deve ter 14 dígitos')).optional(),
   email: z.string().trim().toLowerCase().email().optional(),
   telefone: z.string().transform((v) => v.replace(/\D/g, '')).pipe(z.string().min(10).max(11)).optional(),
-  endereco: z.string().trim().min(5).max(300).optional(),
   cidade: z.string().trim().max(100).optional(),
   estado: z.string().trim().length(2).toUpperCase().optional(),
   responsavel: z.string().trim().max(200).optional(),
@@ -53,7 +53,9 @@ router.patch('/:id', validate({ params: idParams, body: updateBody }), asyncHand
   assertOwnInstitution(req, req.params.id);
   const changes = compact(req.body);
   if (!Object.keys(changes).length) throw badRequest('Nenhum campo para atualizar');
-  const row = await updateRow(req.db, TABLES.instituicoes, req.params.id, changes);
+  // A autorização já foi validada acima; o cliente administrativo evita que
+  // uma RLS sem política de UPDATE bloqueie a edição da própria instituição.
+  const row = await updateRow(req.app.locals.supabase.admin(), TABLES.instituicoes, req.params.id, changes);
   if (!row) throw notFound('Instituição não encontrada');
   res.json(row);
 }));

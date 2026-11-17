@@ -48,16 +48,11 @@
           <div class="topbar-actions">
             <div class="notification-menu">
               <button type="button" class="notification-button" id="notificationButton" aria-label="Notificações" aria-expanded="false" aria-controls="notificationPanel">
-                <i class="bi bi-bell" aria-hidden="true"></i><span class="notification-badge">4</span>
+              <i class="bi bi-bell" aria-hidden="true"></i><span class="notification-badge" hidden>0</span>
               </button>
               <section class="notification-panel" id="notificationPanel" aria-labelledby="notificationTitle">
                 <header class="notification-header"><h2 id="notificationTitle">Notificações</h2><button type="button" id="markNotificationsRead">Marcar como lidas</button></header>
-                <div class="notification-list">
-                  <a class="notification-item unread" href="Tela_Materiais_Perceira.html"><span class="notification-icon critical"><i class="bi bi-box-seam" aria-hidden="true"></i></span><span><strong>Estoque crítico</strong><small>O filamento ABS está abaixo do limite recomendado.</small><time>Há 15 minutos</time></span></a>
-                  <a class="notification-item unread" href="Tela_Impressoras_Parceiras.html"><span class="notification-icon success"><i class="bi bi-check2-circle" aria-hidden="true"></i></span><span><strong>Impressão concluída</strong><small>A impressão da órtese C-012 foi finalizada.</small><time>Há 2 horas</time></span></a>
-                  <a class="notification-item unread" href="Tela_Mensagens_Parceira.html"><span class="notification-icon message"><i class="bi bi-chat-dots" aria-hidden="true"></i></span><span><strong>Nova mensagem</strong><small>A AACD Central enviou uma atualização.</small><time>Ontem</time></span></a>
-                  <a class="notification-item unread" href="Tela_Impressoras_Parceiras.html"><span class="notification-icon printer"><i class="bi bi-printer" aria-hidden="true"></i></span><span><strong>Impressora disponível</strong><small>A Prusa i3 MK3S+ está pronta para uso.</small><time>Ontem</time></span></a>
-                </div>
+                <div class="notification-list"></div>
                 <p class="notification-empty">Você está em dia!</p>
               </section>
             </div>
@@ -74,7 +69,7 @@
             <p>Resumo das atividades e recursos da sua instituição.</p>
           </header>
 
-          <section class="summary-grid" aria-label="Resumo da operação">
+          <section class="summary-grid dashboard-data" aria-label="Resumo da operação">
             <article class="summary-card">
               <div class="card-top">
                 <span class="metric-icon printer"><i class="bi bi-printer" aria-hidden="true"></i></span>
@@ -93,7 +88,7 @@
             </article>
           </section>
 
-          <section class="resource-panel" aria-labelledby="resourceTitle">
+          <section class="resource-panel dashboard-data" aria-labelledby="resourceTitle">
             <h2 id="resourceTitle">Status de Uso dos Recursos</h2>
             <div class="resource-grid">
               <div class="resource-column">
@@ -129,8 +124,8 @@
     </div>
       <script src="../JS/config.js"></script>
     <script src="../JS/api.js" data-perfil="instituicao"></script>
-    <script src="../JS/notificacoes-parceira.js"></script>
       <script src="../JS/profile-menu.js"></script>
+    <script src="../JS/notificacoes-parceira.js"></script>
     <script src="../JS/dashboard-parceira.js"></script>
   </body>
 </html>

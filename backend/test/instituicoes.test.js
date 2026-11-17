@@ -48,6 +48,19 @@ test('PATCH não aceita campos fora da lista', async () => {
   assert.equal(res.status, 400);
 });
 
+test('instituição atualiza CNPJ e normaliza telefone', async () => {
+  const sb = createFakeSupabase({
+    query: (q) => q.table === 'instituicoes' && q.op === 'update'
+      ? { data: { id: INST_ID, ...q.values }, error: null }
+      : undefined,
+  });
+  const res = await request(buildApp(sb)).patch(`/api/instituicoes/${INST_ID}`).set(auth('inst-token'))
+    .send({ cnpj: '12.345.678/0001-90', telefone: '(11) 99999-0000' });
+  assert.equal(res.status, 200);
+  assert.deepEqual(sb.calls.at(-1).values, { cnpj: '12345678000190', telefone: '11999990000' });
+  assert.equal(sb.calls.at(-1).token, 'service-role');
+});
+
 test('aprovar é exclusivo da AACD e provisiona o acesso', async () => {
   const sb = createFakeSupabase({
     query: (q) => (q.table === 'instituicoes' ? { data: { id: INST_ID, email: 'c@h.org' }, error: null } : undefined),
