@@ -10,6 +10,7 @@ export const badRequest = (msg, details) => new HttpError(400, msg, details);
 export const unauthorized = (msg = 'Não autenticado') => new HttpError(401, msg);
 export const forbidden = (msg = 'Acesso negado') => new HttpError(403, msg);
 export const notFound = (msg = 'Recurso não encontrado') => new HttpError(404, msg);
+export const conflict = (msg = 'Conflito com outro registro') => new HttpError(409, msg);
 
 // Converte erros do PostgREST/Supabase em respostas HTTP coerentes.
 // Códigos: https://postgrest.org/en/stable/references/errors.html

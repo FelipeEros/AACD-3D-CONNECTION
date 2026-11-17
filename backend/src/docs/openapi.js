@@ -79,7 +79,7 @@ export const openapi = {
       get: op('Materiais', 'Lista materiais', { parameters: [...page, q('tipo'), q('instituicao_id'), q('busca')] }),
       post: op('Materiais', 'Cadastra material', { requestBody: json({
         nome: s, tipo: { type: 'string', enum: ['Filamento', 'Resina', 'Pó', 'Outro'] }, marca: s, lote: s, cor: s,
-        unidade: { type: 'string', enum: ['rolos', 'frascos', 'kg', 'L'] }, quantidade_inicial: num, instituicao_id: uuid,
+        unidade: { type: 'string', enum: ['g'] }, quantidade_inicial: num, instituicao_id: uuid,
       }, ['nome', 'tipo', 'marca', 'lote', 'cor', 'unidade']) }),
     },
     '/materiais/{id}': { get: op('Materiais', 'Detalhe', { parameters: [id] }), patch: op('Materiais', 'Atualiza dados', { parameters: [id] }) },

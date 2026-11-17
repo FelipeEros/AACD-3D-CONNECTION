@@ -49,7 +49,7 @@ export const COLUMNS = Object.freeze({
   remetenteId: 'remetente_id', // CONFERIR: autor da mensagem
   conteudo: 'conteudo', // CONFERIR: texto da mensagem
   caminhoStorage: 'caminho_storage', // citado no guia
-  criadoEm: 'created_at', // CONFERIR: pode ser criado_em
+  criadoEm: 'criado_em', // CONFERIR: pode ser created_at
   estado: 'estado', // CONFERIR: filtros da tela de instituições
   cidade: 'cidade',
   nome: 'nome',
@@ -59,7 +59,7 @@ export const COLUMNS = Object.freeze({
 // Campos editáveis pela API, por tabela. A API usa os MESMOS nomes das
 // colunas. CONFERIR todos (derivados dos formulários do Frontend).
 export const FIELDS = Object.freeze({
-  impressoras: ['nome', 'fabricante', 'modelo', 'numero_serie', 'tecnologia', 'observacoes'],
+  impressoras: ['nome', 'modelo', 'tecnologia', 'especificacoes'],
   materiais: ['nome', 'tipo', 'marca', 'lote', 'cor', 'unidade'],
   solicitacoes: ['instituicao_id', 'impressora_id', 'prazo', 'observacoes', 'arquivo_modelo'],
   itensSolicitacao: ['solicitacao_id', 'material_id', 'quantidade', 'observacoes'],
@@ -111,7 +111,11 @@ export const RPC = Object.freeze({
     // CONFERIR o formato do jsonb esperado pela função.
     args: ({ id, consumo }) => ({
       p_solicitacao_id: id,
-      p_consumo: consumo.map((c) => ({ item_id: c.item_id, quantidade_consumida: c.quantidade_consumida })),
+      p_consumo: consumo.map((c) => ({
+        item_id: c.item_id,
+        quantidade_consumida: c.quantidade_consumida,
+        consumo_real: c.quantidade_consumida,
+      })),
     }),
   },
   registrarMovimentacaoEstoque: {

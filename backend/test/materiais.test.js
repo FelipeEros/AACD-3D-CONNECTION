@@ -6,7 +6,7 @@ import { createFakeSupabase, auth, INST_ID } from './fake-supabase.js';
 import { toCsv } from '../src/lib/csv.js';
 
 const MAT_ID = '55555555-5555-4555-8555-555555555555';
-const body = { nome: 'PLA Branco', tipo: 'Filamento', marca: 'Voolt', lote: 'L1', cor: 'Branco', unidade: 'kg' };
+const body = { nome: 'PLA Branco', tipo: 'Filamento', marca: 'Voolt', lote: 'L1', cor: 'Branco', unidade: 'g' };
 
 const sbMaterial = () => createFakeSupabase({
   query: (q) => {

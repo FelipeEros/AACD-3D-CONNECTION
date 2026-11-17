@@ -5,18 +5,20 @@ import { validate, idParams, pagination, uuid } from '../lib/validate.js';
 import { notFound, badRequest } from '../lib/errors.js';
 import { requireRole, scopeInstituicao } from '../middlewares/auth.js';
 import { listRows, getRow, insertRow, updateRow, compact } from '../lib/query.js';
-import { TABLES, COLUMNS, RPC, callRpc } from '../config/schema.js';
+import { TABLES, VIEWS, COLUMNS, RPC, callRpc } from '../config/schema.js';
 
 const router = Router();
 const text = (max = 200) => z.string().trim().min(1).max(max);
 
 const materialFields = {
   nome: text(),
-  tipo: z.enum(['Filamento', 'Resina', 'Pó', 'Outro']),
+  tipo: z.enum(['Filamento', 'Resina', 'Pó', 'Outro', 'filamento', 'resina', 'pó', 'outro'])
+    .transform((value) => value.toLowerCase()),
   marca: text(),
   lote: text(100),
   cor: text(60),
-  unidade: z.enum(['rolos', 'frascos', 'kg', 'L']),
+  unidade: z.literal('g'),
+  compatibilidade: text(200).optional(),
 };
 
 const createBody = z.object({
@@ -27,7 +29,7 @@ const createBody = z.object({
 
 const updateBody = z.object(Object.fromEntries(
   Object.entries(materialFields).map(([k, v]) => [k, v.optional()]),
-)).strict();
+)).extend({ quantidade_estoque: z.number().min(0).optional() }).strict();
 
 const listQuery = pagination.extend({
   tipo: z.string().optional(),
@@ -39,7 +41,7 @@ router.get('/', validate({ query: listQuery }), asyncHandler(async (req, res) =>
   const { tipo, busca, limit, offset } = req.validQuery;
   res.json(await listRows(req.db, TABLES.materiais, {
     filters: { tipo, [COLUMNS.instituicaoId]: scopeInstituicao(req, req.validQuery.instituicao_id) },
-    search: busca, searchColumns: ['nome', 'marca', 'lote'],
+    search: busca, searchColumns: ['nome'],
     orderBy: COLUMNS.nome, ascending: true, limit, offset,
   }));
 }));
@@ -56,11 +58,23 @@ router.get('/:id', validate({ params: idParams }), asyncHandler(async (req, res)
 }));
 
 router.post('/', validate({ body: createBody }), asyncHandler(async (req, res) => {
-  const { quantidade_inicial: quantidade, instituicao_id: requested, ...fields } = req.body;
+  const {
+    quantidade_inicial: quantidade,
+    instituicao_id: requested,
+    marca,
+    lote,
+    compatibilidade,
+    ...fields
+  } = req.body;
   const instituicaoId = scopeInstituicao(req, requested);
   if (!instituicaoId) throw badRequest('Informe instituicao_id');
 
-  const material = await insertRow(req.db, TABLES.materiais, { ...fields, [COLUMNS.instituicaoId]: instituicaoId });
+  const caracteristicas = Object.fromEntries(
+    Object.entries({ marca, lote, compatibilidade }).filter(([, value]) => value !== undefined),
+  );
+  const material = await insertRow(req.db, TABLES.materiais, {
+    ...fields, caracteristicas, [COLUMNS.instituicaoId]: instituicaoId,
+  });
   // O saldo nunca é gravado direto: entra como movimentação pela RPC.
   if (quantidade) {
     await callRpc(req.db, RPC.registrarMovimentacaoEstoque, {
@@ -71,10 +85,33 @@ router.post('/', validate({ body: createBody }), asyncHandler(async (req, res) =
 }));
 
 router.patch('/:id', validate({ params: idParams, body: updateBody }), asyncHandler(async (req, res) => {
-  await loadMaterial(req);
-  const changes = compact(req.body);
-  if (!Object.keys(changes).length) throw badRequest('Nenhum campo para atualizar');
-  res.json(await updateRow(req.db, TABLES.materiais, req.params.id, changes));
+  const current = await loadMaterial(req);
+  const { marca, lote, compatibilidade, quantidade_estoque: quantidadeEstoque, ...fields } = req.body;
+  const caracteristicas = compact({ ...(current.caracteristicas || {}), marca, lote, compatibilidade });
+  const changes = compact({ ...fields, caracteristicas });
+  if (!Object.keys(changes).length && quantidadeEstoque === undefined) throw badRequest('Nenhum campo para atualizar');
+  const material = Object.keys(changes).length
+    ? await updateRow(req.db, TABLES.materiais, req.params.id, changes)
+    : current;
+  if (quantidadeEstoque !== undefined) {
+    const { data: saldo, error: saldoError } = await req.db
+      .from(VIEWS.saldoEstoque)
+      .select('saldo_atual')
+      .eq(COLUMNS.materialId, req.params.id)
+      .maybeSingle();
+    if (saldoError) throw saldoError;
+    const atual = Number(saldo?.saldo_atual || 0);
+    const diferenca = quantidadeEstoque - atual;
+    if (diferenca !== 0) {
+      await callRpc(req.db, RPC.registrarMovimentacaoEstoque, {
+        materialId: req.params.id,
+        tipo: 'ajuste',
+        quantidade: diferenca,
+        observacao: 'Ajuste realizado pela tela de materiais',
+      });
+    }
+  }
+  res.json(material);
 }));
 
 // ---- Estoque ------------------------------------------------------------

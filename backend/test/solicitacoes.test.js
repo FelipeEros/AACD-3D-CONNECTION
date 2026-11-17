@@ -10,19 +10,24 @@ const MAT_OK = '55555555-5555-4555-8555-555555555555';
 const MAT_BAD = '77777777-7777-4777-8777-777777777777';
 const ITEM_ID = '88888888-8888-4888-8888-888888888888';
 
-function sb({ printerStatus = 'disponivel', failItems = false, solInst = INST_ID } = {}) {
+function sb({ printerStatus = 'disponivel', failItems = false, solInst = INST_ID, solStatus = 'em_producao', missingStatusRpc = false, missingConclusionRpc = false } = {}) {
   return createFakeSupabase({
     query: (q) => {
       if (q.table === 'impressoras' && q.single) return { data: { id: PRINTER_ID, instituicao_id: INST_ID, status: printerStatus }, error: null };
       if (q.table === 'impressora_materiais') return { data: [{ material_id: MAT_OK }], error: null };
       if (q.table === 'solicitacoes' && q.op === 'insert') return { data: { id: SOL_ID, status: 'pendente', ...q.values }, error: null };
-      if (q.table === 'solicitacoes' && q.single) return { data: { id: SOL_ID, instituicao_id: solInst, status: 'em_producao' }, error: null };
+      if (q.table === 'solicitacoes' && q.single) return { data: { id: SOL_ID, instituicao_id: solInst, status: solStatus }, error: null };
       if (q.table === 'itens_solicitacao' && q.op === 'insert') {
         return failItems ? { data: null, error: { code: '23503', message: 'fk' } } : { data: { id: ITEM_ID, ...q.values }, error: null };
       }
-      if (q.table === 'itens_solicitacao') return { data: [{ id: ITEM_ID }], error: null };
+      if (q.table === 'itens_solicitacao') return { data: [{ id: ITEM_ID, material_id: MAT_OK }], error: null };
       return undefined;
     },
+    rpc: (name) => missingStatusRpc && name === 'atualizar_status_solicitacao'
+      ? { data: null, error: { code: 'PGRST202', message: 'Could not find the function public.atualizar_status_solicitacao' } }
+      : missingConclusionRpc && name === 'concluir_producao'
+        ? { data: null, error: { code: 'PGRST202', message: 'Could not find the function public.concluir_producao' } }
+      : undefined,
   });
 }
 
@@ -77,6 +82,29 @@ test('instituição não altera solicitação de outra instituição', async () 
   assert.equal(res.status, 403);
 });
 
+test('aceita solicitação mesmo sem RPC de status publicada', async () => {
+  const fake = sb({ solStatus: 'pendente', missingStatusRpc: true });
+  const res = await request(buildApp(fake)).post(`/api/solicitacoes/${SOL_ID}/status`)
+    .set(auth('inst-token')).send({ status: 'aceita' });
+  assert.equal(res.status, 200);
+  const update = fake.calls.find((c) => c.table === 'solicitacoes' && c.op === 'update');
+  assert.equal(update.values.status, 'aceita');
+  assert.equal(update.token, 'service-role');
+});
+
+test('conclui produção e registra consumo mesmo sem RPC de conclusão publicada', async () => {
+  const fake = sb({ missingConclusionRpc: true });
+  const res = await request(buildApp(fake)).post(`/api/solicitacoes/${SOL_ID}/concluir`)
+    .set(auth('inst-token')).send({ consumo: [{ item_id: ITEM_ID, quantidade_consumida: 0.4 }] });
+  assert.equal(res.status, 200);
+  assert.ok(fake.calls.some((c) => c.rpc === 'registrar_movimentacao_estoque'
+    && c.args.p_material_id === MAT_OK
+    && c.args.p_tipo === 'ajuste'
+    && c.args.p_quantidade === -0.4));
+  assert.ok(fake.calls.some((c) => c.table === 'solicitacoes' && c.op === 'update'
+    && c.values.status === 'concluida'));
+});
+
 test('concluir exige consumo de todos os itens e chama a RPC', async () => {
   const fake = sb();
   const app = buildApp(fake);
@@ -86,7 +114,11 @@ test('concluir exige consumo de todos os itens e chama a RPC', async () => {
   const ok = await request(app).post(url).set(auth('inst-token')).send({ consumo: [{ item_id: ITEM_ID, quantidade_consumida: 0.4 }] });
   assert.equal(ok.status, 200);
   const rpc = fake.calls.find((c) => c.rpc === 'concluir_producao');
-  assert.deepEqual(rpc.args.p_consumo, [{ item_id: ITEM_ID, quantidade_consumida: 0.4 }]);
+  assert.deepEqual(rpc.args.p_consumo, [{
+    item_id: ITEM_ID,
+    quantidade_consumida: 0.4,
+    consumo_real: 0.4,
+  }]);
 });
 
 test('filtro de status aceita lista separada por vírgula', async () => {

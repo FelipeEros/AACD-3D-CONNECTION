@@ -48,13 +48,13 @@
             <button class="primary-button" id="openPrinterRegistration" type="button"><i class="bi bi-plus-lg" aria-hidden="true"></i>Cadastrar Impressora</button>
           </header>
 
-          <section class="summary-bar" aria-label="Resumo das impressoras">
+          <section class="summary-bar is-loading" aria-label="Resumo das impressoras" aria-busy="true">
             <div><span>Total Ativas</span><strong>4</strong></div>
             <div><span>Em Manutenção</span><strong>1</strong></div>
             <div><span>Tempo Total (Mês)</span><strong>432h</strong></div>
           </section>
 
-          <section class="printer-grid" aria-label="Minhas impressoras">
+          <section class="printer-grid is-loading" aria-label="Minhas impressoras" aria-busy="true">
             <article class="printer-card">
               <div class="printer-image printer-image-purple">
                 <span class="status status-operating"><i></i>OPERANTE</span>
@@ -141,7 +141,7 @@
               <label><span>Modelo</span><input name="model" type="text" required /></label>
               <label><span>Número de série</span><input name="serialNumber" type="text" required /></label>
               <label><span>Tecnologia de impressão</span><select name="technology" required><option value="" selected disabled>Selecione</option><option>FDM</option><option>SLA</option><option>SLS</option></select></label>
-              <label><span>Material compatível</span><input name="material" type="text" placeholder="Ex.: PLA, ABS..." required /></label>
+              <label><span>Material compatível</span><select name="material_id" required><option value="" selected disabled>Carregando materiais...</option></select></label>
             </div>
             <p class="printer-form-feedback" id="printerFormFeedback" role="status" aria-live="polite"></p>
           </div>
@@ -150,6 +150,19 @@
             <button class="printer-modal-primary" type="submit">Cadastrar impressora</button>
           </footer>
         </form>
+      </section>
+    </div>
+    <div class="printer-modal printer-details-modal" id="printerDetailsModal" aria-hidden="true">
+      <div class="printer-modal-backdrop" data-printer-details-close></div>
+      <section class="printer-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="printerDetailsTitle">
+        <header class="printer-modal-header">
+          <div>
+            <span class="printer-modal-eyebrow">Informações</span>
+            <h2 id="printerDetailsTitle">Detalhes da impressora</h2>
+          </div>
+          <button class="printer-modal-close" type="button" aria-label="Fechar" data-printer-details-close>&times;</button>
+        </header>
+        <div class="printer-modal-body" id="printerDetailsContent"></div>
       </section>
     </div>
     <script src="../JS/config.js"></script>

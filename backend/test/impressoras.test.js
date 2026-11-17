@@ -33,6 +33,32 @@ test('instituição não cadastra impressora para outra instituição', async ()
   assert.equal(res.status, 403);
 });
 
+test('instituição confirma a posse antes de excluir uma impressora', async () => {
+  const sb = withPrinter();
+  const res = await request(buildApp(sb)).delete(`/api/impressoras/${PRINTER_ID}`).set(auth('inst-token'));
+  assert.equal(res.status, 204);
+  assert.ok(sb.calls.some((call) => call.op === 'delete' && call.table === 'impressora_materiais'));
+  assert.ok(sb.calls.some((call) => call.op === 'delete' && call.table === 'impressoras'));
+});
+
+test('não exclui impressora vinculada a pedido', async () => {
+  const sb = createFakeSupabase({
+    query: (q) => {
+      if (q.table === 'impressoras' && q.op === 'select' && q.single) {
+        return { data: { id: PRINTER_ID, instituicao_id: INST_ID }, error: null };
+      }
+      if (q.table === 'solicitacoes' && q.op === 'select') {
+        return { data: [{ id: '66666666-6666-4666-8666-666666666666' }], error: null };
+      }
+      return undefined;
+    },
+  });
+  const res = await request(buildApp(sb)).delete(`/api/impressoras/${PRINTER_ID}`).set(auth('inst-token'));
+  assert.equal(res.status, 409);
+  assert.match(res.body.error.message, /vinculada a um pedido/);
+  assert.equal(sb.calls.some((call) => call.op === 'delete'), false);
+});
+
 test('AACD precisa informar a instituição', async () => {
   const res = await request(buildApp(withPrinter())).post('/api/impressoras').set(auth('aacd-token')).send(body);
   assert.equal(res.status, 400);

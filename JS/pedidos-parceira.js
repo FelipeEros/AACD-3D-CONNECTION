@@ -12,7 +12,7 @@
   const acoes = $('#partnerModalActions');
   const modalFeedback = $('#partnerModalFeedback');
 
-  let filtroStatus = 'pendente,aceita,em_producao';
+  let filtroStatus = 'pendente';
   let pedidos = [];
   const impressoras = {};
 
@@ -57,10 +57,10 @@
       const st = STATUS_SOLICITACAO[p.status] || { label: p.status, css: '' };
       return `
         <tr>
-          <td><strong>${fmt.idCurto(p.id)}</strong><small>${escapeHtml((p.observacoes || '').slice(0, 50))}</small></td>
+          <td><strong>${fmt.idCurto(p.id)}</strong><small>${escapeHtml((p.descricao || '').slice(0, 50))}</small></td>
           <td>${escapeHtml(nomeImpressora(p.impressora_id))}</td>
           <td>${fmt.data(p.prazo)}</td>
-          <td>${fmt.data(p.created_at)}</td>
+          <td>${fmt.data(p.criado_em)}</td>
           <td><span class="status ${st.css}">${escapeHtml(st.label)}</span></td>
           <td><div class="row-actions">
             <button class="secondary-action" type="button" data-id="${p.id}" data-acao="detalhes">Detalhes</button>
@@ -124,21 +124,22 @@
         api('/arquivos', { query: { solicitacao_id: id } }).catch(() => []),
       ]);
       const itens = detalhe.itens || [];
+      const quantidadeSolicitada = (item) => item.quantidade ?? item.quantidade_pecas ?? item.consumo_estimado ?? 0;
       corpo.innerHTML = `
         <p><span class="status ${st.css}">${escapeHtml(st.label)}</span>
-          <span class="hint" style="margin-left:8px">Recebido em ${fmt.dataHora(p.created_at)}</span></p>
+          <span class="hint" style="margin-left:8px">Recebido em ${fmt.dataHora(p.criado_em)}</span></p>
         <div class="form-grid-2" style="margin:14px 0">
           <div class="form-field">Impressora<strong>${escapeHtml(nomeImpressora(p.impressora_id))}</strong></div>
           <div class="form-field">Prazo<strong>${fmt.data(p.prazo)}</strong></div>
-          <div class="form-field full">Observações<span>${escapeHtml(p.observacoes || 'Sem observações.')}</span></div>
+          <div class="form-field full">Descrição<span>${escapeHtml(p.descricao || 'Sem descrição.')}</span></div>
         </div>
         <h3 style="font:600 14px 'Space Grotesk',sans-serif;margin:16px 0 8px">${concluir ? 'Informe o consumo real de cada material' : 'Materiais'}</h3>
         ${itens.map((i) => `
           <div class="item-row" style="grid-template-columns:minmax(0,1fr) 150px">
             <div class="form-field">${escapeHtml(i.material?.nome || 'Material')}
-              <span class="hint">Pedido: ${fmt.numero(i.quantidade, 2)} ${escapeHtml(i.material?.unidade || '')}</span></div>
+            <span class="hint">Pedido: ${fmt.numero(quantidadeSolicitada(i), 2)} ${escapeHtml(i.material?.unidade || '')}</span></div>
             ${concluir
-              ? `<label class="form-field">Consumido (${escapeHtml(i.material?.unidade || '')})<input type="number" min="0" step="0.01" data-item="${i.id}" value="${i.quantidade}" required /></label>`
+            ? `<label class="form-field">Consumido (${escapeHtml(i.material?.unidade || '')})<input type="number" min="0" step="0.01" data-item="${i.id || i.item_id}" value="${quantidadeSolicitada(i)}" required /></label>`
               : ''}
           </div>`).join('') || '<p class="hint">Sem itens.</p>'}
         <h3 style="font:600 14px 'Space Grotesk',sans-serif;margin:16px 0 8px">Arquivos do modelo</h3>

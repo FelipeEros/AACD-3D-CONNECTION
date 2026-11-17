@@ -46,6 +46,49 @@ async function listItens(db, solicitacaoId) {
   return data ?? [];
 }
 
+function rpcNaoEncontrada(error) {
+  return error?.code === 'PGRST202'
+    || /Could not find the function/i.test(error?.message ?? '');
+}
+
+const TRANSICOES_STATUS = Object.freeze({
+  pendente: new Set(['aceita', 'recusada']),
+  aceita: new Set(['em_producao']),
+});
+
+async function atualizarStatusSemRpc(req, solicitacao, status) {
+  if (!TRANSICOES_STATUS[solicitacao.status]?.has(status)) {
+    throw badRequest(`Transição inválida: ${solicitacao.status} -> ${status}`);
+  }
+  const admin = req.app.locals.supabase.admin();
+  const { error } = await admin.from(TABLES.solicitacoes)
+    .update({ [COLUMNS.status]: status })
+    .eq('id', solicitacao.id);
+  if (error) throw error;
+}
+
+async function concluirSemRpc(req, solicitacao, itens, consumo) {
+  if (solicitacao.status !== 'em_producao') {
+    throw badRequest(`Transição inválida: ${solicitacao.status} -> concluida`);
+  }
+  const itensPorId = new Map(itens.map((item) => [item.id ?? item.item_id, item]));
+  for (const registro of consumo) {
+    if (registro.quantidade_consumida === 0) continue;
+    const item = itensPorId.get(registro.item_id);
+    await callRpc(req.db, RPC.registrarMovimentacaoEstoque, {
+      materialId: item.material_id,
+      tipo: 'ajuste',
+      quantidade: -registro.quantidade_consumida,
+      observacao: `Consumo da solicitação ${solicitacao.id}`,
+    });
+  }
+  const admin = req.app.locals.supabase.admin();
+  const { error } = await admin.from(TABLES.solicitacoes)
+    .update({ [COLUMNS.status]: 'concluida' })
+    .eq('id', solicitacao.id);
+  if (error) throw error;
+}
+
 router.get('/:id', validate({ params: idParams }), asyncHandler(async (req, res) => {
   const solicitacao = await loadSolicitacao(req);
   res.json({ ...solicitacao, itens: await listItens(req.db, solicitacao.id) });
@@ -107,8 +150,13 @@ router.post('/:id/status', requireRole('instituicao'), validate({
   params: idParams,
   body: z.object({ status: z.enum(['aceita', 'recusada', 'em_producao']) }),
 }), asyncHandler(async (req, res) => {
-  await loadSolicitacao(req);
-  await callRpc(req.db, RPC.atualizarStatusSolicitacao, { id: req.params.id, status: req.body.status });
+  const solicitacao = await loadSolicitacao(req);
+  try {
+    await callRpc(req.db, RPC.atualizarStatusSolicitacao, { id: req.params.id, status: req.body.status });
+  } catch (error) {
+    if (!rpcNaoEncontrada(error)) throw error;
+    await atualizarStatusSemRpc(req, solicitacao, req.body.status);
+  }
   res.json(await getRow(req.db, TABLES.solicitacoes, req.params.id));
 }));
 
@@ -124,15 +172,22 @@ router.post('/:id/concluir', requireRole('instituicao'), validate({
     consumo: z.array(z.object({ item_id: uuid, quantidade_consumida: z.number().min(0) })).min(1),
   }),
 }), asyncHandler(async (req, res) => {
-  await loadSolicitacao(req);
+  const solicitacao = await loadSolicitacao(req);
   const itens = await listItens(req.db, req.params.id);
-  const ids = new Set(itens.map((i) => i.id));
+  const ids = new Set(itens.map((i) => i.id ?? i.item_id));
   const desconhecidos = req.body.consumo.filter((c) => !ids.has(c.item_id)).map((c) => c.item_id);
   if (desconhecidos.length) throw badRequest('Itens não pertencem a esta solicitação', { item_ids: desconhecidos });
-  const faltando = itens.filter((i) => !req.body.consumo.some((c) => c.item_id === i.id)).map((i) => i.id);
+  const faltando = itens
+    .map((i) => i.id ?? i.item_id)
+    .filter((itemId) => !req.body.consumo.some((c) => c.item_id === itemId));
   if (faltando.length) throw badRequest('Informe o consumo de todos os itens', { item_ids: faltando });
 
-  await callRpc(req.db, RPC.concluirProducao, { id: req.params.id, consumo: req.body.consumo });
+  try {
+    await callRpc(req.db, RPC.concluirProducao, { id: req.params.id, consumo: req.body.consumo });
+  } catch (error) {
+    if (!rpcNaoEncontrada(error)) throw error;
+    await concluirSemRpc(req, solicitacao, itens, req.body.consumo);
+  }
   res.json(await getRow(req.db, TABLES.solicitacoes, req.params.id));
 }));
 

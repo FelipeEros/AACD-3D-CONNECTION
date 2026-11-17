@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { z } from 'zod';
 import { asyncHandler } from '../lib/async.js';
 import { validate, idParams, pagination, uuid } from '../lib/validate.js';
-import { notFound, badRequest } from '../lib/errors.js';
+import { notFound, badRequest, conflict } from '../lib/errors.js';
 import { scopeInstituicao } from '../middlewares/auth.js';
 import { listRows, getRow, insertRow, updateRow, compact } from '../lib/query.js';
 import { TABLES, COLUMNS, RPC, STATUS_IMPRESSORA, callRpc } from '../config/schema.js';
@@ -27,7 +27,7 @@ const createBody = z.object({
 
 const updateBody = z.object(Object.fromEntries(
   Object.entries(impressoraFields).map(([k, v]) => [k, v.optional()]),
-)).strict();
+)).extend({ material_ids: z.array(uuid).max(50).optional() }).strict();
 
 const listQuery = pagination.extend({
   status: z.enum(STATUS_IMPRESSORA).optional(),
@@ -41,7 +41,7 @@ router.get('/', validate({ query: listQuery }), asyncHandler(async (req, res) =>
   const instituicaoId = scopeInstituicao(req, req.validQuery.instituicao_id);
   res.json(await listRows(req.db, TABLES.impressoras, {
     filters: { [COLUMNS.status]: status, tecnologia, [COLUMNS.instituicaoId]: instituicaoId },
-    search: busca, searchColumns: ['nome', 'modelo', 'fabricante'],
+    search: busca, searchColumns: ['nome', 'modelo'],
     orderBy: COLUMNS.nome, ascending: true, limit, offset,
   }));
 }));
@@ -68,12 +68,24 @@ router.get('/:id', validate({ params: idParams }), asyncHandler(async (req, res)
 }));
 
 router.post('/', validate({ body: createBody }), asyncHandler(async (req, res) => {
-  const { material_ids: materialIds = [], instituicao_id: requested, ...fields } = req.body;
+  const {
+    material_ids: materialIds = [],
+    instituicao_id: requested,
+    fabricante,
+    numero_serie: numeroSerie,
+    observacoes,
+    ...fields
+  } = req.body;
   const instituicaoId = scopeInstituicao(req, requested);
   if (!instituicaoId) throw badRequest('Informe instituicao_id');
 
   // O status inicial é definido pelo banco.
-  const impressora = await insertRow(req.db, TABLES.impressoras, { ...fields, [COLUMNS.instituicaoId]: instituicaoId });
+  const especificacoes = { fabricante, numero_serie: numeroSerie, observacoes };
+  const impressora = await insertRow(req.db, TABLES.impressoras, {
+    ...fields,
+    especificacoes: Object.fromEntries(Object.entries(especificacoes).filter(([, value]) => value)),
+    [COLUMNS.instituicaoId]: instituicaoId,
+  });
   for (const materialId of materialIds) {
     await insertRow(req.db, TABLES.impressoraMateriais, {
       [COLUMNS.impressoraId]: impressora.id, [COLUMNS.materialId]: materialId,
@@ -82,11 +94,57 @@ router.post('/', validate({ body: createBody }), asyncHandler(async (req, res) =
   res.status(201).json(impressora);
 }));
 
-router.patch('/:id', validate({ params: idParams, body: updateBody }), asyncHandler(async (req, res) => {
+router.delete('/:id', validate({ params: idParams }), asyncHandler(async (req, res) => {
   await loadImpressora(req);
-  const changes = compact(req.body);
-  if (!Object.keys(changes).length) throw badRequest('Nenhum campo para atualizar');
-  res.json(await updateRow(req.db, TABLES.impressoras, req.params.id, changes));
+  const { data: solicitacoes, error: solicitacoesError } = await req.db
+    .from(TABLES.solicitacoes)
+    .select('id')
+    .eq(COLUMNS.impressoraId, req.params.id)
+    .limit(1);
+  if (solicitacoesError) throw solicitacoesError;
+  if (solicitacoes?.length) {
+    throw conflict('Não é possível excluir uma impressora vinculada a um pedido.');
+  }
+
+  const { error: vinculosError } = await req.db
+    .from(TABLES.impressoraMateriais)
+    .delete()
+    .eq(COLUMNS.impressoraId, req.params.id);
+  if (vinculosError) throw vinculosError;
+
+  const { error } = await req.db.from(TABLES.impressoras)
+    .delete()
+    .eq('id', req.params.id);
+  if (error) throw error;
+  res.status(204).end();
+}));
+
+router.patch('/:id', validate({ params: idParams, body: updateBody }), asyncHandler(async (req, res) => {
+  const current = await loadImpressora(req);
+  const { fabricante, numero_serie: numeroSerie, observacoes, material_ids: materialIds, ...fields } = req.body;
+  const specChanges = Object.fromEntries(
+    Object.entries({ fabricante, numero_serie: numeroSerie, observacoes }).filter(([, value]) => value !== undefined),
+  );
+  const changes = compact(fields);
+  if (Object.keys(specChanges).length) {
+    changes.especificacoes = { ...(current.especificacoes || {}), ...specChanges };
+  }
+  if (!Object.keys(changes).length && materialIds === undefined) throw badRequest('Nenhum campo para atualizar');
+  const updated = Object.keys(changes).length
+    ? await updateRow(req.db, TABLES.impressoras, req.params.id, changes)
+    : current;
+  if (materialIds !== undefined) {
+    const { error: deleteError } = await req.db.from(TABLES.impressoraMateriais)
+      .delete()
+      .eq(COLUMNS.impressoraId, req.params.id);
+    if (deleteError) throw deleteError;
+    for (const materialId of materialIds) {
+      await insertRow(req.db, TABLES.impressoraMateriais, {
+        [COLUMNS.impressoraId]: req.params.id, [COLUMNS.materialId]: materialId,
+      });
+    }
+  }
+  res.json(updated);
 }));
 
 // "ocupada" é controlado pelo banco (aceite/conclusão de pedidos).

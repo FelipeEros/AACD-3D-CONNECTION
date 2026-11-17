@@ -48,10 +48,10 @@
             <button type="button" class="primary-button" id="openMaterialRegistration"><i class="bi bi-plus-lg" aria-hidden="true"></i>Novo Material</button>
           </header>
 
-          <section class="summary-grid" aria-label="Resumo do estoque">
+          <section class="summary-grid is-loading" aria-label="Resumo do estoque" aria-busy="true">
             <article class="summary-card">
               <span class="summary-icon"><i class="bi bi-boxes" aria-hidden="true"></i></span>
-              <div><small>Total em Estoque</small><strong>124</strong><p>Rolos/Frascos ativos</p></div>
+              <div><small>Total em Estoque</small><strong>124</strong><p>Gramas em estoque</p></div>
             </article>
             <article class="summary-card critical-card">
               <span class="summary-icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span>
@@ -64,14 +64,20 @@
             <div class="inventory-header">
               <h2 id="inventoryTitle">Inventário Detalhado</h2>
               <div class="inventory-actions">
-                <button type="button">Todos os Tipos <i class="bi bi-chevron-down" aria-hidden="true"></i></button>
-                <button type="button"><i class="bi bi-filter" aria-hidden="true"></i>Filtros</button>
+                <div class="inventory-filter">
+                  <button type="button" id="materialTypeFilter" aria-expanded="false">Todos os Tipos <i class="bi bi-chevron-down" aria-hidden="true"></i></button>
+                  <div class="inventory-filter-menu" id="materialTypeMenu" hidden></div>
+                </div>
+                <div class="inventory-filter">
+                  <button type="button" id="materialStatusFilter" aria-expanded="false"><i class="bi bi-filter" aria-hidden="true"></i>Filtros</button>
+                  <div class="inventory-filter-menu" id="materialStatusMenu" hidden></div>
+                </div>
               </div>
             </div>
-            <div class="table-scroll">
+            <div class="table-scroll is-loading" aria-busy="true">
               <table>
                 <thead><tr><th>Material</th><th>Tipo</th><th>Cor</th><th>Quantidade</th><th>Status</th><th>Ações</th></tr></thead>
-                <tbody>
+                <tbody id="materialsTableBody">
                   <tr>
                     <td><strong>PLA Premium</strong><small>Marca X - Lote 1029</small></td>
                     <td>Filamento<br />(1.75mm)</td>
@@ -118,12 +124,12 @@
             <p class="material-modal-description">Preencha os dados do material para adicioná-lo ao estoque da sua instituição.</p>
             <div class="material-form-grid">
               <label><span>Nome do material</span><input name="name" type="text" required /></label>
-              <label><span>Tipo</span><select name="type" required><option value="" selected disabled>Selecione</option><option>Filamento</option><option>Resina</option><option>Pó</option><option>Outro</option></select></label>
+              <label><span>Tipo</span><select name="type" required><option value="" selected disabled>Selecione</option><option value="filamento">Filamento</option><option value="resina">Resina</option><option value="pó">Pó</option><option value="outro">Outro</option></select></label>
               <label><span>Marca</span><input name="brand" type="text" required /></label>
               <label><span>Número do lote</span><input name="batch" type="text" required /></label>
               <label><span>Cor</span><input name="color" type="text" required /></label>
               <label><span>Quantidade</span><input name="quantity" type="number" min="0" step="0.01" required /></label>
-              <label><span>Unidade de medida</span><select name="unit" required><option value="" selected disabled>Selecione</option><option>Rolos</option><option>Frascos</option><option>Quilogramas (kg)</option><option>Litros (L)</option></select></label>
+              <label><span>Unidade de medida</span><select name="unit" required><option value="" selected disabled>Selecione</option><option value="g">Gramas (g)</option></select></label>
               <label><span>Material compatível</span><input name="compatibility" type="text" placeholder="Ex.: PLA, ABS..." required /></label>
             </div>
             <p class="material-form-feedback" id="materialFormFeedback" role="status" aria-live="polite"></p>

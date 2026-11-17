@@ -146,6 +146,7 @@
     if (err?.details && Array.isArray(err.details)) {
       return `${err.message}: ${err.details.map((d) => d.mensagem || d).join('; ')}`;
     }
+    if (err?.details?.message) return `${err.message}: ${err.details.message}`;
     return err?.message || 'Erro inesperado';
   };
 
