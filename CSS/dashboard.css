@@ -5,7 +5,7 @@
 
 .profile-link .bi{font-size:13px}.topbar-actions .bi{font-size:15px}.topbar-actions button:nth-child(1),.topbar-actions button:nth-child(2){width:20px;height:20px;padding:0;background:none;border:0;color:#5d5252}.profile-link{display:flex;align-items:center;gap:8px}.profile-link span{display:flex;align-items:center;margin-right:0}.nav-item .nav-icon,.profile-link .nav-icon{width:18px!important;min-width:18px!important}.nav-item .nav-icon svg,.profile-link .nav-icon svg,.topbar-actions svg,.metric-icon svg{width:18px!important;height:18px!important;stroke-width:2!important;stroke:currentColor!important;fill:none!important}.metric-icon{width:30px!important;height:30px!important}.metric-icon svg{width:16px!important;height:16px!important}
 
-/* Desktop scale and alignment */
+
 @media(min-width:761px){
 	body{font-size:14px}
 	.sidebar{width:220px;flex-basis:220px}
