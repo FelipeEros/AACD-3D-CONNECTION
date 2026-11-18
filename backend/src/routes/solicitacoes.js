@@ -140,8 +140,13 @@ router.post('/', requireRole('aacd'), validate({ body: createBody }), asyncHandl
   const criados = [];
   try {
     for (const item of itens) {
-      criados.push(await insertRow(req.db, TABLES.itensSolicitacao, { ...item, [COLUMNS.solicitacaoId]: solicitacao.id }));
-    }
+  criados.push(await insertRow(req.db, TABLES.itensSolicitacao, {
+    solicitacao_id: solicitacao.id,
+    material_id: item.material_id,
+    consumo_estimado: item.quantidade,
+    observacoes: item.observacoes
+  }));
+}
   } catch (err) {
     // Sem transação no PostgREST: cancela para não deixar pedido incompleto disponível para aceite.
     await callRpc(req.db, RPC.cancelarSolicitacao, { id: solicitacao.id }).catch(() => {});
