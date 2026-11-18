@@ -39,11 +39,38 @@ const listQuery = pagination.extend({
 
 router.get('/', validate({ query: listQuery }), asyncHandler(async (req, res) => {
   const { tipo, busca, limit, offset } = req.validQuery;
-  res.json(await listRows(req.db, TABLES.materiais, {
+  const page = await listRows(req.db, TABLES.materiais, {
     filters: { tipo, [COLUMNS.instituicaoId]: scopeInstituicao(req, req.validQuery.instituicao_id) },
     search: busca, searchColumns: ['nome'],
     orderBy: COLUMNS.nome, ascending: true, limit, offset,
-  }));
+  });
+
+  if (!page.data.length) return res.json(page);
+
+  const materialIds = page.data.map((material) => material.id);
+  const [saldosResult, alertasResult] = await Promise.all([
+    req.db.from(VIEWS.saldoEstoque).select('*').in(COLUMNS.materialId, materialIds),
+    req.db.from(VIEWS.alertasEstoque).select('*').in(COLUMNS.materialId, materialIds),
+  ]);
+  if (saldosResult.error) throw saldosResult.error;
+  if (alertasResult.error) throw alertasResult.error;
+
+  const saldos = new Map((saldosResult.data || []).map((row) => [row[COLUMNS.materialId] || row.id, row]));
+  const alertas = new Map((alertasResult.data || []).map((row) => [row[COLUMNS.materialId] || row.id, row]));
+
+  res.json({
+    ...page,
+    data: page.data.map((material) => {
+      const saldo = saldos.get(material.id);
+      const alerta = alertas.get(material.id);
+      return {
+        ...material,
+        saldo_atual: Number(saldo?.saldo_atual ?? saldo?.saldo ?? saldo?.quantidade ?? 0),
+        estoque_minimo: Number(alerta?.estoque_minimo ?? material.estoque_minimo ?? 0),
+        situacao_estoque: alerta?.situacao ?? null,
+      };
+    }),
+  });
 }));
 
 async function loadMaterial(req) {

@@ -70,51 +70,161 @@ function createProfileModal() {
 }
 
 function createNotificationMenu(button) {
-  if (button.closest('.notification-menu')) return;
   const telaParceira = document.querySelector(
     '.partner-app, .partner-orders-app, .partner-materials-app, .partner-messages-app, .partner-settings-app',
   );
   if (telaParceira || window.AACD?.usuario?.perfil === 'instituicao') return;
 
-  const wrapper = document.createElement('div');
-  wrapper.className = 'notification-menu';
-  button.parentNode.insertBefore(wrapper, button);
-  wrapper.appendChild(button);
+  let wrapper = button.closest('.notification-menu');
+  if (!wrapper) {
+    wrapper = document.createElement('div');
+    wrapper.className = 'notification-menu';
+    button.parentNode.insertBefore(wrapper, button);
+    wrapper.appendChild(button);
+  }
   button.classList.add('notification-button');
   button.id = 'notificationButton';
   button.setAttribute('aria-expanded', 'false');
   button.setAttribute('aria-controls', 'notificationPanel');
 
-  const panel = document.createElement('section');
-  panel.className = 'notification-panel';
-  panel.id = 'notificationPanel';
-  panel.setAttribute('aria-labelledby', 'notificationTitle');
-  panel.innerHTML = `
-    <header class="notification-header"><h2 id="notificationTitle">Notificações</h2><button type="button" class="notification-mark-read">Marcar como lidas</button></header>
-    <div class="notification-list">
-      <a class="notification-item unread" href="Tela_Mensagens.html"><span class="notification-icon message"><i class="bi bi-chat-dots" aria-hidden="true"></i></span><span><strong>Nova mensagem</strong><small>Você recebeu uma nova atualização da rede AACD 3D Connect.</small><time>Há 15 minutos</time></span></a>
-      <a class="notification-item unread" href="Tela_Impressoras.html"><span class="notification-icon printer"><i class="bi bi-printer" aria-hidden="true"></i></span><span><strong>Impressora disponível</strong><small>Uma impressora parceira está disponível para uma nova produção.</small><time>Há 2 horas</time></span></a>
-      <a class="notification-item unread" href="Tela_Instituicoes.html"><span class="notification-icon critical"><i class="bi bi-building" aria-hidden="true"></i></span><span><strong>Nova solicitação</strong><small>Uma instituição parceira aguarda avaliação.</small><time>Ontem</time></span></a>
-    </div>
-    <p class="notification-empty">Você está em dia!</p>
-  `;
-  wrapper.appendChild(panel);
+  let panel = wrapper.querySelector('#notificationPanel');
+  if (!panel) {
+    panel = document.createElement('section');
+    panel.className = 'notification-panel';
+    panel.id = 'notificationPanel';
+    panel.setAttribute('aria-labelledby', 'notificationTitle');
+    panel.innerHTML = `
+      <header class="notification-header"><h2 id="notificationTitle">Notificações</h2><button type="button" id="markNotificationsRead">Marcar como lidas</button></header>
+      <div class="notification-list"></div>
+      <p class="notification-empty">Você está em dia!</p>`;
+    wrapper.appendChild(panel);
+  }
 
-  const items = [...panel.querySelectorAll('.notification-item')];
-  const badge = document.createElement('span');
-  badge.className = 'notification-badge';
-  badge.textContent = items.length;
-  button.appendChild(badge);
-  const markRead = panel.querySelector('.notification-mark-read');
+  const list = panel.querySelector('.notification-list');
   const empty = panel.querySelector('.notification-empty');
-  const updateCount = () => {
-    const count = items.filter((item) => item.classList.contains('unread')).length;
-    badge.textContent = count;
-    badge.hidden = false;
-    markRead.disabled = count === 0;
-    panel.querySelector('.notification-list').classList.toggle('is-empty', count === 0);
-    empty.classList.toggle('visible', count === 0);
-  };
+  const markRead = panel.querySelector('#markNotificationsRead') || panel.querySelector('.notification-mark-read');
+  let badge = button.querySelector('.notification-badge');
+  if (!badge) {
+    badge = document.createElement('span');
+    badge.className = 'notification-badge';
+    button.appendChild(badge);
+  }
+
+  const readKey = `aacd3d.notificacoes.lidas.${window.AACD?.usuario?.id || 'aacd'}`;
+  const preferenceKey = 'aacd3d.notificacoes.aacd';
+  let readIds = new Set();
+  let notifications = [];
+  try { readIds = new Set(JSON.parse(localStorage.getItem(readKey) || '[]')); } catch { /* usa conjunto vazio */ }
+
+  function preferences() {
+    try {
+      return { aacd: true, estoque: true, manutencao: false, ...JSON.parse(localStorage.getItem(preferenceKey) || '{}') };
+    } catch {
+      return { aacd: true, estoque: true, manutencao: false };
+    }
+  }
+
+  function age(value) {
+    if (!value) return '';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '';
+    const minutes = Math.max(0, Math.floor((Date.now() - date.getTime()) / 60000));
+    if (minutes < 1) return 'Agora';
+    if (minutes < 60) return `Há ${minutes} min`;
+    if (minutes < 1440) return `Há ${Math.floor(minutes / 60)} h`;
+    return date.toLocaleDateString('pt-BR');
+  }
+
+  function updateCount() {
+    const unread = notifications.filter((item) => !readIds.has(item.id)).length;
+    badge.textContent = unread;
+    badge.hidden = unread === 0;
+    if (markRead) markRead.disabled = unread === 0;
+    list.classList.toggle('is-empty', notifications.length === 0);
+    empty.classList.toggle('visible', unread === 0);
+  }
+
+  function render() {
+    list.innerHTML = notifications.length
+      ? notifications.map((item) => `
+        <a class="notification-item ${readIds.has(item.id) ? '' : 'unread'}" href="${item.href}" data-notification-id="${window.AACD.escapeHtml(item.id)}">
+          <span class="notification-icon ${item.type}"><i class="bi ${item.icon}" aria-hidden="true"></i></span>
+          <span><strong>${window.AACD.escapeHtml(item.title)}</strong><small>${window.AACD.escapeHtml(item.text)}</small><time>${window.AACD.escapeHtml(age(item.date))}</time></span>
+        </a>`).join('')
+      : '';
+    list.querySelectorAll('.notification-item').forEach((item) => {
+      item.addEventListener('click', () => {
+        readIds.add(item.dataset.notificationId);
+        localStorage.setItem(readKey, JSON.stringify([...readIds].slice(-300)));
+        updateCount();
+      });
+    });
+    updateCount();
+  }
+
+  async function loadNotifications() {
+    if (!window.AACD?.api) return;
+    const config = preferences();
+    const [institutions, solicitacoes, alerts, printers] = await Promise.all([
+      window.AACD.api('/instituicoes', { query: { limit: 100 } }).catch(() => ({ data: [] })),
+      config.aacd ? window.AACD.api('/solicitacoes', { query: { limit: 100 } }).catch(() => ({ data: [] })) : Promise.resolve({ data: [] }),
+      config.estoque ? window.AACD.api('/estoque/alertas', { query: { limit: 100 } }).catch(() => ({ data: [] })) : Promise.resolve({ data: [] }),
+      config.manutencao ? window.AACD.api('/impressoras', { query: { limit: 100 } }).catch(() => ({ data: [] })) : Promise.resolve({ data: [] }),
+    ]);
+    const novas = [];
+    (institutions.data || []).filter((item) => String(item.status).toLowerCase() === 'pendente').forEach((item) => {
+      novas.push({
+        id: `instituicao:${item.id}:pendente`,
+        type: 'critical',
+        title: 'Nova solicitação de instituição',
+        text: `${item.nome || 'Instituição'} aguarda avaliação.`,
+        href: 'Tela_Instituicoes.html',
+        icon: 'bi-building',
+        date: item.criado_em || item.created_at,
+      });
+    });
+    (solicitacoes.data || []).filter((item) => ['pendente', 'aceita', 'em_producao'].includes(item.status)).forEach((item) => {
+      novas.push({
+        id: `pedido:${item.id}:${item.status}`,
+        type: item.status === 'em_producao' ? 'printer' : 'critical',
+        title: item.status === 'em_producao' ? 'Pedido em produção' : 'Pedido pendente',
+        text: `Solicitação ${window.AACD.fmt.idCurto(item.id)} precisa de acompanhamento.`,
+        href: 'Tela_Pedidos.html',
+        icon: 'bi-clipboard-check',
+        date: item.criado_em || item.created_at,
+      });
+    });
+    (alerts.data || []).filter((item) => {
+      const situation = String(item.situacao || '').toLowerCase();
+      return situation === 'baixo' || situation === 'esgotado' || situation.includes('crit');
+    }).forEach((item) => {
+      const situation = String(item.situacao || '').toLowerCase();
+      const esgotado = situation === 'esgotado' || Number(item.saldo_atual || 0) <= 0;
+      novas.push({
+        id: `estoque:${item.instituicao_id || 'rede'}:${item.material_id}:${situation}`,
+        type: 'critical',
+        title: esgotado ? 'Estoque esgotado' : 'Estoque baixo',
+        text: `${item.material || 'Material'}: ${Number(item.saldo_atual || 0)} ${item.unidade || 'g'} disponíveis.`,
+        href: 'Tela_Materiais.html',
+        icon: 'bi-box-seam',
+        date: null,
+      });
+    });
+    (printers.data || []).filter((item) => item.status === 'indisponivel').forEach((item) => {
+      novas.push({
+        id: `impressora:${item.id}:indisponivel`,
+        type: 'critical',
+        title: 'Impressora indisponível',
+        text: `${item.nome || 'Impressora'} está fora de operação.`,
+        href: 'Tela_Impressoras.html',
+        icon: 'bi-printer',
+        date: item.atualizado_em || item.updated_at,
+      });
+    });
+    notifications = novas.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+    render();
+  }
+
   const close = () => {
     panel.classList.remove('is-open');
     button.setAttribute('aria-expanded', 'false');
@@ -128,13 +238,15 @@ function createNotificationMenu(button) {
     const isOpen = panel.classList.toggle('is-open');
     button.setAttribute('aria-expanded', String(isOpen));
   });
-  items.forEach((item) => item.addEventListener('click', () => {
-    item.classList.remove('unread');
-    updateCount();
-  }));
-  markRead.addEventListener('click', () => {
-    items.forEach((item) => item.classList.remove('unread'));
-    updateCount();
+  if (markRead) {
+    markRead.addEventListener('click', () => {
+      notifications.forEach((item) => readIds.add(item.id));
+      localStorage.setItem(readKey, JSON.stringify([...readIds].slice(-300)));
+      render();
+    });
+  }
+  window.addEventListener('aacd3d-notificacoes-preferencias', () => {
+    loadNotifications().catch(() => {});
   });
   document.addEventListener('click', (event) => {
     if (!wrapper.contains(event.target)) close();
@@ -142,7 +254,13 @@ function createNotificationMenu(button) {
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') close();
   });
+  list.innerHTML = '';
   updateCount();
+  loadNotifications().catch(() => {
+    notifications = [];
+    render();
+  });
+  window.setInterval(() => loadNotifications().catch(() => {}), 30000);
 }
 
 const profileButtons = document.querySelectorAll('.user-avatar');

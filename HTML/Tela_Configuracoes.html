@@ -47,66 +47,42 @@
             </div>
           </header>
 
-          <section class="settings-panel" aria-label="Perfil administrativo">
+          <form class="settings-panel" id="settingsForm">
             <div class="panel-header">
-              <h2>Perfil Administrativo</h2>
-              <p>Informações básicas do ambiente institucional.</p>
+              <div><h2>Perfil administrativo</h2><p>Informações básicas do ambiente institucional.</p></div>
+              <i class="bi bi-person-badge" aria-hidden="true"></i>
             </div>
-
             <div class="field-grid">
-              <div class="field">
-                <label for="institution-name">Nome da Instituição</label>
-                <input id="institution-name" type="text" value="AACD Hospital Central" />
-              </div>
-
-              <div class="field">
-                <label for="institution-department">Setor / Departamento</label>
-                <input id="institution-department" type="text" value="Laboratório de Bioengenharia 3D" />
-              </div>
-
-              <div class="field field-full">
-                <label for="contact-email">E-mail de Contato Administrativo</label>
-                <input id="contact-email" type="email" value="admin.3d@aacd.org.br" />
-              </div>
-
-              <div class="field field-full">
-                <label for="institution-description">Descrição do Hub</label>
-                <textarea id="institution-description" rows="3">Centro de excelência em prototipagem rápida e manufatura aditiva para órteses e próteses personalizadas.</textarea>
-              </div>
+              <div class="field"><label for="institution-name">Nome da instituição</label><input id="institution-name" type="text" required /></div>
+              <div class="field"><label for="institution-department">Setor / Departamento</label><input id="institution-department" type="text" required /></div>
+              <div class="field field-full"><label for="contact-email">E-mail de contato administrativo</label><input id="contact-email" type="email" required /></div>
+              <div class="field field-full"><label for="institution-description">Descrição do hub</label><textarea id="institution-description" rows="3" maxlength="1000"></textarea></div>
             </div>
+            <div class="action-row"><p class="settings-feedback" id="settingsFeedback" role="status"></p><button type="submit" class="primary-button" id="saveSettings">Salvar alterações</button></div>
+          </form>
 
-            <div class="action-row">
-              <button type="button" class="primary-button">Salvar Alterações</button>
-            </div>
+          <section class="settings-panel" aria-labelledby="notificationTitle">
+            <div class="panel-header"><div><h2 id="notificationTitle">Notificações</h2><p>Escolha quais avisos você deseja receber.</p></div><i class="bi bi-bell" aria-hidden="true"></i></div>
+            <label class="toggle-row"><span><strong>Atualizações da AACD</strong><small>Receber mensagens sobre solicitações e operações.</small></span><input type="checkbox" data-notification="aacd" checked /><i aria-hidden="true"></i></label>
+            <label class="toggle-row"><span><strong>Alertas de estoque</strong><small>Ser avisado quando um material atingir nível crítico.</small></span><input type="checkbox" data-notification="estoque" checked /><i aria-hidden="true"></i></label>
+            <label class="toggle-row"><span><strong>Manutenção de impressoras</strong><small>Receber lembretes sobre revisões e indisponibilidade.</small></span><input type="checkbox" data-notification="manutencao" /><i aria-hidden="true"></i></label>
           </section>
 
           <section class="settings-panel" aria-label="Segurança da conta">
-            <div class="panel-header">
-              <h2>Segurança</h2>
-              <p>Gerencie sua senha e segurança da conta.</p>
-            </div>
-
+            <div class="panel-header"><div><h2>Segurança</h2><p>Atualize a senha de acesso da conta.</p></div><i class="bi bi-shield-lock" aria-hidden="true"></i></div>
             <div class="field-grid">
-              <div class="field">
-                <label for="current-password">Senha Atual</label>
-                <input id="current-password" type="password" value="******" />
-              </div>
-
-              <div class="field">
-                <label for="new-password">Nova Senha</label>
-                <input id="new-password" type="password" value="******" />
-              </div>
+              <div class="field"><label for="current-password">Senha atual</label><input id="current-password" type="password" autocomplete="current-password" /></div>
+              <div class="field"><label for="new-password">Nova senha</label><input id="new-password" type="password" autocomplete="new-password" /></div>
+              <div class="field field-full"><label for="confirm-password">Confirmar nova senha</label><input id="confirm-password" type="password" autocomplete="new-password" /></div>
             </div>
-
-            <div class="security-action-row">
-              <button type="button" class="primary-button small-button">Alterar Senha</button>
-            </div>
+            <div class="action-row"><p class="settings-feedback" id="passwordFeedback" role="status"></p><button type="button" class="primary-button small-button" id="changePassword">Alterar senha</button></div>
           </section>
         </div>
       </main>
     </div>
     <script src="../JS/config.js"></script>
     <script src="../JS/api.js" data-perfil="aacd"></script>
-    <script src="../JS/profile-menu.js"></script>
+    <script src="../JS/configuracoes.js?v=2"></script>
+    <script src="../JS/profile-menu.js?v=5"></script>
   </body>
 </html>

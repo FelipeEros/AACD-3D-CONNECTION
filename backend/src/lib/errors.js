@@ -22,7 +22,16 @@ export function fromSupabaseError(err) {
     return new HttpError(403, 'Operação não permitida para este usuário');
   }
   if (code === 'PGRST116') return new HttpError(404, 'Recurso não encontrado');
-  if (code === '23505') return new HttpError(409, 'Registro duplicado', { message });
+  if (code === '23505') {
+    let mensagem = 'Registro duplicado';
+    if (/instituicoes.*email.*(unique|unico)|instituicoes_email/i.test(message)) {
+      mensagem = 'Não foi possível concluir o cadastro. Verifique o e-mail e tente novamente.';
+    }
+    if (/instituicoes.*cnpj.*(unique|unico)|instituicoes_cnpj/i.test(message)) {
+      mensagem = 'Já existe uma instituição cadastrada com este CNPJ';
+    }
+    return new HttpError(409, mensagem);
+  }
   if (code === '23503') return new HttpError(409, 'Registro relacionado não existe ou está em uso', { message });
   if (code === '23514' || code === '23502' || code === '22P02') return new HttpError(422, 'Dados inválidos', { message });
   // RAISE EXCEPTION dentro das RPCs (regras de negócio do banco)

@@ -4,7 +4,7 @@ import request from 'supertest';
 import { buildApp } from './helpers.js';
 import { createFakeSupabase, auth, INST_ID, OTHER_INST_ID } from './fake-supabase.js';
 
-const cadastro = { nome: 'Hospital Teste', cnpj: '12.345.678/0001-90', email: 'Contato@Hosp.org', telefone: '(11) 99999-0000', endereco: 'Rua A, 100 - São Paulo' };
+const cadastro = { nome: 'Hospital Teste', cnpj: '12.345.678/0001-90', email: 'Contato@Hosp.org', telefone: '(11) 99999-0000', endereco: 'Rua A, 100 - São Paulo', responsavel: 'Maria Silva' };
 
 test('cadastro público chama a RPC com dados normalizados', async () => {
   const sb = createFakeSupabase({ rpc: () => ({ data: INST_ID, error: null }) });
@@ -15,6 +15,7 @@ test('cadastro público chama a RPC com dados normalizados', async () => {
   assert.equal(call.token, 'service-role');
   assert.equal(call.args.p_cnpj, '12345678000190');
   assert.equal(call.args.p_email, 'contato@hosp.org');
+  assert.equal(call.args.p_responsavel, 'Maria Silva');
 });
 
 test('cadastro rejeita CNPJ inválido', async () => {

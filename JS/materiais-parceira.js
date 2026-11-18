@@ -34,8 +34,13 @@ function closeMaterialRegistration() {
 }
 
 function materialStatus(material, saldo, alerta) {
-  if (alerta?.situacao?.toLowerCase().includes('cr')) return ['CRÍTICO', 'critical'];
-  if (Number(material.estoque_minimo) > 0 && saldo <= Number(material.estoque_minimo)) return ['BAIXO', 'low'];
+  const situacao = String(alerta?.situacao || '').toLowerCase();
+  const minimo = Number(material.estoque_minimo ?? 0);
+  if (saldo <= 0) return ['CRÍTICO', 'critical'];
+  if (situacao.includes('esgot') || situacao.includes('crít') || situacao.includes('crit')) return ['CRÍTICO', 'critical'];
+  if (minimo > 0 && saldo <= minimo * 0.25) return ['CRÍTICO', 'critical'];
+  if (situacao === 'baixo') return ['BAIXO', 'low'];
+  if (minimo > 0 && saldo <= minimo) return ['BAIXO', 'low'];
   return ['ADEQUADO', 'adequate'];
 }
 
@@ -55,7 +60,7 @@ function renderMaterials(rows) {
   }).join('') : '<tr><td colspan="6">Nenhum material cadastrado.</td></tr>';
 
   const total = inventoryRows.reduce((sum, { saldo }) => sum + saldo, 0);
-  const critical = inventoryRows.filter(({ material, saldo, alerta }) => materialStatus(material, saldo, alerta)[0] !== 'ADEQUADO').length;
+  const critical = inventoryRows.filter(({ material, saldo, alerta }) => materialStatus(material, saldo, alerta)[0] === 'CRÍTICO').length;
   const summaryValues = summaryGrid.querySelectorAll('strong');
   summaryValues[0].textContent = AACD.fmt.numero(total, 2);
   summaryValues[1].textContent = critical;
@@ -109,17 +114,48 @@ function updateFilterMenus() {
 async function loadMaterials() {
   const [materialResponse, saldoResponse, alertResponse] = await Promise.all([
     AACD.api('/materiais', { query: { limit: 100 } }),
-    AACD.api('/estoque/saldo', { query: { limit: 100 } }),
-    AACD.api('/estoque/alertas', { query: { limit: 100 } }),
+    AACD.api('/estoque/saldo', { query: { limit: 100, _cachebust: Date.now() } }),
+    AACD.api('/estoque/alertas', { query: { limit: 100, _cachebust: Date.now() } }),
   ]);
   materials = materialResponse.data || [];
-  const balances = new Map((saldoResponse.data || []).map((row) => [row.material_id, Number(row.saldo_atual || 0)]));
-  const alerts = new Map((alertResponse.data || []).map((row) => [row.material_id, row]));
-  inventoryRows = materials.map((material) => ({
-    material,
-    saldo: balances.get(material.id) || 0,
-    alerta: alerts.get(material.id),
-  }));
+  const balanceRows = saldoResponse.data || [];
+  const balances = new Map(balanceRows.map((row) => [row.material_id || row.id || row.material?.id, {
+    saldo: Number(row.saldo_atual ?? row.saldo ?? row.quantidade ?? 0),
+    minimo: Number(row.estoque_minimo ?? row.minimo ?? 0),
+  }]));
+  const alertRows = alertResponse.data || [];
+  const alerts = new Map(alertRows.map((row) => [row.material_id || row.id || row.material?.id, row]));
+  alerts.forEach((alert, materialId) => {
+    const balance = balances.get(materialId);
+    balances.set(materialId, {
+      saldo: balance?.saldo ?? Number(alert.saldo_atual ?? alert.saldo ?? 0),
+      minimo: Number(alert.estoque_minimo ?? alert.minimo ?? balance?.minimo ?? 0),
+    });
+  });
+  inventoryRows = materials.map((material) => {
+    const alert = alerts.get(material.id);
+    const balance = balances.get(material.id);
+    const saldoCandidates = [
+      material.saldo_atual,
+      balance?.saldo,
+      alert?.saldo_atual,
+      alert?.saldo,
+      alert?.quantidade,
+    ].map((candidate) => Number(candidate)).filter((candidate) => Number.isFinite(candidate));
+    const saldo = saldoCandidates.find((candidate) => candidate > 0) ?? saldoCandidates.at(-1) ?? 0;
+    const minimo = Number(
+      balance?.minimo
+      ?? alert?.estoque_minimo
+      ?? alert?.minimo
+      ?? material.estoque_minimo
+      ?? 0,
+    );
+    return {
+      material: { ...material, estoque_minimo: minimo },
+      saldo,
+      alerta: alert,
+    };
+  });
   updateFilterMenus();
   applyMaterialFilters();
 }

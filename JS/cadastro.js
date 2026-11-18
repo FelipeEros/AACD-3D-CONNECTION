@@ -16,6 +16,7 @@ cadastroForm.addEventListener('submit', async (event) => {
     telefone: campo('telefone').value.trim(),
     email: campo('email').value.trim(),
     endereco: campo('endereco').value.trim(),
+    responsavel: campo('responsavel').value.trim(),
   };
 
   const faltando = Object.entries(dados).filter(([, v]) => !v).map(([k]) => k);
@@ -36,6 +37,7 @@ cadastroForm.addEventListener('submit', async (event) => {
   try {
     const { message } = await AACD.api('/cadastro', { method: 'POST', body: dados });
     cadastroForm.reset();
+    cadastroButton.disabled = false;
     AACD.feedback(cadastroFeedback, message, 'sucesso');
   } catch (err) {
     AACD.feedback(cadastroFeedback, AACD.errorMessage(err), 'erro');

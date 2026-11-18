@@ -9,6 +9,27 @@
   const donut = document.querySelector('.donut');
   const legend = document.querySelector('.materials-legend');
   const RANK_CORES = ['rank-red', 'rank-gray', 'rank-blue', 'rank-brown'];
+  const overview = document.querySelector('[data-content="overview"]');
+  let carregamentoInicial = true;
+
+  function iniciarCarregamento() {
+    if (carregamentoInicial && overview) overview.style.visibility = 'hidden';
+    cards.forEach((el) => { el.textContent = '—'; });
+    vazio(ranking, 'Carregando instituições...');
+    vazio(timeline, 'Carregando atividades...');
+    donut.querySelector('strong').textContent = '—';
+    donut.querySelector('small').textContent = 'carregando';
+    legend.innerHTML = '<p style="color:#766d6d;font-size:10px">Carregando dados...</p>';
+
+    document.querySelector('.notification-badge')?.setAttribute('hidden', '');
+    const notificationList = document.querySelector('.notification-list');
+    if (notificationList) {
+      notificationList.innerHTML = '';
+      notificationList.classList.add('is-empty');
+    }
+  }
+
+  iniciarCarregamento();
 
   // Busca até 1.000 registros em páginas de 100.
   async function listarTudo(path, query = {}) {
@@ -91,11 +112,15 @@
       : '#eee';
     legend.innerHTML = grupos.map(([nome, n, , dot]) => `
       <div class="legend-row"><i class="dot ${dot}"></i><span>${nome}</span><b>${total ? Math.round((n / total) * 100) : 0}%</b></div>`).join('');
+    if (overview) overview.style.visibility = 'visible';
+    carregamentoInicial = false;
   }
 
   function erro(err) {
     cards.forEach((el) => { el.textContent = '—'; });
     vazio(timeline, window.AACD.errorMessage(err));
+    if (overview) overview.style.visibility = 'visible';
+    carregamentoInicial = false;
   }
 
   carregar().catch(erro);

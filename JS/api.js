@@ -61,7 +61,12 @@
 
     let res;
     try {
-      res = await fetch(url, { method, headers, body: form ?? (body !== undefined ? JSON.stringify(body) : undefined) });
+      res = await fetch(url, {
+        method,
+        headers,
+        cache: 'no-store',
+        body: form ?? (body !== undefined ? JSON.stringify(body) : undefined),
+      });
     } catch {
       throw new ApiError(0, 'Não foi possível conectar ao servidor. Verifique se o backend está rodando.');
     }

@@ -81,13 +81,12 @@ export const STATUS_IMPRESSORA = Object.freeze(['disponivel', 'ocupada', 'indisp
 export const RPC = Object.freeze({
   solicitarCadastroInstituicao: {
     name: 'solicitar_cadastro_instituicao',
-    // CONFERIR ordem/nomes dos 5 argumentos text
     args: (d) => ({
       p_nome: d.nome,
       p_cnpj: d.cnpj,
       p_email: d.email,
       p_telefone: d.telefone,
-      p_endereco: d.endereco,
+      p_responsavel: d.responsavel,
     }),
   },
   vincularUsuarioInstituicao: {

@@ -260,7 +260,91 @@ a {
 .action-row {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
   margin-top: 18px;
+}
+
+.settings-feedback {
+  display: none;
+  flex: 1;
+  margin: 0;
+  padding: 9px 13px;
+  border-radius: 6px;
+  color: #267242;
+  background: #e8f6eb;
+  font-size: 11px;
+}
+
+.settings-feedback.visible {
+  display: block;
+}
+
+.settings-feedback.error {
+  color: #9e1d26;
+  background: #fff0f1;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 13px 0;
+  border-top: 1px solid #f1eaea;
+}
+
+.toggle-row:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.toggle-row span {
+  display: grid;
+  gap: 4px;
+}
+
+.toggle-row strong {
+  font-size: 12px;
+}
+
+.toggle-row small {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.toggle-row input {
+  position: absolute;
+  opacity: 0;
+}
+
+.toggle-row i {
+  position: relative;
+  width: 35px;
+  height: 20px;
+  flex: 0 0 35px;
+  border-radius: 20px;
+  background: #d9cece;
+}
+
+.toggle-row i:after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform .18s ease;
+}
+
+.toggle-row input:checked + i {
+  background: var(--red);
+}
+
+.toggle-row input:checked + i:after {
+  transform: translateX(15px);
 }
 
 .security-action-row {

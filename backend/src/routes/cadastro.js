@@ -14,6 +14,7 @@ export const cadastroBody = z.object({
   email: z.string().trim().toLowerCase().email(),
   telefone: z.string().transform(onlyDigits).pipe(z.string().min(10).max(11)),
   endereco: z.string().trim().min(5).max(300),
+  responsavel: z.string().trim().min(2).max(200),
 });
 
 /**
@@ -22,9 +23,10 @@ export const cadastroBody = z.object({
  */
 router.post('/', validate({ body: cadastroBody }), asyncHandler(async (req, res) => {
   const data = await callRpc(req.app.locals.supabase.admin(), RPC.solicitarCadastroInstituicao, req.body);
+  const instituicaoId = typeof data === 'string' ? data : data?.id ?? null;
   res.status(201).json({
     message: 'Cadastro recebido. A AACD vai analisar a solicitação e enviar o acesso por e-mail.',
-    instituicao_id: typeof data === 'string' ? data : data?.id ?? null,
+    instituicao_id: instituicaoId,
   });
 }));
 
