@@ -8,6 +8,21 @@ cadastroButton.after(cadastroFeedback);
 
 const campo = (id) => document.getElementById(id);
 
+document.querySelectorAll('[data-password-toggle]').forEach((button) => {
+  button.addEventListener('click', () => {
+    const input = campo(button.dataset.passwordToggle);
+    const mostrar = input.type === 'password';
+    input.type = mostrar ? 'text' : 'password';
+    button.classList.toggle('is-visible', mostrar);
+    button.querySelector('i')?.classList.toggle('bi-eye', !mostrar);
+    button.querySelector('i')?.classList.toggle('bi-eye-slash', mostrar);
+
+    const rotulo = input.id === 'senha' ? 'senha' : 'confirmação da senha';
+    button.setAttribute('aria-label', mostrar ? `Ocultar ${rotulo}` : `Mostrar ${rotulo}`);
+    button.setAttribute('title', mostrar ? `Ocultar ${rotulo}` : `Mostrar ${rotulo}`);
+  });
+});
+
 cadastroForm.addEventListener('submit', async (event) => {
   event.preventDefault();
   const dados = {
@@ -15,6 +30,7 @@ cadastroForm.addEventListener('submit', async (event) => {
     cnpj: campo('cnpj').value.trim(),
     telefone: campo('telefone').value.trim(),
     email: campo('email').value.trim(),
+    senha: campo('senha').value,
     endereco: campo('endereco').value.trim(),
     responsavel: campo('responsavel').value.trim(),
   };
@@ -29,6 +45,16 @@ cadastroForm.addEventListener('submit', async (event) => {
   if (dados.cnpj.replace(/\D/g, '').length !== 14) {
     AACD.feedback(cadastroFeedback, 'O CNPJ deve ter 14 dígitos.', 'erro');
     campo('cnpj').focus();
+    return;
+  }
+  if (dados.senha.length < 8) {
+    AACD.feedback(cadastroFeedback, 'A senha deve ter pelo menos 8 caracteres.', 'erro');
+    campo('senha').focus();
+    return;
+  }
+  if (dados.senha !== campo('confirmarSenha').value) {
+    AACD.feedback(cadastroFeedback, 'As senhas informadas não coincidem.', 'erro');
+    campo('confirmarSenha').focus();
     return;
   }
 

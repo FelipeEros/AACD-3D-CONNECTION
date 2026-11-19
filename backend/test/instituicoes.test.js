@@ -4,7 +4,7 @@ import request from 'supertest';
 import { buildApp } from './helpers.js';
 import { createFakeSupabase, auth, INST_ID, OTHER_INST_ID } from './fake-supabase.js';
 
-const cadastro = { nome: 'Hospital Teste', cnpj: '12.345.678/0001-90', email: 'Contato@Hosp.org', telefone: '(11) 99999-0000', endereco: 'Rua A, 100 - São Paulo', responsavel: 'Maria Silva' };
+const cadastro = { nome: 'Hospital Teste', cnpj: '12.345.678/0001-90', email: 'Contato@Hosp.org', telefone: '(11) 99999-0000', endereco: 'Rua A, 100 - São Paulo', responsavel: 'Maria Silva', senha: 'senha-segura' };
 
 test('cadastro público chama a RPC com dados normalizados', async () => {
   const sb = createFakeSupabase({ rpc: () => ({ data: INST_ID, error: null }) });
@@ -21,6 +21,20 @@ test('cadastro público chama a RPC com dados normalizados', async () => {
 test('cadastro rejeita CNPJ inválido', async () => {
   const res = await request(buildApp(createFakeSupabase())).post('/api/cadastro').send({ ...cadastro, cnpj: '123' });
   assert.equal(res.status, 400);
+});
+
+test('cadastro cria a instituição diretamente quando o RPC ainda não existe', async () => {
+  const sb = createFakeSupabase({
+    rpc: () => ({ data: null, error: { code: 'PGRST202', message: 'Could not find function' } }),
+    query: (q) => q.table === 'instituicoes' && q.op === 'insert'
+      ? { data: { id: INST_ID, ...q.values }, error: null }
+      : undefined,
+  });
+  const res = await request(buildApp(sb)).post('/api/cadastro').send(cadastro);
+  assert.equal(res.status, 201);
+  assert.equal(res.body.instituicao_id, INST_ID);
+  assert.ok(sb.calls.some((c) => c.table === 'instituicoes' && c.op === 'insert'));
+  assert.ok(sb.calls.some((c) => c.auth === 'createUser'));
 });
 
 test('instituição só lista a si mesma; AACD aplica filtros', async () => {

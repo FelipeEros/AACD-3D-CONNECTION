@@ -68,6 +68,16 @@ router.patch('/:id', validate({ params: idParams, body: updateBody }), asyncHand
  */
 async function provisionarAcesso(supabase, instituicaoId, email) {
   const admin = supabase.admin();
+  if (admin.auth?.admin?.listUsers) {
+    const { data, error } = await admin.auth.admin.listUsers({ page: 1, perPage: 1000 });
+    if (error) throw error;
+    const existente = data?.users?.find((user) => user.email?.toLowerCase() === email.toLowerCase());
+    if (existente) {
+      await callRpc(admin, RPC.vincularUsuarioInstituicao, { usuarioId: existente.id, instituicaoId });
+      return { status: 'acesso_liberado', usuario_id: existente.id, email };
+    }
+  }
+
   const { data, error } = await admin.auth.admin.inviteUserByEmail(email);
   if (error) throw error;
   await callRpc(admin, RPC.vincularUsuarioInstituicao, { usuarioId: data.user.id, instituicaoId });

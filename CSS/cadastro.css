@@ -178,6 +178,38 @@ button {
   gap: 16px;
 }
 
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  padding-right: 44px;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 7px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+}
+
+.password-toggle:hover,
+.password-toggle:focus-visible {
+  background: #f5ecec;
+  color: var(--red);
+  outline: none;
+}
+
 .upload-box {
   position: relative;
   min-height: 110px;

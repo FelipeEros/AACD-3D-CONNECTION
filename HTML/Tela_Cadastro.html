@@ -55,6 +55,27 @@
             <label for="email">E-mail Corporativo <span aria-hidden="true">*</span></label>
             <input id="email" name="email" type="email" />
 
+            <div class="two-col">
+              <div>
+                <label for="senha">Senha <span aria-hidden="true">*</span></label>
+                <div class="password-field">
+                  <input id="senha" name="senha" type="password" minlength="8" autocomplete="new-password" />
+                  <button class="password-toggle" type="button" data-password-toggle="senha" aria-label="Mostrar senha" title="Mostrar senha">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+              <div>
+                <label for="confirmarSenha">Confirmar senha <span aria-hidden="true">*</span></label>
+                <div class="password-field">
+                  <input id="confirmarSenha" name="confirmarSenha" type="password" minlength="8" autocomplete="new-password" />
+                  <button class="password-toggle" type="button" data-password-toggle="confirmarSenha" aria-label="Mostrar confirmação da senha" title="Mostrar confirmação da senha">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
             <label for="endereco">Endereço Completo <span aria-hidden="true">*</span></label>
             <input id="endereco" name="endereco" type="text" placeholder="Rua, Número, Bairro, Cidade - UF" />
 

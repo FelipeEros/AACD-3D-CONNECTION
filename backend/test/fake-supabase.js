@@ -82,6 +82,11 @@ export function createFakeSupabase(handlers = {}) {
         admin: {
           updateUserById: (id, attrs) => { calls.push({ auth: 'updateUser', id, attrs }); return Promise.resolve(ok({})); },
           signOut: (jwt) => { calls.push({ auth: 'signOut', jwt }); return Promise.resolve(ok({})); },
+          createUser: (attrs) => {
+            calls.push({ auth: 'createUser', attrs });
+            return Promise.resolve(handlers.createUser?.(attrs) ?? ok({ user: { id: '33333333-3333-4333-8333-333333333333', email: attrs.email } }));
+          },
+          listUsers: (params) => Promise.resolve(handlers.listUsers?.(params) ?? ok({ users: [] })),
           inviteUserByEmail: (email) => {
             calls.push({ auth: 'invite', email });
             return Promise.resolve(handlers.invite?.(email) ?? ok({ user: { id: '33333333-3333-4333-8333-333333333333', email } }));

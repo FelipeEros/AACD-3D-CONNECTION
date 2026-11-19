@@ -230,7 +230,7 @@ document.querySelectorAll('[data-review-action]').forEach((button) => {
         ? { ...item, status: approved ? 'ativa' : 'rejeitada' }
         : item);
       reviewFeedback.textContent = approved
-        ? 'Solicitação aprovada. Um convite de acesso foi solicitado para o e-mail da instituição.'
+        ? 'Solicitação aprovada. A instituição já pode entrar com o e-mail e a senha cadastrados.'
         : 'Solicitação recusada e removida da fila de pendências.';
       reviewFeedback.className = `review-feedback visible ${approved ? 'success' : 'rejected'}`;
       renderInstitutions();
