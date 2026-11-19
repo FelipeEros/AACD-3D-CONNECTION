@@ -234,7 +234,11 @@ async function listAll(path) {
 }
 
 async function loadPrinters() {
-  if (!window.AACD.usuario) return;
+  if (!window.AACD.usuario) {
+    grid.innerHTML = '<p class="empty-state">Sessão não encontrada. Entre novamente para carregar as impressoras.</p>';
+    resultCount.textContent = 'Não foi possível carregar as impressoras';
+    return;
+  }
   try {
     const [printerRows, institutionRows] = await Promise.all([
       listAll('/impressoras'),

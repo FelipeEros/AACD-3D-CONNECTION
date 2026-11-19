@@ -13,7 +13,7 @@
   let carregamentoInicial = true;
 
   function iniciarCarregamento() {
-    if (carregamentoInicial && overview) overview.style.visibility = 'hidden';
+    if (carregamentoInicial && overview) overview.classList.remove('is-loaded');
     cards.forEach((el) => { el.textContent = '—'; });
     vazio(ranking, 'Carregando instituições...');
     vazio(timeline, 'Carregando atividades...');
@@ -112,14 +112,14 @@
       : '#eee';
     legend.innerHTML = grupos.map(([nome, n, , dot]) => `
       <div class="legend-row"><i class="dot ${dot}"></i><span>${nome}</span><b>${total ? Math.round((n / total) * 100) : 0}%</b></div>`).join('');
-    if (overview) overview.style.visibility = 'visible';
+    if (overview) overview.classList.add('is-loaded');
     carregamentoInicial = false;
   }
 
   function erro(err) {
     cards.forEach((el) => { el.textContent = '—'; });
     vazio(timeline, window.AACD.errorMessage(err));
-    if (overview) overview.style.visibility = 'visible';
+    if (overview) overview.classList.add('is-loaded');
     carregamentoInicial = false;
   }
 
